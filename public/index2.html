@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js'></script>
+<script type='text/javascript' >
+  let userInfo;
+
+
+  var socket = io('http://localhost:3000');
+  socket.on('connect', function(){
+  	// Юра - > "Привит" -> Максим
+
+
+  	/*
+  	socket.emit('setHistory', ({idAddressee:'58fb344ce893580b40cf98e2', body:'Привіт'}));
+
+  	socket.emit('getHistory',({idPartner:'58fb344ce893580b40cf98e2'}) )
+
+	*/
+
+	
+	  socket.emit('getProfile')
+
+	/*
+	 socket.emit('getProfile')
+  	 socket.emit('setHistory', ({idAddressee:'58fb344ce893580b40cf98e2', body:'Привіт'}));
+  	 socket.emit('getHistory','58fb344ce893580b40cf98e2' );
+	*/
+
+  });
+ 
+ 
+  socket.on('profile', (user)=>{
+
+  	 userInfo = user;
+  	 socket.emit('addUsersFromChat',user._id);
+  	 socket.on('addUsersFromChat', (res)=>{
+  	 	console.log(res);
+  	 	socket.on('getUsersChat', (res)=>{
+  	 		
+  	 		console.log(res);
+  	 		socket.emit('sendDualMsg', {idAddressee:userInfo._id, body: 'Привіт знову))'});
+  	 	})
+  	 	socket.emit('getUsersChat');
+
+  	 })
+  });
+
+  socket.on('sendDualMsg', (res)=>{
+  	console.log(res);
+  })
+
+  socket.on('incomDualMsg', (msg)=>{
+  	console.log(msg);
+  })
+
+  socket.on('getHistory', function(history){
+
+  	console.log(history);
+  });
+
+  socket.on('setHistory', function(res){
+
+	  	console.log(res);
+	  });
+  socket.on('disconnect', function(){});
+
+</script>
+<link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+	
+
+<header class='header'>
+
+</header>
+	
+<main class='main'>
+	
+	<div id='btn' class="btn" style="display:block; width: 200px; 
+	height: 100px; background-color: #000;"></div>
+</main>
+
+
+
+<footer class="footer">
+
+</footer>
+
+
+
+
+</body>
+<script type="text/javascript">
+
+	btn.addEventListener('click', ()=>{
+			 socket.on('getHistory', function(history){
+
+  	console.log(history);
+  });
+	})
+</script>
+</html>
+
