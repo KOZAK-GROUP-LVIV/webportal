@@ -43,6 +43,10 @@ let schema = new Schema({
 							type: Boolean,
 							default: false
 						},
+						isAdmin : {
+							type :Boolean,
+							default: false
+						},
 						isOnline : {
 							type: Boolean,
 							default: false
@@ -155,8 +159,19 @@ module.exports = (function(){
 				return usersModel.find({isWorker:true});
 			}
 		},
-		addUserChat(id){
+		addWorker(id){
 			return usersModel.find({_id: id}).update({isWorker:true});
+		},
+		removeWorker(id){
+			return usersModel.find({_id: id}).update({isWorker:false});
+		},
+
+		addAdmin(id){
+			return usersModel.find({_id: id}).update({isAdmin:true});
+		},
+
+		removeAdmin(id){
+			return usersModel.find({_id: id}).update({isAdmin:false});
 		},
 
 		getUserById(id){

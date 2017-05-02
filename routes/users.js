@@ -43,13 +43,41 @@ router.get('/api/getUsers', function(req, res, next) {
   })
 });
 
-router.post('/api/addUserChat', function(req, res, next) {
-  usersModel.addUserChat(req.body.id).then(result=>{
+router.get('/api/addWorker/:id', function(req, res, next) {
+  if(req.user.isAdmin&&String(req.user._id)==req.params.id){
+    return res.json({isSucces:true});
+  }
+  usersModel.addWorker(req.params.id).then(result=>{
     res.json({isSucces:true, result})
   }).catch(err=>{
     res.json({isSucces:false, err});
   })
 });
+
+router.get('/api/removeWorker/:id', function(req, res, next) {
+  if(req.user.isAdmin&&String(req.user._id)==req.params.id){
+    return res.json({isSucces:false, err: 'This user belongs to administrators'});
+  }
+  usersModel.removeWorker(req.params.id).then(result=>{
+    res.json({isSucces:true, result})
+  }).catch(err=>{
+    res.json({isSucces:false, err});
+  })
+});
+
+
+router.get('/api/addAdmin/:id', function(req, res, next) {
+  if(req.user.isAdmin){
+    return res.json({isSucces:true});
+  }
+  usersModel.addAdmin(req.params.id).then(result=>{
+    res.json({isSucces:true, result})
+  }).catch(err=>{
+    res.json({isSucces:false, err});
+  })
+});
+
+
 
 
 

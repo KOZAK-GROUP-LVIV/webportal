@@ -20,8 +20,9 @@ router.post('/api/setInterview', function(req, res, next) {
 
 router.get('/api/getAllInterview', function(req, res, next) {
 
-   InterviewModel.getAllInterview()
+   InterviewModel.getAllInterview(req.user)
    .then(result=>{
+    console.log(result)
      res.json({isSucces:true, result})
    }).catch(err=>{
      res.json({isSucces:false, err})
@@ -33,7 +34,7 @@ router.get('/api/getAllInterview', function(req, res, next) {
 router.post('/api/setInterviewResult', function(req, res, next) {
 
 
-   InterviewModel.setInterviewResult(req.body, "58fb344ce893580b40cf98e2")
+   InterviewModel.setInterviewResult(req.body, req.user)
    .then(result=>{
      res.json({isSucces:true, result})
    }).catch(err=>{

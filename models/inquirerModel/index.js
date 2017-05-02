@@ -160,17 +160,38 @@ module.exports = (function(){
 
 		},
 
-		getAllInterview(){
-		
-			interviewModel.find().then(res=>{
-					console.log(res)
+		getAllInterview(user){
+			return new Promise((resolve, reject)=>{
+
+
+			interviewModel.find().then((res)=>{
+				  console.log(res)
+				  console.log(user)
+				 let isUseMas = res.map(interview=>{
+							let isUse = false;
+							interview.answersResult.forEach(result=>{
+								if(String(result.interviewPerson) == String(user._id)){
+									isUse = true;
+								}
+							});
+							interview.isUse = isUse;
+						return interview;
+					});
+
+				 resolve(isUseMas);
 			}).catch(err=>{
 				console.log(err)
+				reject(err)
 			})
-			return interviewModel.find();
+
+		});
 		},
 
-		setInterviewResult(data, interviewerId){
+		setInterviewResult(dataResult, user){
+			   let data = dataResult.map(interviewResult=>{
+			       interviewResult.interviewPerson = user._id;
+			       return interviewResult;
+			   });
 
 			return	new Promise((resolve, reject)=>{
 
@@ -183,19 +204,22 @@ module.exports = (function(){
 						 	reject("this interview is not valid");
 						 }
 						 else{
-						 	//console.log('I SAVE NO MULTIPLE')
-						 	//console.log(data._is)
+						 	console.log('I SAVE NO MULTIPLE')
+						 	console.log(data)
+						 	console.log(data[0]._id)
 						 	//console.log()
 
-						 	interviewModel.update({_id: data[0]._id}, {$pullAll: {answersResult: {}}}).then(res=>{
-
-						 	}).catch(err=>{
-
-						 	})
-						 	interviewModel.update({_id: data[0]._id}, {$pushAll: {answersResult: data}})
+						 	interviewModel.update({_id: data[0]._id, 'answersResult.interviewPerson': {$ne: user._id}}, {$pushAll: {answersResult: data}})
 							 	.then(res=>{
-							 		interviewModel.refreshResults(data[0]._id);
-							 		resolve(res);
+							 		console.log(res)
+							 		if(res.nModified>0){
+							 			interviewModel.refreshResults(data[0]._id);
+							 			resolve(res);
+							 		}
+							 		if(res.nModified==0){
+							 			reject('This interview already use existed')
+							 		}
+	 		
 							 	}).catch(err=>{
 							 		reject(err)
 							 	})

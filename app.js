@@ -8,6 +8,7 @@ var cors = require('cors');
 var users = require('./routes/users');
 var chat = require('./routes/chat');
 var news = require('./routes/news');
+var interview = require('./routes/inquirer.js')
 var cookie = require('cookie');
 var connect = require('connect');
 var cookieSession = require('cookie-session');
@@ -114,6 +115,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', users);
 app.use('/', chat);
 app.use('/', news);
+app.use('/', interview);
 
 app.get('/js/:filename', (req, res)=>{
   res.sendFile(`${__dirname}/public/frontend/socketChat/dist/${req.params.filename}`);

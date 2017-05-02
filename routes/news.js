@@ -55,7 +55,7 @@ router.post('/api/updateNews', (req, res)=>{
 
 });
 
-router.get('/api/deleteNews/:id', (req, res)=>{
+router.get('/api/removeNews/:id', (req, res)=>{
    
     newsModel.deleteNews(req.params.id).then(result=>{
     res.json({isSucces:true})

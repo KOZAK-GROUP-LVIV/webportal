@@ -260,7 +260,7 @@ module.exports = function(io, sessionStore, __dirname){
             }
              if(session.passport){
             //  console.log('asdjalsd');
-                socket.user = session.passport.user;    
+                socket.user = session.passport.user;   
                 if(!socket.user){
                   return io.sockets.to(socket.id).emit('redirectLogin');
                 }      
@@ -269,8 +269,11 @@ module.exports = function(io, sessionStore, __dirname){
                 if(socket.user){
                   if(socket.user.isWorker){
                         initEvent(socket);
+                        socket.user.isOnline = true;
+                        socket.user.socketId = socket.id;
                         userModel.getUsersChat(socket).then(users=>{
                           socket.emit('getUsersChat', {isSucces:true, users});
+                          socket.emit('profile', {isSucces:!!socket.user, user:socket.user});
                           io.sockets.emit('refreshUsers');
                         })
 

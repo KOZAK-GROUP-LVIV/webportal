@@ -259,16 +259,7 @@ module.exports = (function(){
 
 		  });
 
-
-
-
-
-
-
 		},
-
-
-
 
 		getGeneralHistory({padigation}){
 
@@ -287,7 +278,7 @@ module.exports = (function(){
 
 
 		getLastMsgAction(myId){ // mas  1:myId'
-		console.log('adasd')
+		//console.log('adasd')
 			let partnerIdMas;
 
 			return new Promise((res, rej)=>{
@@ -305,13 +296,13 @@ module.exports = (function(){
 								return user._id!= myId;
 							});
 					
-					console.log(partnerIdMas)
+					//console.log(partnerIdMas)
 					//chatDualModel.find({}).remove().then(res=>{
 						//console.log(res);
 
 					chatDualModel
 			  		.find({$and: [{users: myId}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
-			  			console.log(dialogs);
+			  			//console.log(dialogs);
 
 					let masInfo = [];
 			  			 usersMas.forEach(user=>{
@@ -359,31 +350,7 @@ module.exports = (function(){
 	}())
 
 
-			
-			/*
-			return	chatModel.getMsgPersone(dataMsg).then((usersInfo)=>{
-						let author = usersInfo.author,
-							addressee = usersInfo.addressee,
-							field = { history : {
-								author : {
-									id : author._id
-								},
-								addressee : {
-									id : addressee._id
-								},
-								date : new Date(),
-								body : dataMsg.body
 
-							}};
-
-
-						return Promise.all(
-							[chatModel.update({_id: dataMsg.idAuthor}, {$push: field}),
-							chatModel.update({_id: dataMsg.idAddressee}, {$push: field})]
-						)
-			})
-
-			*/
 
 
 

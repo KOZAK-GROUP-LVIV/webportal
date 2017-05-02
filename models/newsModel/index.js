@@ -62,7 +62,7 @@ module.exports = (function(){
 		},
 
 		getNews(_id){
-			return newsModel.find({_id});
+			return newsModel.findOne({_id}).populate('author');
 		},
 
 		getAllNews(pagination){	 
