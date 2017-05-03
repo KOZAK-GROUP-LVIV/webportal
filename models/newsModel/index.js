@@ -9,12 +9,7 @@ let schema = new Schema({
 						   author : {
 											type: Schema.Types.ObjectId,
 											ref: 'users',
-											required: [true,  "*author title is required"]
-									},
-													 
-						   date:  {
-										type: Date,
-										default: Date.now()
+											required: [true,  "*author news is required"]
 									},
 
 							title: {
@@ -24,11 +19,13 @@ let schema = new Schema({
 
 							excerpt: {
 										type:String,
-										required: [true, "*excerpt title is required"]
-									}
+										required: [true, "*excerpt news is required"]
+									},
+
+
 
 					
-	});
+	}, {timestamps: true});
 
 
 let newsModel =  mongoose.model('news', schema);
@@ -41,24 +38,15 @@ module.exports = (function(){
 		newsModel: newsModel,
 
 
-		setNews(data){
+		setNews(data, req){
 				let news = new newsModel({
-					author: data.author,
+					author: req.user._id,
 					title: data.title,
 					excerpt : data.excerpt
 				});
 
-				news.save(function(error) {
-				    if (!error) {
-				    	/*
-				        Post.find({})
-				            .populate('author')
-				            .exec(function(error, posts) {
-				                console.log(JSON.stringify(posts, null, "\t"))
-				            })
-				            */
-				    }
-			});
+				return news.save() 
+			
 		},
 
 		getNews(_id){
@@ -75,7 +63,7 @@ module.exports = (function(){
 
 						let responce = {};
 						if(pagination){
-							newsModel.find({}).populate('author').skip((pagination-1)*10).limit(10).then(posts=>{
+							newsModel.find({}).sort({'createdAt': -1}).populate('author').skip((pagination-1)*10).limit(10).then(posts=>{
 								responce.posts = posts;
 								responce.count = count;
 								res(responce);
@@ -85,7 +73,7 @@ module.exports = (function(){
 							}
 
 						if(!pagination){
-							newsModel.find({}).populate('author').limit(10).then(posts=>{
+							newsModel.find({}).sort({'createdAt': -1}).populate('author').limit(10).then(posts=>{
 								responce.posts = posts;
 								responce.count = count;
 								res(responce);
@@ -108,9 +96,10 @@ module.exports = (function(){
 		
 		},
 
-		updateNews(data){
+		updateNews(data, req){
 
-			return newsModel.find({_id:data._id}).update(data);
+			return newsModel.find({_id:data._id})
+					.update({title: data.title, author: req.user._id, excerpt: data.excerpt});
 		},
 
 		deleteNews(_id){

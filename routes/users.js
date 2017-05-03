@@ -67,8 +67,8 @@ router.get('/api/removeWorker/:id', function(req, res, next) {
 
 
 router.get('/api/addAdmin/:id', function(req, res, next) {
-  if(req.user.isAdmin){
-    return res.json({isSucces:true});
+  if(!req.user.isAdmin){
+    return res.json({isSucces:false});
   }
   usersModel.addAdmin(req.params.id).then(result=>{
     res.json({isSucces:true, result})
@@ -76,6 +76,21 @@ router.get('/api/addAdmin/:id', function(req, res, next) {
     res.json({isSucces:false, err});
   })
 });
+
+
+
+router.get('/api/removeUser/:id', function(req, res, next) {
+
+  usersModel.removeUser(req.params.id).then(result=>{
+    res.json({isSucces:true, result})
+  }).catch(err=>{
+    res.json({isSucces:false, err});
+  });
+  
+});
+
+
+
 
 
 

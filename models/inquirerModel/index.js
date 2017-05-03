@@ -30,10 +30,6 @@ let schema = new Schema({
 			}
 		}]
 	},
-	date : {
-		type:Date,
-		default: Date.now()
-	},
 	
 	answersResult :{
 		type: [{
@@ -66,12 +62,12 @@ let schema = new Schema({
 		type:Boolean,
 		default:false
 	}
-});
+}, {timestamps: true});
 
-schema.statics.refreshDocument = function(indexAnswer, percentResult){
+schema.statics.refreshDocument = function(idInterview ,indexAnswer, percentResult){
 
 
-	this.model('interview').update({'answers.indexAnswer': indexAnswer}, {$set: {
+	this.model('interview').findOne({_id: idInterview}).update({'answers.indexAnswer': indexAnswer}, {$set: {
 						    'answers.$.isTruePercent': percentResult
 						}}).then(res=>{
 							console.log(res)
@@ -108,7 +104,9 @@ schema.statics.refreshResults = function(id){
 						let	percentResult = (lengthVarianResult>0&&onePercent>0) ?
 										 Math.round(lengthVarianResult/onePercent) : 100;
 
-						this.refreshDocument(answer.indexAnswer, percentResult);
+										console.log(`I set ${percentResult} result`);
+
+						this.refreshDocument(id, answer.indexAnswer, percentResult);
 
 					}
 
@@ -117,6 +115,39 @@ schema.statics.refreshResults = function(id){
 			this.addAction(id);
 
 		})
+
+
+	};
+
+
+schema.statics.getInterview = function(id, user){
+
+	return new Promise((resolve, reject)=>{
+
+				let query = id ? {_id: id} : {};
+
+				interviewModel.find(query).populate('author').sort({'createdAt': -1}).then((res)=>{
+					//console.log(`query - > ${query}`)
+					//  console.log(res)
+					  //console.log(user)
+					 let isUseMas = res.map(interview=>{
+								let isUse = false;
+								interview.answersResult.forEach(result=>{
+									if(String(result.interviewPerson) == String(user._id)){
+										isUse = true;
+									}
+								});
+								interview.isUse = isUse;
+							return interview;
+						});
+
+					 resolve(isUseMas);
+				}).catch(err=>{
+					console.log(err)
+					reject(err)
+				})
+
+			});
 
 
 	};
@@ -145,13 +176,12 @@ module.exports = (function(){
 
 
 
-		setInterview(data){
+		addInterview(data, user){
 			let interview = new interviewModel({
 				question: data.question,
-				isMultiple: data.isMultiple,
+				isMultiple: (data.isMultiple=="true"),
 				answers : data.answers,
-				date : Date.now(),
-				author : data.author,
+				author : user._id,
 				countResult : 0,
 				isUse : false
 			});
@@ -160,31 +190,13 @@ module.exports = (function(){
 
 		},
 
+
+		getInterview(id, user){
+			return interviewModel.getInterview(id, user);
+		},
+
 		getAllInterview(user){
-			return new Promise((resolve, reject)=>{
-
-
-			interviewModel.find().then((res)=>{
-				  console.log(res)
-				  console.log(user)
-				 let isUseMas = res.map(interview=>{
-							let isUse = false;
-							interview.answersResult.forEach(result=>{
-								if(String(result.interviewPerson) == String(user._id)){
-									isUse = true;
-								}
-							});
-							interview.isUse = isUse;
-						return interview;
-					});
-
-				 resolve(isUseMas);
-			}).catch(err=>{
-				console.log(err)
-				reject(err)
-			})
-
-		});
+			return interviewModel.getInterview(null, user);
 		},
 
 		setInterviewResult(dataResult, user){
@@ -195,7 +207,7 @@ module.exports = (function(){
 
 			return	new Promise((resolve, reject)=>{
 
-				interviewModel.find({_id: data._id}).then(interview=>{
+				interviewModel.findOne({_id: data[0]._id}).then(interview=>{
 					let isMultiple = data.length>1&&data.length!=0&&data.length>0;
 
 					if(interview&&!interview.isMultiple){
@@ -230,6 +242,7 @@ module.exports = (function(){
 					if(interview&&interview.isMultiple){
 
 						 if(!isMultiple){
+						 	
 						 	reject("this interview is not valid");
 						 }
 						 else{
@@ -248,8 +261,18 @@ module.exports = (function(){
 			})
 		},
 
+		updateInterview(data, user){
+			data.author = user._id;
+			console.log(data)
+			return interviewModel.find({_id: data._id}).update(data);
+		},
+
 		removeAll(){
 			return interviewModel.find().remove();
+		},
+
+		removeInterview(id){
+			return interviewModel.find({_id: id}).remove();
 		}
 
 

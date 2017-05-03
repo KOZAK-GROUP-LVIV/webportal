@@ -6,11 +6,14 @@ var passport = require('passport');
 
 
 
-router.post('/api/setNews', function(req, res, next) {
+router.post('/api/addNews', function(req, res, next) {
 
-  newsModel.setNews(req.body);
-  res.json({isSucces:true})
-
+  newsModel.setNews(req.body, req).then(result=>{
+     res.json({isSucces:true})
+  }).catch(err=>{
+     res.json({isSucces:false, err})
+  });
+ 
 });
 
 router.get('/api/getNews/:id', (req, res)=>{
@@ -47,7 +50,7 @@ router.get('/api/getAllNews', (req, res)=>{
 
 router.post('/api/updateNews', (req, res)=>{
    
-    newsModel.updateNews(req.body).then(result=>{
+    newsModel.updateNews(req.body, req).then(result=>{
     res.json({isSucces:true})
   }).catch(err=>{
     res.json({isSucces:false, err});

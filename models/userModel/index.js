@@ -8,28 +8,28 @@ let crypto = require('crypto'),
 let schema = new Schema({
 						first_name:{
 							type:String,
-							required: [true, "*Фамилия не указана!"],
-							minlength : [3, "Не меньше 3-х символов."]
+							required: [true, "*first_name is required"],
+							minlength : [3, "On entry firstname minimum count 3 letters"]
 						},
 						last_name : {
 							type:String,
-							required: [true, "*Имя не указано!"],
-							minlength : [3, "Не меньше 3-х символов."]
+							required: [true, "*last_name is required!"],
+							minlength : [3, "On entry firstname minimum count 3 letters"]
 						},
 						login : {
 							type: String,
 							unique:true,
-							required: [true, "*Логин не указан!"],
-							minlength : [5, "Слишком коротный логин."]
+							required: [true, "*login is required"],
+							minlength : [5, "On entry firstname minimum count 5 letters"]
 						},
 						avatar : {
 							type: String,
-							required: [true, "*Аватар обьязателен!"]
+							required: [true, "*avatar is required"]
 						},
 						password : {
 							type: String,
-							required : [true , "*Пароль обьзателен"],
-							minlength : [7, "Слишком коротный пароль."]
+							required : [true , "*password is required"],
+							minlength : [7, "password is plain"]
 						},
 						msgActions : {
 							type: [],
@@ -96,6 +96,9 @@ module.exports = (function(){
 			        isWorker : true
 		    	});
 		  	return chatUser.save()
+		},
+		removeUser(_id){
+			return usersModel.find({_id}).remove();
 		},
 		loginUser(user){
 			return usersModel.findOne({'login':user.login});

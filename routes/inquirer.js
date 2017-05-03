@@ -7,9 +7,9 @@ var passport = require('passport');
 
 
 
-router.post('/api/setInterview', function(req, res, next) {
+router.post('/api/addInterview', function(req, res, next) {
 
-   InterviewModel.setInterview(req.body)
+   InterviewModel.addInterview(req.body, req.user)
    .then(result=>{
      res.json({isSucces:true})
    }).catch(err=>{
@@ -22,13 +22,41 @@ router.get('/api/getAllInterview', function(req, res, next) {
 
    InterviewModel.getAllInterview(req.user)
    .then(result=>{
-    console.log(result)
+  //  console.log(result)
      res.json({isSucces:true, result})
    }).catch(err=>{
      res.json({isSucces:false, err})
    })
 
 });
+
+
+router.get('/api/getInterview/:id', function(req, res, next) {
+
+   InterviewModel.getInterview(req.params.id, req.user)
+   .then(result=>{
+    //console.log(result)
+     res.json({isSucces:true, result})
+   }).catch(err=>{
+     res.json({isSucces:false, err})
+   })
+
+});
+
+
+router.post('/api/updateInterview', function(req, res, next) {
+
+   InterviewModel.updateInterview(req.body, req.user)
+   .then(result=>{
+    console.log(result)
+     res.json({isSucces:true})
+   }).catch(err=>{
+     res.json({isSucces:false, err})
+   })
+
+});
+
+
 
 
 router.post('/api/setInterviewResult', function(req, res, next) {
@@ -57,6 +85,16 @@ router.get('/api/removeAllInterviews', function(req, res, next) {
 });
 
 
+router.get('/api/removeInterview/:id', function(req, res, next) {
+
+   InterviewModel.removeInterview(req.params.id)
+   .then(result=>{
+     res.json({isSucces:true})
+   }).catch(err=>{
+     res.json({isSucces:false, err})
+   })
+
+});
 
 
 
