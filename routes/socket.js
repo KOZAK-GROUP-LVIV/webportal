@@ -8,7 +8,7 @@ console.log(userModel)
 module.exports = function(io, sessionStore, __dirname){
 
     io.on('connection', function(socket){
-             console.log('a user connected');
+            // console.log('a user connected');
              getSession(socket);
 
     socket.on('login', ()=>{
@@ -70,8 +70,8 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('sendDualMsg', ({idAddressee, body})=>{  
         userModel.getUserById(idAddressee).then(user=>{
-            console.log(user);
-            console.log(socket.user);
+          //  console.log(user);
+           // console.log(socket.user);
 
 
                 chatModel.setDualHistory({author: socket.user, addressee:user, body})
@@ -168,15 +168,19 @@ module.exports = function(io, sessionStore, __dirname){
 
 
     socket.on('getDualHistory', ({myId, partnerId, padigation})=>{
-        if(socket.user._id == partnerId){
-          socket.emit('redirectGeneral');
-          return
-        }
+       // if(socket.user._id == partnerId){
+       //   socket.emit('redirectGeneral');
+     //     return
+     //   }
+
+
 
 
         chatModel.getDualHistory({myId:socket.user._id, partnerId, padigation}, socket).then(history=>{
+                 console.log(history);
                 socket.emit('getDualHistory', {isSucces:true, history});
         }).catch(err=>{
+                console.log(err)
                 socket.emit('getDualHistory', {isSucces:false, err});
         })
     });
@@ -195,14 +199,26 @@ module.exports = function(io, sessionStore, __dirname){
 
 
 
+    socket.on('writeMessage', (id)=>{
+        userModel.getUserById(id).then(user=>{
+
+          if(user.isOnline){
+            io.to(user.socketId)
+            .emit('writeMessage', {_id: socket.user._id,
+                                   first_name: socket.user.first_name,
+                                   last_name: socket.user.last_name,
+                                   login: socket.user.login});
+          }
+        })
+    });
 
 
 
 
     socket.on('deleteHistory', (idAddressee)=>{  
-        //console.log(socket.user);
+
         chatModel.deleteHistory(idAddressee).then(responce=>{
-                console.log('asdasdasd')
+                
                 socket.emit('deleteHistory', {isSucces:true})
         }).catch(err=>{
             socket.emit('deleteHistory', {isSucces:false, err})
@@ -259,8 +275,10 @@ module.exports = function(io, sessionStore, __dirname){
                 console.log(err);
             }
              if(session.passport){
-            //  console.log('asdjalsd');
+          
+                console.log( session.passport.user);
                 socket.user = session.passport.user;   
+                console.log(`${session.passport.user} connect!!!!!`)
                 if(!socket.user){
                   return io.sockets.to(socket.id).emit('redirectLogin');
                 }      

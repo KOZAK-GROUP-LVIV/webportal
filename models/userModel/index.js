@@ -29,7 +29,8 @@ let schema = new Schema({
 						password : {
 							type: String,
 							required : [true , "*password is required"],
-							minlength : [7, "password is plain"]
+							minlength : [7, "password is plain"],
+							select: false
 						},
 						msgActions : {
 							type: [],
@@ -92,8 +93,7 @@ module.exports = (function(){
 			        last_name: req.body.last_name,
 			        login: req.body.login,
 			        password : req.body.password,
-			        avatar: '/default-icon.png',
-			        isWorker : true
+			        avatar: '/default-icon.png'
 		    	});
 		  	return chatUser.save()
 		},
@@ -101,7 +101,7 @@ module.exports = (function(){
 			return usersModel.find({_id}).remove();
 		},
 		loginUser(user){
-			return usersModel.findOne({'login':user.login});
+			return usersModel.findOne({'login':user.login}).select("+password");
 		},
 
 		getUsersChat(socket){
@@ -110,7 +110,7 @@ module.exports = (function(){
 					usersModel.findByIdAndUpdate(socket.user._id, {"isOnline": true, "socketId": socket.id}, function(err, model) {
 					//console.log(model);
 					if(!err){
-
+						
 						usersModel.find({isWorker:true}).then(users=>{
 							let partnerIdMas = users.filter(user=>{
 										return user._id!= socket.user._id;
@@ -128,16 +128,22 @@ module.exports = (function(){
 
 							chatDualModel
 					  		.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
-					  			console.log(dialogs);
+					  			//console.log(dialogs);
 
 							let masInfo = [];
 					  			 usersMas.forEach(user=>{
 					  					let newUser = user;
 					  					dialogs.forEach(dialog=>{
 					  						if(dialog.users.indexOf(user._id)!=-1){
-
-					  								newUser.isAuthorMsgActions = dialog.history[dialog.history.length-1].author._id==socket.user._id;
-					  								newUser.msgActions.push(dialog.history[dialog.history.length-1]);
+					  								//console.log(dialog.history)
+					  								if(dialog.history.length>0){
+					  									newUser.isAuthorMsgActions = dialog.history[dialog.history.length-1].author._id==socket.user._id;
+					  									newUser.msgActions.push(dialog.history[dialog.history.length-1]);
+					  								}
+					  								else{
+					  									newUser.msgActions.push({});
+					  								}
+					  								
 					  						}
 					  					})
 
@@ -163,10 +169,27 @@ module.exports = (function(){
 			}
 		},
 		addWorker(id){
-			return usersModel.find({_id: id}).update({isWorker:true});
+			return usersModel.findOne({_id: id}).update({isWorker:true}).then(res=>{
+					usersModel.findOne({_id: id}).then(user=>{
+						if(user.isOnline){
+							if(global.io){
+								io.sockets.connected[user.socketId].disconnect();
+							}
+						}
+				});
+			})
+		
 		},
 		removeWorker(id){
-			return usersModel.find({_id: id}).update({isWorker:false});
+			return usersModel.find({_id: id}).update({isWorker:false}).then(res=>{
+					usersModel.findOne({_id: id}).then(user=>{
+						if(user.isOnline){
+							if(global.io){
+								io.sockets.connected[user.socketId].disconnect();
+							}
+						}
+				});
+			})
 		},
 
 		addAdmin(id){
@@ -192,6 +215,7 @@ module.exports = (function(){
 		},
 
 		offlineUser(socket){
+
 			return new Promise((res, rej)=>{
 					usersModel.findByIdAndUpdate(socket.user._id, {isOnline: false, socketId: null}, {new: true}, function(err, model) {
 					if(!err){

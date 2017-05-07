@@ -59,8 +59,18 @@ let schema1 = new Schema({
 							body: {
 										type:String,
 										required: [true, "*Текст сообщение должен быть не менее 1-го символа!"]
-									}
-								}
+									},
+
+							read : {
+								type: [Schema.Types.ObjectId],
+								default: []
+							},
+
+							isRead : {
+								type:Boolean,
+								default:true
+							}
+						}
 				  ],
 			default : []	
 
@@ -69,7 +79,7 @@ let schema1 = new Schema({
 
 		type: [Schema.Types.ObjectId]}
 
-		});
+		}, {timestamps: true});
 
 
 
@@ -124,22 +134,8 @@ let schema2 = new Schema({
 		default: false
 	}
 
-});
+}, {timestamps: true});
 
-
-/*
-	schema.statics.addSocisActions = function(dataMsg){
-		let authorInfo = this.model('chat').findById(dataMsg.idAuthor),
-			addresseeInfo = this.model('chat').findById(dataMsg.idAddressee);
-
-		return Promise.all([authorInfo, addresseeInfo]).then(usersInfo=>{
-			return {
-				author : usersInfo[0],
-				addressee : usersInfo[1]
-			}
-		});
-	};
-*/
 
 
 
@@ -170,7 +166,8 @@ module.exports = (function(){
 			       			login : addressee.login
 			       },
 			       body,
-			       date : new Date()
+			       date : new Date(),
+			       read : [author._id]
 		    	};
 		    	console.log(' I SAVE')
 		    	console.log(msg)
@@ -180,7 +177,7 @@ module.exports = (function(){
 		  	chatDualModel
 		  		.find({$and: [{users: author._id}, {users:addressee._id}]})
 			  		.then(responce=>{
-			  			console.log(responce);
+			  			//console.log(responce);
 			  			console.log(' I SAVE')
 			  			if(responce.length>0){
 			  				chatDualModel
@@ -267,12 +264,56 @@ module.exports = (function(){
 		},
 
 		getDualHistory({myId, partnerId, padigation}, socket){
-			
-		
-			//console.log({myId, partnerId, padigation})
+
 			
 			return chatDualModel
-		  		.find({$and: [{users: myId}, {users:partnerId}]}, 'history');
+		  		.findOne({$and: [{users: myId}, {users:partnerId}]}, 'history').then(res=>{
+
+
+		  			res.history =  res.history.map(msg=>{
+		  			 let onreadMsgId = msg._id;
+		  			// console.log(msg)
+
+		  			 msg.isRead = msg.read.some(readerId=>{
+		  					return String(readerId) == String(partnerId);
+		  				});
+
+		  			 if(String(msg.addressee._id) == String(myId)){
+
+		  			 	let isReadReader = msg.read.some(readerId=>{
+		  					return String(readerId) == String(myId);
+		  				});
+
+		  				if(!isReadReader){
+
+		  					chatDualModel.find({'history._id': onreadMsgId})
+		  			 				.update({$push : {"history.$.read" : myId}})
+		  			 				.then(result=>{
+		  			 					userModel.findById(partnerId).then((user)=>{
+		  			 						if(user.isOnline){
+		  			 							io.sockets.to(user.socketId).emit('readMessage', myId);
+		  			 						}
+		  			 					}).catch(err=>{
+
+		  			 					});
+
+		  			 				}).catch(error=>{
+		  			 					console.log(error);
+		  			 				})
+
+		  				}
+		  				
+		  			 }
+		  			 
+		  			 
+
+		  			 return msg;
+		  			});
+
+		  			
+		  			
+		  		 return res;
+		  		})
 		},
 
 
@@ -292,9 +333,7 @@ module.exports = (function(){
 								return {users: user._id}
 							}),
 
-						usersMas = users.filter(user=>{
-								return user._id!= myId;
-							});
+						usersMas = users.filter(user=>user._id!= myId);
 					
 					//console.log(partnerIdMas)
 					//chatDualModel.find({}).remove().then(res=>{
@@ -310,6 +349,9 @@ module.exports = (function(){
 			  					dialogs.forEach(dialog=>{
 			  						if(dialog.users.indexOf(user._id)!=-1){
 			  							newUser.msgActions.push(dialog.history[dialog.history.length-1]);
+			  							newUser.countNoRead = 0;
+
+
 			  						}
 			  					})
 

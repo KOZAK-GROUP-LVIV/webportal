@@ -112,10 +112,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
 app.use('/', users);
+
+
 app.use('/', chat);
 app.use('/', news);
 app.use('/', interview);
+
+
 
 app.get('/js/:filename', (req, res)=>{
   res.sendFile(`${__dirname}/public/frontend/socketChat/dist/${req.params.filename}`);
@@ -124,6 +131,10 @@ app.get('/js/:filename', (req, res)=>{
 app.get('*', (req, res)=>{
   res.sendFile(__dirname + '/public/index.html');
 })
+
+
+
+
 
 
 
@@ -150,41 +161,8 @@ app.use(function(err, req, res, next) {
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-/*
-io.use(function(socket, next){
-  if (!socket.user){
+global.io = io;
 
-       let cookies = cookie.parse(socket.handshake.headers.cookie);
-       let sid = cookieParser.signedCookie(cookies['sid'], 'tasmanialDeywool');
-
-       sessionStore.get(sid, (err, session)=>{
-            if(err)
-            {
-                console.log(err);
-            }
-              console.log(session.passport)
-             if(session.passport){
-                console.log(socket.user);
-                socket.user = session.passport.user;     
-                console.log('NNEEEXT')
-                if(socket)
-                console.log(socket.user);
-                next();     
-            }
-            if(!session.passport){
-              socket.emit('redirectLogin')
-            }
-
-        });
-
-    }
-
-    else{
-      next();
-    }
-
-})
-*/
 require('./routes/socket.js')(io, sessionStore, __dirname);
 
 
@@ -230,3 +208,7 @@ http.listen(3000, function(){
 
 
 module.exports = app;
+
+
+
+
