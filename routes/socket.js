@@ -177,10 +177,10 @@ module.exports = function(io, sessionStore, __dirname){
 
 
         chatModel.getDualHistory({myId:socket.user._id, partnerId, padigation}, socket).then(history=>{
-                 console.log(history);
+               //  console.log(history);
                 socket.emit('getDualHistory', {isSucces:true, history});
         }).catch(err=>{
-                console.log(err)
+              //  console.log(err)
                 socket.emit('getDualHistory', {isSucces:false, err});
         })
     });

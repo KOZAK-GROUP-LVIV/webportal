@@ -2,7 +2,7 @@ let crypto = require('crypto'),
 	mongoose = require('../../db/mongoose'),
 	Schema = mongoose.Schema,
     ObjectId = require('mongodb').ObjectID,
-    userModel = require('../userModel');
+    userModel = require('../userModel')
 
 let schema1 = new Schema({  
 
@@ -75,6 +75,13 @@ let schema1 = new Schema({
 			default : []	
 
 		},
+	lastMessage : {
+		type: {
+			author : Schema.Types.ObjectId,
+			text : String,
+			date:Date
+		}
+	},
 	users : {
 
 		type: [Schema.Types.ObjectId]}
@@ -175,14 +182,14 @@ module.exports = (function(){
 		    //chatDualModel.remove();
 
 		  	chatDualModel
-		  		.find({$and: [{users: author._id}, {users:addressee._id}]})
+		  		.findOne({$and: [{users: author._id}, {users:addressee._id}]})
 			  		.then(responce=>{
 			  			//console.log(responce);
 			  			console.log(' I SAVE')
-			  			if(responce.length>0){
+			  			if(responce){
 			  				chatDualModel
 			  					.find({$and: [{users: author._id}, {users:addressee._id}]})
-			  					.update({$push: {history:msg}}).then(responce=>{
+			  					.update({$push: {history:msg}, $set: {lastMessage: { author:author._id, body, date: new Date() }} }).then(responce=>{
 
 			  						res(responce);
 			  					}).catch(err=>{
@@ -199,7 +206,7 @@ module.exports = (function(){
 			  				dualHistory.save().then(()=>{
 			  					chatDualModel
 			  					.find({$and: [{users: author._id}, {users:addressee._id}]})
-			  					.update({$push: {history:msg}}).then(responce=>{
+			  					.update({$push: {history:msg}, $set: {lastMessage: { author:author._id, body, date: new Date() }} }).then(responce=>{
 
 			  						res(responce);
 			  					})
@@ -267,8 +274,9 @@ module.exports = (function(){
 
 			
 			return chatDualModel
-		  		.findOne({$and: [{users: myId}, {users:partnerId}]}, 'history').then(res=>{
-
+		  		.findOne({$and: [{users: myId}, {users:partnerId}]}, 'history lastMessage').then(res=>{
+		  			//console.log(`THI IS LAST MESSAGE ${res.lastMessage}`);
+		  			//console.log(res)
 
 		  			res.history =  res.history.map(msg=>{
 		  			 let onreadMsgId = msg._id;

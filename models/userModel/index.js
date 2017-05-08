@@ -55,8 +55,7 @@ let schema = new Schema({
 						socketId: {
 							type: String,
 							default: null
-						},
-						news : [{type: Schema.Types.ObjectId, ref: 'newsModel'}]
+						}
 		});
 
 	schema.statics.addSocisActions = function(dataMsg){
@@ -129,16 +128,26 @@ module.exports = (function(){
 							chatDualModel
 					  		.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
 					  			//console.log(dialogs);
+					  			console.log(socket.user._id)
+					  			chatDualModel.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}, { $and : [{'history.read' : {$exists: true, $ne: [socket.user._id] } }] } )
+					  			.then(unreadMessages=>{
 
-							let masInfo = [];
-					  			 usersMas.forEach(user=>{
+					  				console.log(`Unread Message`)
+					  				console.log(unreadMessages)
+
+
+
+
+					  				let masInfo = [];
+					  			 	usersMas.forEach(user=>{
 					  					let newUser = user;
 					  					dialogs.forEach(dialog=>{
 					  						if(dialog.users.indexOf(user._id)!=-1){
 					  								//console.log(dialog.history)
 					  								if(dialog.history.length>0){
-					  									newUser.isAuthorMsgActions = dialog.history[dialog.history.length-1].author._id==socket.user._id;
-					  									newUser.msgActions.push(dialog.history[dialog.history.length-1]);
+					  									newUser.isAuthorMsgActions = dialog.lastMessage.author==socket.user._id;
+					  									newUser.msgActions = dialog.lastMessage.body;
+
 					  								}
 					  								else{
 					  									newUser.msgActions.push({});
@@ -150,6 +159,15 @@ module.exports = (function(){
 					  					return masInfo.push(newUser);
 					  				});
 					  				res(masInfo);
+
+
+
+
+					  			}).catch(err=>{
+					  				console.log(err)
+					  			})
+
+							
 					  		})
 
 
@@ -190,6 +208,10 @@ module.exports = (function(){
 						}
 				});
 			})
+		},
+
+		findById(id){
+			return userModel.findById(id);
 		},
 
 		addAdmin(id){
