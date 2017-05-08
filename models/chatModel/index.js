@@ -1,8 +1,11 @@
-let crypto = require('crypto'),
-	mongoose = require('../../db/mongoose'),
-	Schema = mongoose.Schema,
-    ObjectId = require('mongodb').ObjectID,
-    userModel = require('../userModel')
+const crypto = require('crypto'),
+	  mongoose = require('../../db/mongoose'),
+	  Schema = mongoose.Schema,
+      ObjectId = require('mongodb').ObjectID;
+
+
+
+
 
 let schema1 = new Schema({  
 
@@ -58,7 +61,7 @@ let schema1 = new Schema({
 									},
 							body: {
 										type:String,
-										required: [true, "*Текст сообщение должен быть не менее 1-го символа!"]
+										required: [true, "*messsage body is required"]
 									},
 
 							read : {
@@ -150,9 +153,14 @@ let chatDualModel =  mongoose.model('chatDualStore', schema1);
 let chatMultiModel =  mongoose.model('chatMultiStore', schema2);
 
 
-module.exports = (function(){
+module.exports = function(userModel){
+	var usersModel = userModel;
+	console.log(`my user model`)
+	console.log(userModel)
 
-	return {
+		return {
+
+
 
 		chatDualModel: chatDualModel,
 
@@ -176,10 +184,6 @@ module.exports = (function(){
 			       date : new Date(),
 			       read : [author._id]
 		    	};
-		    	console.log(' I SAVE')
-		    	console.log(msg)
-
-		    //chatDualModel.remove();
 
 		  	chatDualModel
 		  		.findOne({$and: [{users: author._id}, {users:addressee._id}]})
@@ -190,8 +194,20 @@ module.exports = (function(){
 			  				chatDualModel
 			  					.find({$and: [{users: author._id}, {users:addressee._id}]})
 			  					.update({$push: {history:msg}, $set: {lastMessage: { author:author._id, body, date: new Date() }} }).then(responce=>{
+			  					
+			  						chatDualModel.aggregate( [
+									{ "$match": { $and: [ { "users": ObjectId(author._id) }, { "users": ObjectId(addressee._id) } ] } },
+									{ "$unwind": "$history" },
+									{ "$group": {
+										"_id": "$_id",
+							            "history": { "$last": "$history" }
+							        }}
+									] ).then(lastMessage=>{
+										res(lastMessage);
+									}).catch(err=>{
+										//console.log(err);
+									})
 
-			  						res(responce);
 			  					}).catch(err=>{
 			  						rej(err);
 			  					})
@@ -208,7 +224,19 @@ module.exports = (function(){
 			  					.find({$and: [{users: author._id}, {users:addressee._id}]})
 			  					.update({$push: {history:msg}, $set: {lastMessage: { author:author._id, body, date: new Date() }} }).then(responce=>{
 
-			  						res(responce);
+			  						chatDualModel.aggregate( [
+									{ "$match": { $and: [ { "users": ObjectId(author._id) }, { "users": ObjectId(addressee._id) } ] } },
+									{ "$unwind": "$history" },
+									{ "$group": {
+										"_id": "$_id",
+							            "history": { "$last": "$history" }
+							        }}
+									] ).then(lastMessage=>{
+										res(lastMessage);
+									}).catch(err=>{
+									//	console.log(err);
+									})
+
 			  					})
 			  				})
 			  				//createDualStore
@@ -279,7 +307,7 @@ module.exports = (function(){
 		  			//console.log(res)
 
 		  			res.history =  res.history.map(msg=>{
-		  			 let onreadMsgId = msg._id;
+		  			 let onreadMessageId = msg._id;
 		  			// console.log(msg)
 
 		  			 msg.isRead = msg.read.some(readerId=>{
@@ -288,27 +316,11 @@ module.exports = (function(){
 
 		  			 if(String(msg.addressee._id) == String(myId)){
 
-		  			 	let isReadReader = msg.read.some(readerId=>{
-		  					return String(readerId) == String(myId);
-		  				});
+		  			 	let isReadReader = !(msg.read.indexOf(myId) == -1);
 
 		  				if(!isReadReader){
 
-		  					chatDualModel.find({'history._id': onreadMsgId})
-		  			 				.update({$push : {"history.$.read" : myId}})
-		  			 				.then(result=>{
-		  			 					userModel.findById(partnerId).then((user)=>{
-		  			 						if(user.isOnline){
-		  			 							io.sockets.to(user.socketId).emit('readMessage', myId);
-		  			 						}
-		  			 					}).catch(err=>{
-
-		  			 					});
-
-		  			 				}).catch(error=>{
-		  			 					console.log(error);
-		  			 				})
-
+		  					this.readMessage(onreadMessageId, partnerId, myId);
 		  				}
 		  				
 		  			 }
@@ -325,66 +337,34 @@ module.exports = (function(){
 		},
 
 
+		readMessage(onreadMessageId, authorMessage, readerId){
+			chatDualModel.find({'history._id': onreadMessageId})
+		  			 .update({$push : {"history.$.read" :  readerId}})
+		  			 .then(result=>{
+		  			 	console.log(result)
+		  			 	//console.log(usersModel)
+		  			 usersModel.findById(authorMessage).then((user)=>{
+		  			 	console.log(`${user.login} readMessage event!`)
+		  			 	if(user.isOnline){
+		  			 						//	console.log(`user writer ${user.login} - socketId ${user.socketId}`)
+		  			 		io.sockets.to(user.socketId).emit('readMessage', readerId);
 
-		getLastMsgAction(myId){ // mas  1:myId'
-		//console.log('adasd')
-			let partnerIdMas;
-
-			return new Promise((res, rej)=>{
-
-
-
-				userModel.getUsersChat().then(users=>{
-					let partnerIdMas = users.filter(user=>{
-								return user._id!= myId;
-							}).map(user=>{
-								return {users: user._id}
-							}),
-
-						usersMas = users.filter(user=>user._id!= myId);
-					
-					//console.log(partnerIdMas)
-					//chatDualModel.find({}).remove().then(res=>{
-						//console.log(res);
-
-					chatDualModel
-			  		.find({$and: [{users: myId}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
-			  			//console.log(dialogs);
-
-					let masInfo = [];
-			  			 usersMas.forEach(user=>{
-			  					let newUser = user;
-			  					dialogs.forEach(dialog=>{
-			  						if(dialog.users.indexOf(user._id)!=-1){
-			  							newUser.msgActions.push(dialog.history[dialog.history.length-1]);
-			  							newUser.countNoRead = 0;
+		  			 		}
+		  			 		}).catch(err=>{
+		  			 			console.log(err)
+		  			 		});
 
 
-			  						}
-			  					})
-
-			  					return masInfo.push(newUser);
-			  				});
-			  				res(masInfo);
-			  		})
-
-
-				}).catch(err=>{
-					console.log(err)
-				})
-
-							})
-
-				
-		
-
-			
+		  			}).catch(error=>{
+		  			 	console.log(error);
+		  			 })
 
 		}
-		
-
 
 		}
+	}
+
+
 
 
 		/*
@@ -396,8 +376,6 @@ module.exports = (function(){
 
 		*/
 
-
-	}())
 
 
 

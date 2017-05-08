@@ -2,7 +2,7 @@ let crypto = require('crypto'),
 	mongoose = require('../../db/mongoose'),
 	Schema = mongoose.Schema,
     ObjectId = require('mongodb').ObjectID,
-    chatDualModel = require('../chatModel').chatDualModel;
+    chatDualModel = require('../chatModel')().chatDualModel;
 
 
 let schema = new Schema({
@@ -32,11 +32,19 @@ let schema = new Schema({
 							minlength : [7, "password is plain"],
 							select: false
 						},
-						msgActions : {
-							type: [],
-							default : []
+						lastMessageActions : {
+							type: String,
+							default: null
 						},
-						isAuthorMsgActions: {
+						countUnreadMessage: {
+							type: Number,
+							default: null
+						},
+						isUnreadLastMessageForUser :{
+							type:Boolean, 
+							default:null
+						},
+						isAuthorMessageActions: {
 							type: Boolean,
 							default: false
 						},
@@ -58,33 +66,12 @@ let schema = new Schema({
 						}
 		});
 
-	schema.statics.addSocisActions = function(dataMsg){
-		let authorInfo = this.model('chat').findById(dataMsg.idAuthor),
-			addresseeInfo = this.model('chat').findById(dataMsg.idAddressee);
-
-		return Promise.all([authorInfo, addresseeInfo]).then(usersInfo=>{
-			return {
-				author : usersInfo[0],
-				addressee : usersInfo[1]
-			}
-		});
-	};
-
-
-
 
 let usersModel =  mongoose.model('users', schema);
-module.exports = (function(){
+  
 
-	return {
+let model = {
 
-
-		addSocisActions(idDual){
-			Promise.all(
-					[userModel.update({_id: dataMsg.idAuthor}, {$push: field}),
-					userModel.update({_id: dataMsg.idAddressee}, {$push: field})]
-						)
-		},
 
 		addUser(req){
 		  let chatUser = new usersModel({
@@ -96,6 +83,7 @@ module.exports = (function(){
 		    	});
 		  	return chatUser.save()
 		},
+
 		removeUser(_id){
 			return usersModel.find({_id}).remove();
 		},
@@ -123,20 +111,12 @@ module.exports = (function(){
 							
 							//console.log(partnerIdMas)
 							//chatDualModel.find({}).remove().then(res=>{
-								//console.log(res);
+							//console.log(res);
 
 							chatDualModel
 					  		.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
 					  			//console.log(dialogs);
-					  			console.log(socket.user._id)
-					  			chatDualModel.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}, { $and : [{'history.read' : {$exists: true, $ne: [socket.user._id] } }] } )
-					  			.then(unreadMessages=>{
-
-					  				console.log(`Unread Message`)
-					  				console.log(unreadMessages)
-
-
-
+					  			//console.log(socket.user._id)
 
 					  				let masInfo = [];
 					  			 	usersMas.forEach(user=>{
@@ -144,9 +124,15 @@ module.exports = (function(){
 					  					dialogs.forEach(dialog=>{
 					  						if(dialog.users.indexOf(user._id)!=-1){
 					  								//console.log(dialog.history)
-					  								if(dialog.history.length>0){
-					  									newUser.isAuthorMsgActions = dialog.lastMessage.author==socket.user._id;
-					  									newUser.msgActions = dialog.lastMessage.body;
+					  								if(dialog.history.length!=0){
+					  									newUser.isAuthorMessageActions = dialog.lastMessage.author==socket.user._id;
+					  									newUser.lastMessageActions = dialog.lastMessage.body;
+					  									newUser.countUnreadMessage = dialog.history.filter(message=>{
+					  										return message.read.indexOf(socket.user._id) == -1;
+					  									}).length;
+					  									newUser.isUnreadLastMessageForUser = dialog.history[(dialog.history.length-1)].read.length == 1	
+					  													 && dialog.history[(dialog.history.length-1)].read.indexOf(socket.user._id) != -1;
+
 
 					  								}
 					  								else{
@@ -158,25 +144,13 @@ module.exports = (function(){
 
 					  					return masInfo.push(newUser);
 					  				});
-					  				res(masInfo);
-
-
-
-
-					  			}).catch(err=>{
-					  				console.log(err)
-					  			})
-
-							
+					  				res(masInfo);		
 					  		})
-
 
 						}).catch(err=>{
 							console.log(err)
 						})
-
-							
-						
+					
 					}
 				})
 
@@ -211,7 +185,7 @@ module.exports = (function(){
 		},
 
 		findById(id){
-			return userModel.findById(id);
+			return usersModel.findById(id);
 		},
 
 		addAdmin(id){
@@ -232,9 +206,6 @@ module.exports = (function(){
 		getFullUsersChat(){
 			return usersModel.find({isWorker:true})
 		},
-		getUser(_id){
-			return usersModel.find({isWorker:true});
-		},
 
 		offlineUser(socket){
 
@@ -251,7 +222,10 @@ module.exports = (function(){
 		
 		}
 
-}
-}())
+};
+
+
+global.usr = model;
+module.exports  = model;
 
 

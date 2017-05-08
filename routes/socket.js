@@ -1,9 +1,9 @@
 var cookieParser = require('cookie-parser');
 var cookie = require('cookie');
-var chatModel = require('../models/chatModel');
-var userModel = require('../models/userModel')
-let flagConnect = false;
-console.log(userModel)
+var userModel = require('../models/userModel');
+var chatModel = require('../models/chatModel')(userModel);
+
+
 
 module.exports = function(io, sessionStore, __dirname){
 
@@ -73,41 +73,42 @@ module.exports = function(io, sessionStore, __dirname){
           //  console.log(user);
            // console.log(socket.user);
 
-
                 chatModel.setDualHistory({author: socket.user, addressee:user, body})
-                    .then(responce=>{
+                    .then(lastMessage=>{
+                        console.log(`LAST MESSAGE`);
+                        console.log(lastMessage)
+                        sendMessage(lastMessage[0].history._id)
                         socket.emit('setHistory', {isSucces:true});
                     }).catch(err=>{
+                        console.log(err)
                         socket.emit('setHistory', {isSucces:false, err})
                     });
 
-         if(user.isOnline){
-
-            let dataAdreesse =  {author: {          _id: socket.user._id, 
-                                                    first_name : socket.user.first_name,
-                                                     last_name: socket.user.last_name,
-                                                     login: socket.user.login},
-
-                                             addressee: {
-                                                       _id: user._id, 
-                                                     first_name : user.first_name,
-                                                     last_name: user.last_name,
-                                                     login: user.login},
-                                             body, 
-                                             date: new Date()};
-
-          
 
 
-            io.to(user.socketId).emit('incomDualMsg',dataAdreesse);
-                       
-            }
-           // console.log(socket.user)
-           // console.log('ISONLINE')
-           // console.log(socket.user.isOnline)
+         function sendMessage(lastMessageId){
 
-                
-          let dataAuthor = {author: {                _id: socket.user._id,        
+             if(user.isOnline){
+
+              let dataAdreesse =  {author: {          _id: socket.user._id, 
+                                                      first_name : socket.user.first_name,
+                                                       last_name: socket.user.last_name,
+                                                       login: socket.user.login},
+
+                                               addressee: {
+                                                         _id: user._id, 
+                                                       first_name : user.first_name,
+                                                       last_name: user.last_name,
+                                                       login: user.login},
+                                               body, 
+                                               date: new Date(),
+                                               _id: lastMessageId};
+
+                io.to(user.socketId).emit('incomDualMsg',dataAdreesse);
+                         
+              }
+
+            let dataAuthor = {author: {                _id: socket.user._id,        
                                                       first_name :socket.user.first_name,
                                                      last_name: socket.user.last_name,
                                                      login: socket.user.login},
@@ -118,10 +119,15 @@ module.exports = function(io, sessionStore, __dirname){
                                                      last_name: socket.user.last_name,
                                                      login: socket.user.login},
                                              body, 
-                                             date: new Date()};
+                                             date: new Date(),
+                                             isRead:false,
+                                             _id: lastMessageId
+                                           };
 
             socket.emit('incomDualMsg', dataAuthor);
-            io.sockets.emit('refreshUsers');
+            io.sockets.to(user.socketId).emit('refreshUsers');
+            socket.emit('refreshUsers');
+         }
 
         });        
     });
@@ -168,13 +174,6 @@ module.exports = function(io, sessionStore, __dirname){
 
 
     socket.on('getDualHistory', ({myId, partnerId, padigation})=>{
-       // if(socket.user._id == partnerId){
-       //   socket.emit('redirectGeneral');
-     //     return
-     //   }
-
-
-
 
         chatModel.getDualHistory({myId:socket.user._id, partnerId, padigation}, socket).then(history=>{
                //  console.log(history);
@@ -195,6 +194,11 @@ module.exports = function(io, sessionStore, __dirname){
         }).catch(err=>{
                 socket.emit('getGeneralHistory', {isSucces:false, err});
         })
+    });
+
+
+    socket.on('readMessage', ({idMessage, authorId})=>{
+      chatModel.readMessage(idMessage, authorId, socket.user._id);
     });
 
 
@@ -276,9 +280,9 @@ module.exports = function(io, sessionStore, __dirname){
             }
              if(session.passport){
           
-                console.log( session.passport.user);
+               // console.log( session.passport.user);
                 socket.user = session.passport.user;   
-                console.log(`${session.passport.user} connect!!!!!`)
+               // console.log(`${session.passport.user} connect!!!!!`)
                 if(!socket.user){
                   return io.sockets.to(socket.id).emit('redirectLogin');
                 }      
