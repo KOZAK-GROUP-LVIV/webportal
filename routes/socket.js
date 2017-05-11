@@ -69,6 +69,29 @@ module.exports = function(io, sessionStore, __dirname){
 
 
     socket.on('sendDualMsg', ({idAddressee, body})=>{  
+
+        let dataAuthor = {author: {                _id: socket.user._id,        
+                                                      first_name :socket.user.first_name,
+                                                     last_name: socket.user.last_name,
+                                                     login: socket.user.login,
+                                                     avatar: socket.user.avatar
+                                                   },
+
+                                             addressee: {
+                                                     _id: socket.user._id,  
+                                                     first_name : socket.user.first_name,
+                                                     last_name: socket.user.last_name,
+                                                     login: socket.user.login,
+                                                     avatar: socket.user.avatar},
+                                             body, 
+                                             date: new Date(),
+                                             isRead:false
+                                           };
+       
+            
+                  
+        socket.emit('incomDualMsg', dataAuthor);
+
         userModel.getUserById(idAddressee).then(user=>{
           //  console.log(user);
            // console.log(socket.user);
@@ -76,57 +99,39 @@ module.exports = function(io, sessionStore, __dirname){
                 chatModel.setDualHistory({author: socket.user, addressee:user, body})
                     .then(lastMessage=>{
                         console.log(`LAST MESSAGE`);
-                        console.log(lastMessage)
-                        sendMessage(lastMessage[0].history._id)
+                        //console.log(lastMessage)
+                        sendMessage(lastMessage._id)
                         socket.emit('setHistory', {isSucces:true});
                     }).catch(err=>{
                         console.log(err)
                         socket.emit('setHistory', {isSucces:false, err})
                     });
 
+                 function sendMessage(lastMessageId){
 
+                     if(user.isOnline){
 
-         function sendMessage(lastMessageId){
+                      let dataAdreesse =  {author: {          _id: socket.user._id, 
+                                                              first_name : socket.user.first_name,
+                                                               last_name: socket.user.last_name,
+                                                               login: socket.user.login,
+                                                               avatar: socket.user.avatar},
 
-             if(user.isOnline){
+                                                       addressee: {
+                                                                 _id: user._id, 
+                                                               first_name : user.first_name,
+                                                               last_name: user.last_name,
+                                                               login: user.login},
+                                                       body, 
+                                                       date: new Date(),
+                                                       _id: lastMessageId};
+                        socket.emit('refreshUsers');
+                        io.to(user.socketId).emit('refreshUsers');
+                        io.to(user.socketId).emit('incomDualMsg',dataAdreesse);
+                                 
+                      }
 
-              let dataAdreesse =  {author: {          _id: socket.user._id, 
-                                                      first_name : socket.user.first_name,
-                                                       last_name: socket.user.last_name,
-                                                       login: socket.user.login},
-
-                                               addressee: {
-                                                         _id: user._id, 
-                                                       first_name : user.first_name,
-                                                       last_name: user.last_name,
-                                                       login: user.login},
-                                               body, 
-                                               date: new Date(),
-                                               _id: lastMessageId};
-
-                io.to(user.socketId).emit('incomDualMsg',dataAdreesse);
-                         
-              }
-
-            let dataAuthor = {author: {                _id: socket.user._id,        
-                                                      first_name :socket.user.first_name,
-                                                     last_name: socket.user.last_name,
-                                                     login: socket.user.login},
-
-                                             addressee: {
-                                                     _id: socket.user._id,  
-                                                    first_name : socket.user.first_name,
-                                                     last_name: socket.user.last_name,
-                                                     login: socket.user.login},
-                                             body, 
-                                             date: new Date(),
-                                             isRead:false,
-                                             _id: lastMessageId
-                                           };
-
-            socket.emit('incomDualMsg', dataAuthor);
-            io.sockets.to(user.socketId).emit('refreshUsers');
-            socket.emit('refreshUsers');
+          
          }
 
         });        
@@ -136,11 +141,6 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('sendGeneralMsg', ({body})=>{  
         userModel.getFullUsersChat().then(users=>{
-
-          //console.log('SENDGENERAL')
-          //  console.log(users);
-           // console.log(socket.user);
-            
 
             chatModel.setGeneralHistory({author: socket.user, body})
                     .then(responce=>{
@@ -173,10 +173,10 @@ module.exports = function(io, sessionStore, __dirname){
     });
 
 
-    socket.on('getDualHistory', ({myId, partnerId, padigation})=>{
+    socket.on('getDualHistory', ({partnerId, pagination})=>{
 
-        chatModel.getDualHistory({myId:socket.user._id, partnerId, padigation}, socket).then(history=>{
-               //  console.log(history);
+        chatModel.getDualHistory({myId:socket.user._id, partnerId, pagination}, socket).then(history=>{
+               // console.log(history);
                 socket.emit('getDualHistory', {isSucces:true, history});
         }).catch(err=>{
               //  console.log(err)
@@ -187,18 +187,30 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('getGeneralHistory', ({padigation})=>{
 
-        chatModel.getGeneralHistory({padigation}).then(historyList=>{
-          //console.log(historyList)
-         // console.log(historyList[0].history)
-                socket.emit('getGeneralHistory', {isSucces:true, history : historyList[0].history});
-        }).catch(err=>{
-                socket.emit('getGeneralHistory', {isSucces:false, err});
-        })
+      chatModel.getGeneralHistory({padigation}).then(historyList=>{
+          socket.emit('getGeneralHistory', {isSucces:true, history : historyList[0].history});
+      }).catch(err=>{
+          socket.emit('getGeneralHistory', {isSucces:false, err});
+        });
+
     });
 
 
-    socket.on('readMessage', ({idMessage, authorId})=>{
-      chatModel.readMessage(idMessage, authorId, socket.user._id);
+    socket.on('readMessage', ({idMessage, authorId, readerId})=>{
+
+      chatModel.readMessage(idMessage, authorId, readerId).then(()=>{
+
+        userModel.findById(authorId).then(user=>{
+          if(user.isOnline){
+            io.to(user.socketId).emit('readMessage', {reader: socket.user._id, writer: authorId});
+            socket.emit('readMessage', {reader: socket.user._id, writer: authorId});
+          }
+        });
+
+      }).catch(()=>{
+
+      });
+
     });
 
 
@@ -279,29 +291,32 @@ module.exports = function(io, sessionStore, __dirname){
                 console.log(err);
             }
              if(session.passport){
-          
-               // console.log( session.passport.user);
-                socket.user = session.passport.user;   
-               // console.log(`${session.passport.user} connect!!!!!`)
-                if(!socket.user){
+                userModel.findById(session.passport.user._id).then(user=>{
+                   socket.user = user;   
+
+                      if(!socket.user){
                   return io.sockets.to(socket.id).emit('redirectLogin');
                 }      
 
-                socket.emit('authorization', {isSucces: !!socket.user, myProfile: socket.user})
-                if(socket.user){
-                  if(socket.user.isWorker){
-                        initEvent(socket);
-                        socket.user.isOnline = true;
-                        socket.user.socketId = socket.id;
-                        userModel.getUsersChat(socket).then(users=>{
-                          socket.emit('getUsersChat', {isSucces:true, users});
-                          socket.emit('profile', {isSucces:!!socket.user, user:socket.user});
-                          io.sockets.emit('refreshUsers');
-                        })
+                  socket.emit('authorization', {isSucces: !!socket.user, myProfile: socket.user})
+                  if(socket.user){
+                    if(socket.user.isWorker){
+                          initEvent(socket);
+                          socket.user.isOnline = true;
+                          socket.user.socketId = socket.id;
+                          userModel.getUsersChat(socket).then(users=>{
+                            socket.emit('getUsersChat', {isSucces:true, users});
+                            socket.emit('profile', {isSucces:!!socket.user, user:socket.user});
+                            socket.broadcast.emit('refreshUsers');
+                          })
 
 
-                  }
-                }
+                      }
+                    }
+
+                })
+
+             
 
 
             }

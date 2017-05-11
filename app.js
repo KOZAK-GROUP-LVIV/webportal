@@ -17,18 +17,17 @@ var Strategy = require('passport-local').Strategy;
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const chatModel = require('./models/userModel');
+const usersModel = require('./models/userModel');
 const passportSocketIo = require("passport.socketio");
 
 var express = require('express');
 var app = express();
 
-	
 
 passport.use(new Strategy(
   function(username, password, cb) {
 
-	  chatModel.loginUser({login:username}).then(user=>{
+	  usersModel.loginUser({login:username}).then(user=>{
 	  	 if(!user){
 	  	 	return cb(null, false)
 	  	 }
@@ -51,7 +50,8 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(user, cb) {
-  chatModel.loginUser({login:user.login}).then(user=>{
+  
+  usersModel.findById(user._id).then(user=>{
   	return cb(null, user);
   }).catch(err=>{
   	return cb(err)
@@ -90,17 +90,6 @@ app.use(cors({
 
 
 
-
-/*
-app.get('/chat', (req, res)=>{
-  res.sendFile(__dirname + '/public/index.html');
-})
-app.get('/index2', (req, res)=>{
-  res.sendFile(__dirname + '/public/index2.html');
-})
-*/
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -111,7 +100,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 
 
@@ -126,6 +114,9 @@ app.use('/', interview);
 
 app.get('/js/:filename', (req, res)=>{
   res.sendFile(`${__dirname}/public/frontend/socketChat/dist/${req.params.filename}`);
+})
+app.get('/images/avatars/:filename', (req, res)=>{
+  res.sendFile(`${__dirname}/public/images/${req.params.filename}`)
 })
 
 app.get('*', (req, res)=>{

@@ -2,8 +2,10 @@ let crypto = require('crypto'),
 	mongoose = require('../../db/mongoose'),
 	Schema = mongoose.Schema,
     ObjectId = require('mongodb').ObjectID,
-    chatDualModel = require('../chatModel')().chatDualModel;
-
+    chatDualModel = require('../chatModel')().chatDualModel,
+    gravatary = require('gravatary'),
+    randomstring = require("randomstring"),
+    fs = require('fs');
 
 let schema = new Schema({
 						first_name:{
@@ -72,14 +74,17 @@ let usersModel =  mongoose.model('users', schema);
 
 let model = {
 
+		usersModel,
+
 
 		addUser(req){
-		  let chatUser = new usersModel({
+		  let hashstring = req.body.login || randomstring.generate(),
+		      chatUser = new usersModel({
 			        first_name: req.body.first_name,
 			        last_name: req.body.last_name,
 			        login: req.body.login,
 			        password : req.body.password,
-			        avatar: '/default-icon.png'
+			        avatar: gravatary.default(hashstring)
 		    	});
 		  	return chatUser.save()
 		},
@@ -109,9 +114,6 @@ let model = {
 										return user._id!= socket.user._id;
 									});
 							
-							//console.log(partnerIdMas)
-							//chatDualModel.find({}).remove().then(res=>{
-							//console.log(res);
 
 							chatDualModel
 					  		.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
@@ -220,6 +222,78 @@ let model = {
 				})
 			})
 		
+		},
+
+		generateAvatars(){
+			return usersModel.find({isWorker:true}).then(workers=>{
+				workers.forEach(worker=>{
+					let hashstring = gravatary.default(worker.login, {margin: 0.08, size: 50, background: [0, 0, 0]});
+					usersModel.update({_id:worker._id}, {avatar: hashstring}).then(res=>{
+						console.log(res)
+					}).catch(err=>{
+						console.log(err)
+					})
+
+				});
+
+			})
+		},
+
+		updateProfile(_id, req){
+
+				return new Promise((res, rej)=>{
+
+					if(req.file){
+						
+
+					  fs.readFile(req.file.path, (err, data)=>{
+	                                  var randomName = randomstring.generate(7);
+	                                          
+
+				  		fs.writeFile(`./public/images/avatars/${randomName}.png`, data, (err)=> {
+				                                   if(err) {
+				                                       return rej(err)
+				                                        }
+				                                        console.log(_id);
+				                                        console.log('WIIIINNN');
+				                                        req.body.avatar = `/images/avatars/${randomName}.png`;
+				                                        this.editProfile(_id, req.body).then(result=>{
+				                                        	res(result)
+				                                        }).catch(err=>{
+				                                        	rej(err)
+				                                        });
+				                                          
+				                                         
+				                  
+				                                 });
+
+				   			 });
+					  }
+					if(!req.file){
+						this.editProfile(_id, req.body).then(result=>{
+				                                        	res(result)
+				                                        }).catch(err=>{
+				                                        	rej(err)
+				                                        });
+				                   }
+
+				});
+
+			
+			
+
+		},
+
+
+		editProfile(_id, data){
+			return usersModel.update({_id : _id}, data).then(()=>{
+				usersModel.findById(_id).then(user=>{
+					if(user.isOnline){
+						io.sockets.connected[user.socketId].disconnect()
+					}
+				})
+			})
+
 		}
 
 };

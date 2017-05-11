@@ -11,48 +11,20 @@ let schema1 = new Schema({
 
 	history : {
 			type: [
-					{author : {
-										type: {
-											_id: {
+					{author : {	
+													
 												type: Schema.Types.ObjectId,
-												required: [true, '_id is required']
-											},
-											first_name : {
-												type: String,
-												required: [true, 'first_name is required']
-											},
-											last_name : {
-												type: String,
-												required: [true, 'last_name is required']
-											},
-											login : {
-												type: String,
-												required: [true, 'login is required']
-											}
-										},
-										required: [true, "*author info is required"]
-													},
+												required: [true, '_id is required'],
+												ref: 'users'
+											
+								},
 													 
 					addressee: {		
-										type: {
-											_id: {
+															
 												type: Schema.Types.ObjectId,
-												required: [true, '_id is required']
-											},
-											first_name : {
-												type: String,
-												required: [true, 'first_name is required']
-											},
-											last_name : {
-												type: String,
-												required: [true, 'last_name is required']
-											},
-											login : {
-												type: String,
-												required: [true, 'login is required']
-											}
-										},
-										required: [true, "*addressee info is required"]
+												required: [true, '_id is required'],
+												ref: 'users'
+												
 									},
 
 						   date:{
@@ -155,8 +127,6 @@ let chatMultiModel =  mongoose.model('chatMultiStore', schema2);
 
 module.exports = function(userModel){
 	var usersModel = userModel;
-	console.log(`my user model`)
-	console.log(userModel)
 
 		return {
 
@@ -168,18 +138,9 @@ module.exports = function(userModel){
 		setDualHistory({author, addressee, body}){
 			return new Promise((res, rej)=>{
 			
-
 			let msg = {
-			       author:{	_id: author._id,
-			       			first_name: author.first_name, 
-			       		    last_name : author.last_name,
-			       			login : author.login},
-			       addressee : {
-			       			_id: addressee._id,
-			       			first_name: addressee.first_name, 
-			       		    last_name : addressee.last_name,
-			       			login : addressee.login
-			       },
+			       author : author._id,
+			       addressee : addressee._id,
 			       body,
 			       date : new Date(),
 			       read : [author._id]
@@ -189,7 +150,7 @@ module.exports = function(userModel){
 		  		.findOne({$and: [{users: author._id}, {users:addressee._id}]})
 			  		.then(responce=>{
 			  			//console.log(responce);
-			  			console.log(' I SAVE')
+			  			//console.log(' I SAVE')
 			  			if(responce){
 			  				chatDualModel
 			  					.find({$and: [{users: author._id}, {users:addressee._id}]})
@@ -202,18 +163,28 @@ module.exports = function(userModel){
 										"_id": "$_id",
 							            "history": { "$last": "$history" }
 							        }}
-									] ).then(lastMessage=>{
-										res(lastMessage);
-									}).catch(err=>{
-										//console.log(err);
-									})
+							        
+									])
+
+									.exec((err, transactions)=>{
+										if(err){
+											console.log(err)
+										}
+										else{
+											usersModel.usersModel.populate(transactions, {path: 'history.author  history.addressee'}, function(err, populatedTransactions) {
+													res(populatedTransactions[0].history)
+        										});
+										}
+
+									});
 
 			  					}).catch(err=>{
+			  						console.log(err)
 			  						rej(err);
 			  					})
 			  			}
 			  			else{
-			  				console.log('CREEEATE')
+			  			//	console.log('CREEEATE')
 			  				let dualHistory = new chatDualModel({
 			  					history : [],
 			  					users : [author._id, addressee._id]
@@ -231,11 +202,17 @@ module.exports = function(userModel){
 										"_id": "$_id",
 							            "history": { "$last": "$history" }
 							        }}
-									] ).then(lastMessage=>{
-										res(lastMessage);
-									}).catch(err=>{
-									//	console.log(err);
-									})
+									] ).exec((err, transactions)=>{
+										if(err){
+											console.log(err)
+										}
+										else{
+											usersModel.usersModel.populate(transactions, {path: 'history.author  history.addressee'}, function(err, populatedTransactions) {
+													res(populatedTransactions[0].history)
+        										});
+										}
+
+									});
 
 			  					})
 			  				})
@@ -298,68 +275,79 @@ module.exports = function(userModel){
 			return chatMultiModel.find({isGeneral:true})
 		},
 
-		getDualHistory({myId, partnerId, padigation}, socket){
+		getDualHistory({myId, partnerId, pagination}, socket){
+			console.log(`pagination -> ${pagination}`);
+			console.log(`partnerId -> ${partnerId}`)
 
-			
+			return new Promise((resolve, reject )=>{
+
+
+			let skip = pagination*20;
+
 			return chatDualModel
-		  		.findOne({$and: [{users: myId}, {users:partnerId}]}, 'history lastMessage').then(res=>{
-		  			//console.log(`THI IS LAST MESSAGE ${res.lastMessage}`);
-		  			//console.log(res)
+		  		.findOne({$and: [{users: myId}, {users:partnerId}]}, {history:{$slice:0-skip}})
+		  		.exec((err, transactions)=>{
+							if(err)
+								return	
 
-		  			res.history =  res.history.map(msg=>{
-		  			 let onreadMessageId = msg._id;
-		  			// console.log(msg)
+							//console.log(transactions)
+							       
+							usersModel.usersModel.populate(transactions, {path: 'history.author  history.addressee'},
+								 (err, res)=> {
 
-		  			 msg.isRead = msg.read.some(readerId=>{
-		  					return String(readerId) == String(partnerId);
-		  				});
+							res.history =  res.history.map(msg=>{
+					  			 let onreadMessageId = msg._id;
+					  			 msg.isRead = msg.read.indexOf(partnerId) != -1;
 
-		  			 if(String(msg.addressee._id) == String(myId)){
+					  			 if(String(msg.addressee._id) == String(myId)){
+						  			 	let isReadReader = !(msg.read.indexOf(myId) == -1);
+						  				if(!isReadReader){
+						  					this.readMessage(onreadMessageId, partnerId, myId);
+						  				}	  				
+					  			 	}
+					  			 		return msg;
+		  						});
 
-		  			 	let isReadReader = !(msg.read.indexOf(myId) == -1);
+								//console.log(res);
+								if(String(res.history[res.history.length-1].addressee._id)==String(myId)){
+	        						  this.notifyAuthor(res.history[res.history.length-1].author._id, myId)
+			  					}
 
-		  				if(!isReadReader){
+			  					console.log('I resolve!')
+								resolve(res)
 
-		  					this.readMessage(onreadMessageId, partnerId, myId);
-		  				}
-		  				
-		  			 }
-		  			 
-		  			 
+        										});
 
-		  			 return msg;
-		  			});
-
-		  			
-		  			
-		  		 return res;
+							
+			   });
 		  		})
+
 		},
 
 
 		readMessage(onreadMessageId, authorMessage, readerId){
-			chatDualModel.find({'history._id': onreadMessageId})
+			return chatDualModel.find({'history._id': onreadMessageId})
 		  			 .update({$push : {"history.$.read" :  readerId}})
 		  			 .then(result=>{
-		  			 	console.log(result)
-		  			 	//console.log(usersModel)
-		  			 usersModel.findById(authorMessage).then((user)=>{
-		  			 	console.log(`${user.login} readMessage event!`)
-		  			 	if(user.isOnline){
-		  			 						//	console.log(`user writer ${user.login} - socketId ${user.socketId}`)
-		  			 		io.sockets.to(user.socketId).emit('readMessage', readerId);
+		  			 		console.log(result)
+			  			}).catch((err)=>{
+			  				console.log(err)
+			  			})
 
-		  			 		}
-		  			 		}).catch(err=>{
-		  			 			console.log(err)
+			},
+
+		getLastMessage(){
+
+			},
+
+		notifyAuthor(writerId, readerId){
+			usersModel.findById(writerId).then((user)=>{
+		  			 	if(user.isOnline)
+		  			 		io.sockets.to(user.socketId)
+		  			 			.emit('readMessage', {reader: readerId, writer: writerId});
+
 		  			 		});
-
-
-		  			}).catch(error=>{
-		  			 	console.log(error);
-		  			 })
-
-		}
+			}
 
 		}
 	}
