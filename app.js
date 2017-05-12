@@ -62,10 +62,16 @@ passport.deserializeUser(function(user, cb) {
 
 
 
-
+/*
 var sessionStore = new MongoStore({
       url: 'mongodb://localhost/sessions',
       port: 27017
+    });
+*/
+
+
+var sessionStore = new MongoStore({
+      url: 'mongodb://maxim:123987bonus@ds157677.mlab.com:57677/chat'
     });
 
 
