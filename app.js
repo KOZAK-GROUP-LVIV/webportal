@@ -71,7 +71,7 @@ var sessionStore = new MongoStore({
 
 
 var sessionStore = new MongoStore({
-      url: 'mongodb://maxim:123987bonus@ds157677.mlab.com:57677/chat'
+      url: 'mongodb://maxim:123987bonus@ds139761.mlab.com:39761/webportalkozakgroup'
     });
 
 
