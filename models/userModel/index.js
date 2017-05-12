@@ -76,7 +76,6 @@ let model = {
 
 		usersModel,
 
-
 		addUser(req){
 		  let hashstring = req.body.login || randomstring.generate(),
 		      chatUser = new usersModel({
@@ -100,25 +99,18 @@ let model = {
 			if(socket){
 				return new Promise((res, rej)=>{
 					usersModel.findByIdAndUpdate(socket.user._id, {"isOnline": true, "socketId": socket.id}, function(err, model) {
-					//console.log(model);
-					if(!err){
-						
-						usersModel.find({isWorker:true}).then(users=>{
-							let partnerIdMas = users.filter(user=>{
-										return user._id!= socket.user._id;
-									}).map(user=>{
+					
+					if(!err){					
+						usersModel.find({$and: [{isWorker:true},  {_id: {$ne: socket.user._id} }] }).then(users=>{
+							
+							let partnerIdMas = users.map(user=>{
 										return {users: user._id}
 									}),
-
-								usersMas = users.filter(user=>{
-										return user._id!= socket.user._id;
-									});
+								usersMas = users
 							
-
 							chatDualModel
 					  		.find({$and: [{users: socket.user._id}, {$or:partnerIdMas}]}).exec((err, dialogs)=>{
-					  			//console.log(dialogs);
-					  			//console.log(socket.user._id)
+
 
 					  				let masInfo = [];
 					  			 	usersMas.forEach(user=>{
@@ -205,8 +197,8 @@ let model = {
 		getUsers(){
 			return usersModel.find();
 		},
-		getFullUsersChat(){
-			return usersModel.find({isWorker:true})
+		getFullUsersChat(socket){
+			return usersModel.find({$and: [{isWorker:true, isOnline: true},  {_id: {$ne: socket.user._id} }] })
 		},
 
 		offlineUser(socket){
@@ -254,17 +246,13 @@ let model = {
 				                                   if(err) {
 				                                       return rej(err)
 				                                        }
-				                                        console.log(_id);
-				                                        console.log('WIIIINNN');
 				                                        req.body.avatar = `/images/avatars/${randomName}.png`;
 				                                        this.editProfile(_id, req.body).then(result=>{
 				                                        	res(result)
 				                                        }).catch(err=>{
 				                                        	rej(err)
 				                                        });
-				                                          
-				                                         
-				                  
+				                                                          
 				                                 });
 
 				   			 });
@@ -278,10 +266,6 @@ let model = {
 				                   }
 
 				});
-
-			
-			
-
 		},
 
 

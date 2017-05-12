@@ -98,13 +98,9 @@ module.exports = function(io, sessionStore, __dirname){
 
                 chatModel.setDualHistory({author: socket.user, addressee:user, body})
                     .then(lastMessage=>{
-                        console.log(`LAST MESSAGE`);
-                        //console.log(lastMessage)
                         sendMessage(lastMessage._id)
-                        socket.emit('setHistory', {isSucces:true});
                     }).catch(err=>{
                         console.log(err)
-                        socket.emit('setHistory', {isSucces:false, err})
                     });
 
                  function sendMessage(lastMessageId){
@@ -139,33 +135,77 @@ module.exports = function(io, sessionStore, __dirname){
 
 
 
+    socket.on('getGeneralConference',()=>{
+        chatModel.getGeneralConferencePreview(socket.user._id).then((preview)=>{
+          socket.emit('getGeneralConference' , preview);
+        }).catch((err)=>{
+
+        })
+    })
+
+
+
     socket.on('sendGeneralMsg', ({body})=>{  
-        userModel.getFullUsersChat().then(users=>{
+
+       userModel.getFullUsersChat(socket).then(users=>{
+
+        let dataAuthor = {author: {              _id: socket.user._id,        
+                                                     first_name :socket.user.first_name,
+                                                     last_name: socket.user.last_name,
+                                                     login: socket.user.login,
+                                                     avatar: socket.user.avatar
+                                                   },
+
+                                             addressee: {
+                                                     _id: socket.user._id,  
+                                                     first_name : socket.user.first_name,
+                                                     last_name: socket.user.last_name,
+                                                     login: socket.user.login,
+                                                     avatar: socket.user.avatar},
+                                             body, 
+                                             date: new Date(),
+                                             isRead: true
+                                           };
+
+            socket.emit('incomGeneralMsg', dataAuthor);
+            socket.emit('refreshUsers');
 
             chatModel.setGeneralHistory({author: socket.user, body})
-                    .then(responce=>{
-                        socket.emit('sendGeneralMsg', {isSucces:true});
+                    .then(lastMessage=>{
+                    // console.log('LAST MESSAGE');
+                     //console.log(lastMessage);
+                    
+                      for(let user of users){
+
+                            io.to(user.socketId).emit('incomGeneralMsg', {
+                                             _id : lastMessage._id,
+                                             author: {
+                                                    _id: socket.user._id,        
+                                                     first_name :socket.user.first_name,
+                                                     last_name: socket.user.last_name,
+                                                     login: socket.user.login,
+                                                     avatar: socket.user.avatar
+                                                   },
+
+                                             addressee: {
+                                                    _id: user._id,
+                                                     first_name : user.first_name,
+                                                     last_name: user.last_name,
+                                                     login: user.login,
+                                                     avatar:user.avatar
+                                                   },
+                                             body, 
+                                             date: new Date(),
+                                             isRead: true
+
+                                                      });
+                            io.to(user.socketId).emit('refreshUsers');
+                      }
+
                     }).catch(err=>{
                       console.log(err);
                         socket.emit('sendGeneralMsg', {isSucces:false, err})
                     });
-
-            for(let user of users){
-              if(user.isOnline){
-                io.to(user.socketId)
-                            .emit('incomGeneralMsg', {author: {first_name : socket.user.first_name,
-                                                     last_name: socket.user.last_name,
-                                                     login: socket.user.login},
-
-                                             addressee: {first_name : user.first_name,
-                                                     last_name: user.last_name,
-                                                     login: user.login},
-                                             body, 
-                                             date: new Date()
-                                                      });
-              }
-            }
-                io.sockets.emit('refreshUsers');
 
         }).catch(err=>{
              socket.emit('sendGeneralMsg', {isSucces:false, err});
@@ -185,10 +225,10 @@ module.exports = function(io, sessionStore, __dirname){
     });
 
 
-    socket.on('getGeneralHistory', ({padigation})=>{
+    socket.on('getGeneralHistory', (pagination)=>{
 
-      chatModel.getGeneralHistory({padigation}).then(historyList=>{
-          socket.emit('getGeneralHistory', {isSucces:true, history : historyList[0].history});
+      chatModel.getGeneralHistory(socket.user._id, pagination).then(history=>{
+          socket.emit('getGeneralHistory', {isSucces:true, history});
       }).catch(err=>{
           socket.emit('getGeneralHistory', {isSucces:false, err});
         });
@@ -196,14 +236,19 @@ module.exports = function(io, sessionStore, __dirname){
     });
 
 
-    socket.on('readMessage', ({idMessage, authorId, readerId})=>{
+    socket.on('readMessage', ({idMessage, authorId, readerId, isGeneral})=>{
+      console.log(`is general ${isGeneral}`)
 
-      chatModel.readMessage(idMessage, authorId, readerId).then(()=>{
+      chatModel.readMessage(idMessage, authorId, readerId, isGeneral).then(()=>{
 
         userModel.findById(authorId).then(user=>{
           if(user.isOnline){
+            if(isGeneral){
+             return socket.emit('readMessage', {reader: socket.user._id, writer: authorId});
+            }
             io.to(user.socketId).emit('readMessage', {reader: socket.user._id, writer: authorId});
             socket.emit('readMessage', {reader: socket.user._id, writer: authorId});
+            
           }
         });
 
@@ -260,9 +305,7 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('logout', ()=>{
       io.sockets.to(socket.id).emit('redirectLogin');
-     // io.sockets.connected[socket.id].disconnect();
       let soc = socket;
-      //  socket.disconnect();
        userModel.offlineUser(socket)
       .then(models=>{
         socket.user = null;
@@ -290,7 +333,7 @@ module.exports = function(io, sessionStore, __dirname){
             {
                 console.log(err);
             }
-             if(session.passport){
+             if(session.passport.user){
                 userModel.findById(session.passport.user._id).then(user=>{
                    socket.user = user;   
 
@@ -305,7 +348,6 @@ module.exports = function(io, sessionStore, __dirname){
                           socket.user.isOnline = true;
                           socket.user.socketId = socket.id;
                           userModel.getUsersChat(socket).then(users=>{
-                            socket.emit('getUsersChat', {isSucces:true, users});
                             socket.emit('profile', {isSucces:!!socket.user, user:socket.user});
                             socket.broadcast.emit('refreshUsers');
                           })
