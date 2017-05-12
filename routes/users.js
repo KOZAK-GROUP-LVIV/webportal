@@ -12,7 +12,7 @@ var multer = require('multer');
 var path = require('path');
 
 var storage = multer.diskStorage({
-  destination: '../public/images/',
+  destination: './',
   filename: function (req, file, cb) {
     crypto.pseudoRandomBytes(16, function (err, raw) {
       if (err) return cb(err)
