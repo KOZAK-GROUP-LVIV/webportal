@@ -333,7 +333,8 @@ module.exports = function(io, sessionStore, __dirname){
             {
                 console.log(err);
             }
-             if(session.passport.user){
+            //console.log()
+             if(session.passport){
                 userModel.findById(session.passport.user._id).then(user=>{
                    socket.user = user;   
 
