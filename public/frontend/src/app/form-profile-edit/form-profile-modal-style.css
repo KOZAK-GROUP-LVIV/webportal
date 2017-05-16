@@ -1,0 +1,10 @@
+
+
+.custom-file-control:before{
+    content: "Вибрати" !important;
+}
+
+.uploted:after{
+    content: "Завантажено.. 100%" !important;
+}
+

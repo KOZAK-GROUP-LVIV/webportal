@@ -1,0 +1,115 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container no-padding bootstrap snippet chat">
+    <div class="row no-gutters">
+    <div class="col-lg-4 col-md-5 col-sm-5 bg-white ">
+              <ul class="friend-list">
+                <li  class="bounceInDown border-0 mb-3">
+                   <a  class="clearfix my">
+                    <div  [style.background-image]="'url(' + myPersonInfo?.avatar +')'"  alt="" class="img-circle mr-3"></div>
+                    <div class="friend-name"> 
+                      <strong>{{myPersonInfo?.first_name}} {{myPersonInfo?.last_name}}</strong>
+                    </div>
+                    <small class="time text-muted" [ngClass]="{'green':myPersonInfo?.isOnline}">{{myPersonInfo?.isOnline | status:'online'}}</small>
+                    <small class="chat-alert label label-danger"></small>
+                  </a>
+                  
+                </li>
+
+            <div class="row no-gutters border-bottom mb-3 mb-sm-3">
+             <a (click)="hideMenuUser = false" role="button" [routerLink]="['/chat/workers']" routerLinkActive="btn-warning" class="btn btn-primary mb-2 mr-1 mb-sm-1">
+             <i class="fa fa-users mr-1" aria-hidden="true"></i>
+             Список колег</a>
+              <a (click)="hideMenuUser = false" role="button" [routerLink]="['/chat/dialogs']" routerLinkActive="btn-warning" class="btn btn-primary mb-2 mb-sm-1  mr-1">
+              <i class="fa fa-comment-o mr-1" aria-hidden="true"></i>
+              Діалоги</a>
+              <a role="button" (click)="hideMenuUser = !hideMenuUser" class="btn mb-2 mb-sm-1 btn-primary ml-auto hidden-sm-up">
+              <i *ngIf="hideMenuUser" class="fa c-white fa-bars" aria-hidden="true"></i> 
+              <i *ngIf="!hideMenuUser" class="fa c-white fa-times" aria-hidden="true"></i></a>
+            </div>
+
+            
+            <!-- =============================================================== -->
+            <!-- member list -->
+            <div *ngIf="chatMode=='dialogs'" [ngClass]="{'hidden-sm-down': hideMenuUser}">
+
+                 <li class="bounceInDown" (click)="hideMenuUser=true"  
+                [ngClass]="{'active': !currId&&currMsgList=='general','unreadMessageFromUser': generalConference?.countUnreadMessage}" >
+
+                  <a [routerLink]="['/chat/dialogs']" [queryParams]="{ conference: 'general' }" class="clearfix">
+                     <img  alt="" class="img-circle mr-2" [src]="'http://www.iconsdb.com/icons/preview/orange/conference-xxl.png'">  
+                     <div _ngcontent-c3="" class="friend-name"> 
+                      <strong _ngcontent-c3="">Головна конференція</strong>
+                    </div>
+
+                    <div class="last-message text-muted">{{generalConference?.lastMessageActions}}</div> 
+
+                <!--    <small class="time text-muted" [ngClass]="{'green':user?.isOnline}">{{user?.isOnline | status:'online'}}</small> -->
+                    <small class="chat-alert text-muted"><i class="fa" [ngClass]="{'fa-arrow-left': generalConference?.isAuthorMessageActions, 'fa-arrow-right' : !generalConference?.isAuthorMessageActions}"></i></small>
+
+                     <small *ngIf="generalConference?.countUnreadMessage&&currId" class="chat-alert-msg-action label label-danger">{{generalConference?.countUnreadMessage}}</small>
+                  </a>
+                </li>
+              
+            
+                <li class="bounceInDown" (click)="hideMenuUser=true" *ngFor="let user of userList" 
+                [ngClass]="{'active': user?._id == currId, 'd-none' : !user?.lastMessageActions&&currId!=user._id, 'unreadMessageFromUser': user?.countUnreadMessage}" >
+                  <a [routerLink]="['/chat/dialogs']" [queryParams]="{ userid: user._id }" class="clearfix">
+                     <div [style.background-image]="'url(' + user?.avatar +')'" alt="" class="img-circle mr-2"> </div>
+                    <div class="friend-name"> 
+                      <strong>{{user?.first_name}} {{user?.last_name}}</strong>
+                    </div>
+                    <div class="last-message text-muted" [ngClass]="{'unreadMessageForUser' : user?.isUnreadLastMessageForUser}">{{user?.lastMessageActions}}</div> 
+                    <small class="time text-muted" [ngClass]="{'green':user?.isOnline}">{{user?.isOnline | status:'online'}}</small>
+                    <small class="chat-alert text-muted"><i class="fa" [ngClass]="{'fa-arrow-left': user?.isAuthorMessageActions, 'fa-arrow-right' : !user?.isAuthorMessageActions}"></i></small>
+                     <small *ngIf="user?.countUnreadMessage" class="chat-alert-msg-action label label-danger">{{user?.countUnreadMessage}}</small>
+                  </a>
+                </li>
+
+            </div>
+
+            <div *ngIf="chatMode=='workers'" [ngClass]="{'hidden-sm-down': hideMenuUser}">
+              
+            
+                <li class="bounceInDown" (click)="hideMenuUser=true" *ngFor="let user of userList" 
+                [ngClass]="{'active': user?._id == currId, 'unreadMessageFromUser': user?.countUnreadMessage}" >
+                  <a [routerLink]="['/chat/dialogs']" [queryParams]="{ userid: user._id }" class="clearfix">
+                    <div [style.background-image]="'url(' + user?.avatar +')'" alt="" class="img-circle mr-2"> </div>
+                    <div class="friend-name"> 
+                      <strong>{{user?.first_name}} {{user?.last_name}}</strong>
+                    </div>
+                    <div class="last-message text-muted" [ngClass]="{'unreadMessageForUser' : user?.isUnreadLastMessageForUser}">{{user?.lastMessageActions}}</div> 
+                    <small class="time text-muted" [ngClass]="{'green':user?.isOnline}">{{user?.isOnline | status:'online'}}</small>
+                    <small class="chat-alert text-muted" *ngIf="user?.lastMessageActions"><i class="fa" [ngClass]="{'fa-arrow-left': user?.isAuthorMessageActions, 'fa-arrow-right' : !user?.isAuthorMessageActions}"></i></small>
+                    <small *ngIf="user?.countUnreadMessage" class="chat-alert-msg-action label label-danger">{{user?.countUnreadMessage}}</small>
+                  </a>
+                </li>
+
+            </div>
+                           
+            </ul>
+    </div>
+        
+        <!--=========================================================-->
+        <!-- selected chat -->
+      <div class="col-lg-8 col-md-7 col-sm-7 bg-white " *ngIf="hideMenuUser">
+
+      <app-chat-messages-list #msgList> </app-chat-messages-list>
+            <div class="chat-box bg-white">
+
+              <div class="input-group" [formGroup]="msgInput">
+              <div class="write-msg-info" *ngIf="writer">
+                {{writer?.first_name}} {{writer?.last_name}} друкує для вас повідомлення...
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </div>
+                <input #messageInput (keyup)="sendMsg(msgInput, $event)" formControlName="text" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+                <span class="input-group-btn">
+                  <button (click)="sendMsg(msgInput)"  class="btn btn-success no-rounded" type="button">
+                  <i class="fa fa-paper-plane-o mr-1" aria-hidden="true"></i>
+                  Відправити</button>
+                </span>
+              </div><!-- /input-group --> 
+            </div>            
+    </div>        
+  </div>
+</div>

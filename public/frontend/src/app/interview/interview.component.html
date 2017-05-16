@@ -1,0 +1,56 @@
+<div class="container align-items-start center no-padding row" >
+
+
+<div class="jumbotron mb-5 px-2 pt-1 pb-1 col-12 col-md-5 pos-relative pb-5 center" *ngFor="let inerview of interviewList">
+  <h1 class="display-5">{{inerview?.question}}</h1>
+  <p class="lead"><small>Автор: {{inerview?.author.first_name}} {{inerview?.author.last_name}}</small></p>
+  <p class="lead"><small>{{inerview?.createdAt | customDate:'post'}}</small></p>
+  <hr class="my-2">
+
+  <div class="row no-padding no-gutters" *ngIf="inerview?.isMultiple&&!inerview.isUse">
+	<div class="form-check  col-12"  *ngFor="let answer of inerview?.answers">
+	  <label class="form-check-label">
+	    <input type="checkbox" (change)="setVarian(inerview, answer, $event)" class="form-check-input" id="checkboxSuccess" value="option1">
+	    {{answer?.text}}
+	  </label>
+	</div>
+	 <p class="lead mt-2  col-12">
+    <a class="btn btn-primary btn-sm" (click)=sendInterviewResult(inerview._id) role="button">Голосувати</a>
+  </p>
+  <div class="count-answers">{{inerview?.countResult}} голосів</div>
+  </div>
+
+ <div class="row no-padding no-gutters full-width" *ngIf="!inerview?.isMultiple&&!inerview.isUse">
+ <div class="progress row col-12 no-gutters mb-1" *ngFor="let answer of inerview?.answers">
+	<label class="custom-control custom-radio form-check-label ml-1">
+	  <input id="radio1" name="radio" type="radio" class="custom-control-input" (change)="setVarian(inerview, answer, $event)">
+	  <span class="custom-control-indicator"></span>
+	  <span class="custom-control-description mb-2">{{answer?.text}}</span>
+	</label>
+</div>
+
+  <p class="lead mt-2 col-12">
+    <a class="btn btn-primary btn-sm" (click)=sendInterviewResult(inerview._id) role="button">Голосувати</a>
+  </p>
+  <div class="count-answers">{{inerview?.countResult}} голосів</div>
+  </div>
+
+  <div class="row no-padding no-gutters full-width" *ngIf="inerview.isUse">
+	<div class="progress row col-12 no-gutters mb-1" *ngFor="let answer of inerview?.answers">
+	 <span class="custom-control-description mb-2 col-12 mb-1 text-left">{{answer?.text}}</span>
+  <div class="progress-bar " role="progressbar" [style.width.%]="answer?.isTruePercent+0.5" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">{{answer?.isTruePercent}}%</div>
+	</div>
+	<div class="count-answers">{{inerview?.countResult}} голосів</div>
+  </div>
+
+  
+
+
+
+
+
+
+</div>
+
+
+</div>

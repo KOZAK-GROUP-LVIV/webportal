@@ -1,0 +1,83 @@
+<div class="content-wrap">
+	
+	<div class="content-wrap__content container row">
+		<form *ngIf="currForm=='login'" action="" class="entry-form row" [formGroup]="entryForm" (submit)="login(entryForm)">
+		<div [ngClass]="{'has-success':
+		!submitedInvalidForm&&entryForm.controls['login'].valid&&entryForm.controls['login'].touched&&
+		entryForm.controls['login'].value.length>0}" class="form-group entry-form__form col-lg-5">
+		  Введіть логін
+		  <br>
+
+		  <input type="text" placeholder="Login" class="form-control form-control-success" id="inputSuccess1"
+		  formControlName="login">
+		  <div class="form-control-feedback" *ngIf="entryForm.controls['login'].valid&&entryForm.controls['login'].touched&&entryForm.controls['login'].value.length>0"  class="form-control-feedback" class="form-control-feedback">Чудово!</div>
+		</div>
+
+		<div [ngClass]="{'has-success':
+		!submitedInvalidForm&&entryForm.controls['password'].valid&&entryForm.controls['password'].touched&&
+		entryForm.controls['password'].value.length>0}" class="form-group entry-form__form col-lg-5">
+		  Введіть пароль
+		  <br>
+		  <input type="password" placeholder="password" class="form-control form-control-success" id="inputSuccess1"
+		  formControlName="password">
+		  <div *ngIf="entryForm.controls['password'].valid&&entryForm.controls['password'].touched&&entryForm.controls['password'].value.length>0" class="form-control-feedback">Отлично!</div>
+		</div>
+
+		<div class="content-wrap__submit col-lg-2">
+		<button type="submit" class="btn width100 btn-success">Увійти</button></div>
+		</form>
+
+
+		<form *ngIf="currForm=='singin'" action="" class="entry-form row" [formGroup]="entryForm" (submit)="singin(entryForm)">
+		<div [ngClass]="{'has-success':
+		!submitedInvalidForm&&entryForm.controls['first_name'].valid&&entryForm.controls['first_name'].touched&&
+		entryForm.controls['first_name'].value.length>0}" 
+		class="form-group entry-form__form col-lg-5">
+		  Введіть Ім’я
+		  <br>
+		<!--  <label class="form-control-label" for="inputSuccess1">Имя уникально</label> -->
+		  <input type="text" placeholder="Иван" class="form-control form-control-success" id="inputSuccess1"
+		  formControlName="first_name">
+		  <div *ngIf="entryForm.controls['first_name'].valid&&entryForm.controls['first_name'].touched&&entryForm.controls['first_name'].value.length>0"  class="form-control-feedback">Чудово!</div>
+		</div>
+
+			<div [ngClass]="{'has-success':
+		!submitedInvalidForm&&entryForm.controls['last_name'].valid&&entryForm.controls['last_name'].touched&&
+		entryForm.controls['last_name'].value.length>0}" class="form-group entry-form__form col-lg-5">
+		  Введіть Прізвище
+		  <br>
+		<!--  <label class="form-control-label" for="inputSuccess1">Имя уникально</label> -->
+		  <input type="text" placeholder="Иванов" class="form-control form-control-success" id="inputSuccess1"
+		  formControlName="last_name">
+		   <div *ngIf="entryForm.controls['last_name'].valid&&entryForm.controls['last_name'].touched&&entryForm.controls['last_name'].value.length>0"  class="form-control-feedback">Чудово!</div>
+		</div>
+
+
+		<div [ngClass]="{'has-success':
+		!submitedInvalidForm&&entryForm.controls['login'].valid&&entryForm.controls['login'].touched&&
+		entryForm.controls['login'].value.length>0}" class="form-group entry-form__form col-lg-5">
+		  Введіть логін
+		  <br>
+		<!--  <label class="form-control-label" for="inputSuccess1">Имя уникально</label> -->
+		  <input type="text" placeholder="ivanLogin" class="form-control form-control-success" id="inputSuccess1"
+		  formControlName="login">
+		  <div *ngIf="entryForm.controls['login'].valid&&entryForm.controls['login'].touched&&entryForm.controls['login'].value.length>0"  class="form-control-feedback" class="form-control-feedback">Отлично!</div>
+		  <small class="form-text text-muted">Данний ідентифікатор має буде унікальним.</small>
+		</div>
+
+		<div [ngClass]="{'has-success':
+		!submitedInvalidForm&&entryForm.controls['password'].valid&&entryForm.controls['password'].touched&&
+		entryForm.controls['password'].value.length>0}" class="form-group entry-form__form col-lg-5">
+		  Введіть пароль
+		  <br>
+		  <input type="password" placeholder="password" class="form-control form-control-success" id="inputSuccess1"
+		  formControlName="password">
+		  <div *ngIf="entryForm.controls['password'].valid&&entryForm.controls['password'].touched&&entryForm.controls['password'].value.length>0"  class="form-control-feedback" class="form-control-feedback">Чудово!</div>
+		</div>
+
+		<div class="content-wrap__submit col-lg-2">
+		<button type="submit" class="btn width100 btn-success">Реєстрауватися</button></div>
+		</form>
+	</div>
+
+</div>

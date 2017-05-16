@@ -1,0 +1,46 @@
+		<div class="wrap container center row no-padding">
+		<div class="col-3 center text-center">
+		<app-form-news-edit #formNews> </app-form-news-edit>
+		</div>
+		<table class="table table-hover my-5 col-12">
+		 <thead>
+
+		 <tr>
+		 <th>Заголовок</th>
+		 <th>Автор</th>
+		 <th>Дата публікації</th>
+		 <th>Дії</th>
+		 </tr>
+		 </thead>
+		 <tbody >
+
+
+		 <tr *ngFor="let news of newsList" [ngClass]="{'table-active': news?._id == currNewsId}" (click)="choiceNews(news._id)" class="cursor-pointer">
+		 <td>{{news?.title}}</td>
+		 <td>{{news?.author?.first_name}} {{news?.author?.last_name}}</td>
+		 <td>{{news?.createdAt | customDate:'post'}}</td>
+		 <td>
+		 	 <button  type="button" class="btn btn-primary" (click)="editNews(news)">Редагувати</button>
+
+		 	 <button  type="button" class="deleteWorker btn btn-danger" (click)="removeNews(news?._id)">Видалити</button>
+		 </td>
+
+
+		 </tr>
+		
+		 </tbody>
+		 </table>
+
+		  <div class="card  col-7 col-xl-7 center mb-3 px-0" *ngIf="currNewsScreen">
+			  <h3 class="card-header">{{currNewsScreen?.title}}</h3>
+			  <div class="card-block">
+			    <p class="card-text"><small class="text-muted">Автор: {{currNewsScreen?.author?.first_name}} {{currNewsScreen?.author?.last_name}}</small></p>
+			    <p class="card-text">{{currNewsScreen?.excerpt}}</p>
+			    <p class="card-text"><small class="text-muted">{{currNewsScreen?.createdAt | customDate:'post'}}</small></p>
+			  </div>
+		  </div>
+			<div class="col-12 d-flex justify-content-center">
+				<ngbd-pagination-basic (pageChange)="onPageChange($event)" #pagination> </ngbd-pagination-basic>
+			</div>
+		  
+		 </div>

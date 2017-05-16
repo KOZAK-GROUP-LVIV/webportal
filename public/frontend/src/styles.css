@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+.content-wrap{
+	width: 100%;
+}
+.content-wrap__nav{
+	margin-bottom: 50px;
+}
+
+.content-wrap__content{
+	margin: 0 auto;
+}
+
+
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
+
+.container.chat-contain {
+  margin: 0 auto;
+  margin-bottom: 100px;
+  width: 750px;
+  background: #444753;
+  border-radius: 5px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.center{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.green-bcg{
+  background-color: green;
+}
+.white-color{
+  color:#fff;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.no-padding{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.c-white{
+  color:#fff;
+}
+
+.center{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.custom-control-description{
+  font-size:1.25rem !important;
+}
+
+.pos-relative{
+  position: relative !important;
+}
+
+
+
+@media (max-width: 768px) {
+  .no-padding{
+     padding-left: 15px !important;
+     padding-right: 15px !important;
+  }
+  }
+

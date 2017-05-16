@@ -1,0 +1,23 @@
+            <div  class="chat-message" #chatMessages (scroll)="loadHistory(chatMessages)">
+            <ul class="chat" #chatList *ngIf="renderMsgList.length>0">
+          
+            
+             <li class="clearfix single-msg" *ngFor="let msg of renderMsgList" [ngClass]="{'right' : msg?.author?.login === myPersonInfo?.login, 'left' : msg?.author?.login!==myPersonInfo?.login}">
+
+                      <span class="chat-img " [ngClass]="{'pull-right' : msg?.author?.login === myPersonInfo?.login, 'pull-left' : msg?.author.login!==myPersonInfo?.login}">
+                        <div class='avatar' [style.background-image]="'url(' + msg?.author?.avatar +')'"  alt="User Avatar"></div>
+                      </span>
+                      <div class="chat-body clearfix">
+                        <div class="header">
+                          <strong class="primary-font">{{msg?.author.first_name}} {{msg?.author.last_name}}</strong>
+                          <small class="pull-right text-muted"><i class="time-icon fa fa-clock-o"></i>{{msg?.date | customDate:'chat'}}</small>
+                        </div>
+                        <p [ngClass]="{'unreadMessageForUser' : !msg?.isRead && msg?.author?._id != currId}">
+                          {{msg?.body}}
+                        </p>
+                      </div>
+                    </li>
+
+                                  
+                </ul>
+            </div>

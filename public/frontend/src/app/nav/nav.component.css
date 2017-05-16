@@ -1,0 +1,27 @@
+a:hover{
+	border-bottom: none;
+	text-decoration: none;
+}
+
+.act{
+	color:red;
+}
+
+
+
+@media (min-width: 992px) {
+  .nav-adap-bar.show {
+    display: none !important;
+  }
+ 
+
+}
+
+@media (max-width: 992px) {
+	 .nav-item a{
+ color: #014c8c !important;
+	}
+}
+
+
+

@@ -1,0 +1,20 @@
+.center{
+	margin: 0 auto;
+}
+.no-padding{
+	padding-left: 0;
+	padding-right: 0;
+}
+.mb-big{
+	margin-bottom: 20px;
+}
+.card-columns{
+    column-count: 1;
+}
+.page-item{
+	cursor: pointer;
+}
+
+.disabled{
+	cursor: normal;
+}

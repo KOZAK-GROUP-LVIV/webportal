@@ -1,0 +1,30 @@
+.content-wrap{
+	padding-top: 100px;
+	width: 100%;
+		
+}
+
+
+.entry-form{
+	width: 100%;
+	display: block;
+}
+.entry-form__form{
+	margin: 0 auto;
+}
+.content-wrap__content{
+	margin: 0 auto;
+}
+
+.content-wrap__submit {
+	cursor: pointer;
+	margin: 50px auto;
+}
+
+.width100{
+	width: 100%;
+}
+
+.btn{
+	cursor: pointer;
+}
