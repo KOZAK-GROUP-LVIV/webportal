@@ -62,7 +62,6 @@ passport.deserializeUser(function(user, cb) {
 
 
 
-
 var sessionStore = new MongoStore({
       url: 'mongodb://localhost/sessions',
       port: 27017
