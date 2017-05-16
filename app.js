@@ -117,7 +117,7 @@ app.use('/', interview);
 
 
 app.get('/js/:filename', (req, res)=>{
-  res.sendFile(`${__dirname}/public/frontend/socketChat/dist/${req.params.filename}`);
+  res.sendFile(`${__dirname}/public/frontend/dist/${req.params.filename}`);
 })
 app.get('/images/avatars/:filename', (req, res)=>{
   res.sendFile(`${__dirname}/public/images/${req.params.filename}`)
