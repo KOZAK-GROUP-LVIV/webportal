@@ -290,7 +290,7 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('disconnect', ()=>{
        // console.log('sdasda;sldjalksjdlasjldkjaslkjd')
-       // console.log(socket.user);
+      console.log(socket.user);
       userModel.offlineUser(socket)
       .then(models=>{
         io.sockets.emit('refreshUsers');
@@ -334,7 +334,7 @@ module.exports = function(io, sessionStore, __dirname){
                 console.log(err);
             }
             //console.log()
-             if(session.passport){
+             if(session.passport.user){
                 userModel.findById(session.passport.user._id).then(user=>{
                    socket.user = user;   
 
