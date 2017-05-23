@@ -20,11 +20,14 @@ let schema = new Schema({
 
 							excerpt: {
 										type:String,
-										required: [true, "*excerpt news is required"]
+										required: [true, "*excerpt news is required"],
+										minlength : [20, "*text content news is required"]
 									},
-
-
-
+							textHtml : {
+										type:String,
+										required: [true, "*text content news is required"],
+										minlength : [20, "*text content news is required"]
+							}
 					
 	}, {timestamps: true});
 
@@ -40,10 +43,12 @@ module.exports = (function(){
 
 
 		setNews(data, req){
+				let excerptLimit = data.textHtml.length > 250 ? 100 : Math.round((data.textHtml.length/100)*20);
 				let news = new newsModel({
 					author: req.user._id,
 					title: data.title,
-					excerpt : data.excerpt
+					excerpt : data.textHtml.replace(/<\/?[^>]+>/g,'').replace("\&nbsp;"," ").replace("&nbsp", " ").substr(0, excerptLimit) + "..",
+					textHtml : data.textHtml
 				});
 
 				return news.save() 
@@ -64,7 +69,7 @@ module.exports = (function(){
 
 						let responce = {};
 						if(pagination){
-							newsModel.find({}).sort({'createdAt': -1}).populate('author').skip((pagination-1)*10).limit(10).then(posts=>{
+							newsModel.find({}, 'title excerpt author createdAt').sort({'createdAt': -1}).populate('author').skip((pagination-1)*10).limit(10).then(posts=>{
 								responce.posts = posts;
 								responce.count = count;
 								res(responce);
@@ -74,7 +79,7 @@ module.exports = (function(){
 							}
 
 						if(!pagination){
-							newsModel.find({}).sort({'createdAt': -1}).populate('author').limit(10).then(posts=>{
+							newsModel.find({}, 'title excerpt author createdAt').sort({'createdAt': -1}).populate('author').limit(10).then(posts=>{
 								responce.posts = posts;
 								responce.count = count;
 								res(responce);

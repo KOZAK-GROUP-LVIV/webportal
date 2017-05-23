@@ -1,5 +1,19 @@
 <div class="container center no-padding">
-<div class="row no-gutters mb-5">
+  <div #postWrap>
+    <a _ngcontent-c4="" [ngClass]="{'hidden-xl-down':!newsId}" class="btn btn-secondary cursor-pointer mb-5" [routerLink]="'/news'" [queryParams]="{pagination: pagination }" role="button" routerlinkactive="btn-secondary"  ng-reflect-router-link-active="btn-warning" >
+              <i _ngcontent-c1="" aria-hidden="true" class="fa pointer fa-arrow-left mr-1"></i>
+                Назад</a>
+    <h1 [ngClass]="{'hidden-xl-down':!newsId}" class="textTitle">
+    </h1>
+
+    <div [ngClass]="{'hidden-xl-down':!newsId}"  class="pb-5 clearfix textHtml demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+
+        
+
+    </div>
+  </div>
+
+<div *ngIf="!newsId" class="row no-gutters mb-5">
 
 
  <div class="card  col-12 col-md-7 center mb-3" *ngFor="let card of news">
@@ -9,13 +23,16 @@
     <p class="card-text">{{card?.excerpt}}</p>
     <p class="card-text"><small class="text-muted">{{card?.createdAt | customDate:'post'}}</small></p>
   </div>
+  <div class="card-block text-right pt-0">
+    <a [routerLink]="'/news'" [queryParams]="{ newsId: card?._id, pagination:pagination }" class="card-link">Детальніше..</a>
+  </div>
 </div>
 
 
 
 </div>
 
-<div class="pagination-wrap d-flex justify-content-center">
+<div *ngIf="!newsId" class="pagination-wrap d-flex justify-content-center">
 	<padinationNews  (pageChange)="changePagination($event)" #pagination></padinationNews>
 </div>
 

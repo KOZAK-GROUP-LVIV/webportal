@@ -18,8 +18,8 @@ import {httpConnection} from '../tokens';
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-  <div class="modal-body" [formGroup]="newsGroup">
-   <div class="form-group row" >
+  <div class="modal-body">
+   <div class="form-group row"  [formGroup]="newsGroup">
   <label for="example-text-input" class="col-2 col-form-label">Заголовок</label>
   <div class="col-10">
     <input class="form-control" type="text" formControlName="title">
@@ -28,11 +28,24 @@ import {httpConnection} from '../tokens';
 
 <div class="form-group">
     <label for="exampleTextarea">Наповлення</label>
-    <textarea class="form-control" id="exampleTextarea" rows="3" formControlName="excerpt"></textarea>
+     <ckeditor
+  [(ngModel)]="ckeditorContent">
+    <ckbutton [name]="'saveButton'"
+      [command]="'saveCmd'"
+      (click)="save($event)"
+      [icon]="'save.png'"
+      [label]="'Save Document'"
+      [toolbar]="'clipboard,1'">
+    </ckbutton>
+</ckeditor>
   </div> 
 
 
 </div>
+
+   
+
+
 
     <div class="modal-footer">
     
@@ -55,13 +68,14 @@ export class modalNewsEditor {
    private action;
    private newsGroup:FormGroup;
    private isInvalidForm = false;
+   private ckeditorContent;
 
 
   constructor(public activeModal: NgbActiveModal, private _router:Router, @Inject(httpConnection) private _http, private _fb:FormBuilder) {
   	
   	this.newsGroup = this._fb.group({
-  		title : [null, Validators.compose([Validators.minLength(3), Validators.maxLength(20)])],
-      excerpt : [null, Validators.compose([Validators.minLength(20), Validators.maxLength(100)])]
+  		title : [null, Validators.compose([Validators.minLength(3), Validators.maxLength(20)])]
+      //excerpt : [null, Validators.compose([Validators.minLength(20), Validators.maxLength(100)])]
   	});
 
 
@@ -70,25 +84,31 @@ export class modalNewsEditor {
 	private addNews(form:FormGroup){
 	
 		this.isInvalidForm = !form.valid;
-		if(form.valid){
+		if(!form.valid)
+     return false;
+      
 	      if(!this.selectNews){
+          let body =  {excerpt:this.ckeditorContent,
+                      textHtml:this.ckeditorContent,
+                      title : form.value.title
+                    }           
+          this._http.addNews(body).subscribe(()=>{
+              debugger
+              this._http.getNewsList(this.routerParams.pagination).subscribe(()=>{
+                this.activeModal.close();
+              }, 
+              ()=>{
 
-				this._http.addNews(form.value).subscribe(()=>{
-				  	this._http.getNewsList(this.routerParams.pagination).subscribe(()=>{
-				  		this.activeModal.close();
-				  	}, 
-				  	()=>{
+              });
+              },
+              (err)=>{
+                  this.isInvalidForm = true;
+                  
+                });
+  }
 
-				  	})
-					
-				},
-	     	 	(err)=>{
-			        this.isInvalidForm = true;
-			        
-	      		});
-
-      }  
-
+    
+             
       else{
         let updatedNewstInfo = {};
         for(let key in this.selectNews){
@@ -114,7 +134,7 @@ export class modalNewsEditor {
         
         }
       
-      }
+      
 		}
 
 	
@@ -126,15 +146,11 @@ export class modalNewsEditor {
 
   			if(this.selectNews){
   	
-  			for(let key in this.selectNews){
-
-  				if(this.newsGroup.value.hasOwnProperty(key)){
-  					console.log(key)
-  					this.newsGroup.controls[key].setValue(this.selectNews[key]);
-  				}
+  					this.newsGroup.controls['title'].setValue(this.selectNews['title']);
+            this.ckeditorContent = this.selectNews.textHtml;
+  				
   			};
-  		    }
-		
+  		    		
   			this.title = (!this.selectNews) ? 'Додати новину' : 'Редагувати новину';
   			this.action = (!this.selectNews) ? 'Додати' : 'Редагувати';
   }

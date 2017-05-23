@@ -28,13 +28,15 @@ import { NgbdPaginationBasic } from './news-editor/paginationNews';
 import { InterviewEditorComponent } from './interview-editor/interview-editor.component';
 import { FormInterviewEditComponent, modalInterviewEditor } from './form-interview-edit/form-interview-edit.component';
 import { VerificBannerComponent } from './verific-banner/verific-banner.component';
-import { MaterializeModule } from 'ng2-materialize';
+import { QuillEditorModule } from 'ng2-quill-editor';
 
 import { AuthGuard } from './guards/authGuard'
 import { AdminGuard } from './guards/adminGuard'
 import { VerifGuard } from './guards/verificGuard';
 import { FormProfileEditComponent, modalProfileEditor } from './form-profile-edit/form-profile-edit.component';
 import { Gravatar } from 'ng2-gravatar-directive';
+import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 const routers:Route[] = [
 {path: 'entry/:mode', component: EntryComponent},
@@ -46,7 +48,8 @@ const routers:Route[] = [
 {path: 'admin/editWorkers', component: AdminEditChatComponent, canActivate: [AdminGuard]},
 {path: 'admin/editNews', component: NewsEditorComponent, canActivate: [AdminGuard]},
 {path: 'admin/editInterviews', component: InterviewEditorComponent, canActivate: [AdminGuard]},
-{path: 'noVerificWorker', component: VerificBannerComponent, canActivate:[AuthGuard]}
+{path: 'noVerificWorker', component: VerificBannerComponent, canActivate:[AuthGuard]},
+{path: '', pathMatch: 'full', redirectTo: 'news'}
 ]
 
 
@@ -84,7 +87,10 @@ const routers:Route[] = [
     ReactiveFormsModule,
     RouterModule.forRoot(routers),
     NgbModule.forRoot(),
-    MaterializeModule.forRoot()
+    CKEditorModule
+   // FroalaEditorModule.forRoot(), 
+   // FroalaViewModule.forRoot(),
+   // QuillEditorModule
   ],
   providers: [{provide: httpConnection, useClass: HttpConnectionService}, 
               {provide: socketConnection, useClass: SocketConnectionService}, AuthGuard, AdminGuard, VerifGuard],

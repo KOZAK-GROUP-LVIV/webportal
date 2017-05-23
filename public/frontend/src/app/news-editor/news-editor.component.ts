@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
-import {httpConnection} from '../tokens';
+import { httpConnection } from '../tokens';
 
 
 

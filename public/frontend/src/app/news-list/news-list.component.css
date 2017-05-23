@@ -18,3 +18,16 @@
 .disabled{
 	cursor: normal;
 }
+
+.textTitle{
+	margin-bottom: 50px !important;
+}
+
+.textHtml img{
+ 	max-width: 100% !important;
+    height: auto !important;
+}
+
+.textHtml * {
+	display: inline-block !important;
+}

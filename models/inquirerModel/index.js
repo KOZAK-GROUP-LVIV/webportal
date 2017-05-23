@@ -241,11 +241,6 @@ module.exports = (function(){
 
 					if(interview&&interview.isMultiple){
 
-						 if(!isMultiple){
-						 	
-						 	reject("this interview is not valid");
-						 }
-						 else{
 						 	console.log('I SAVE YES MULTIPLE')
 						 	interviewModel.update({_id: data[0]._id}, {$pushAll: {answersResult: data}})
 							 	.then(res=>{
@@ -254,8 +249,7 @@ module.exports = (function(){
 							 	}).catch(err=>{
 							 		reject(err)
 							 	})
-						 }
-
+						 
 					}
 				})
 			})

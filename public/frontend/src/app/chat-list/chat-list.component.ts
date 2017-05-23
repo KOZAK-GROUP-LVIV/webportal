@@ -21,6 +21,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import "rxjs/add/operator/takeWhile";
+import 'rxjs/add/operator/debounceTime';
 
 import { DOCUMENT } from '@angular/platform-browser';
 
