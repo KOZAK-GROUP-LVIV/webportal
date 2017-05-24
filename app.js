@@ -20,7 +20,7 @@ const usersModel = require('./models/userModel');
 const passportSocketIo = require("passport.socketio");
 
 var express = require('express');
-const PORT = process.env.PORT || 3000;
+const PORT =  3000;
 const socketIO = require('socket.io');
 
 const server = express()
