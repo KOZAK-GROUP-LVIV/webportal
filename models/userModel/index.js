@@ -248,10 +248,11 @@ let model = {
 				                                        }
 				                                        req.body.avatar = `/images/avatars/${randomName}.png`;
 				                                        this.editProfile(_id, req.body).then(result=>{
-				                                        	res(result)
+				                                        	res( this.findById({_id}) );
 				                                        }).catch(err=>{
 				                                        	rej(err)
 				                                        });
+														
 				                                                          
 				                                 });
 

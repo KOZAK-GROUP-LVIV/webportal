@@ -24,16 +24,6 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage });
 
-  
-
-
-
-
-/* GET users listing. */
-
-
-
-
 router.post('/api/singin', function(req, res, next) {
   req.logout();
   usersModel.addUser(req).then(result=>{
@@ -42,7 +32,6 @@ router.post('/api/singin', function(req, res, next) {
   }).catch(err=>{
   	res.json({isSucces:false, err});
   });
-  req.logout();
 });
 
 router.post('/api/login', 
@@ -58,9 +47,7 @@ router.get('/api/getProfile', [authGuard] ,(req, res)=>{
       req.user.isAdmin = true;
       req.user.isWorker = true;
       res.json({isSucces:true, user: req.user});
-
-
- });
+  });
 
 router.get('/api/getWorkerProfile', [authGuard, verifGuard] ,(req, res)=>{
   res.json({isSucces:true, user:req.user});
@@ -124,27 +111,23 @@ router.get('/api/removeUser/:id', adminGuard, function(req, res, next) {
 
 router.post('/api/editProfile', [authGuard, verifGuard], upload.single('avatar'), (req, res)=>{
 
-   usersModel.updateProfile(req.user._id, req).then(result=>{
-    res.json({isSucces:true})
+   usersModel.updateProfile(req.user._id, req).then(newUser=>{
+    req.user = newUser;
+    req.session.save(function(err){
+      if(!err){
+        res.json({isSucces:true})
+      }
+      else{
+        res.json({isSucces:false, err})
+      }
+    });
+    
    }).catch(err=>{
     res.json({isSucces:false, err})
    })
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;
