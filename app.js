@@ -23,11 +23,10 @@ var express = require('express');
 const PORT =  3000;
 const socketIO = require('socket.io');
 
-const server = express()
-              .listen(PORT, () => console.log(`Listening on ${ PORT }`));
-const io = socketIO(server);
+const app = express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const io = socketIO(app);
 
-var app = express();
+//var app = express();
 app.set('port',3000);
 
 passport.use(new Strategy(
