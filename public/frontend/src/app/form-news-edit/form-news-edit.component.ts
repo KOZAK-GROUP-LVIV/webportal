@@ -145,13 +145,10 @@ export class modalNewsEditor {
   			console.log(this.selectNews)
 
   			if(this.selectNews){
-  	
-  					this.newsGroup.controls['title'].setValue(this.selectNews['title']);
             this._http.getNews(this.selectNews).subscribe((news)=>{
+              this.newsGroup.controls['title'].setValue(news['title']);
               this.ckeditorContent = news.textHtml;
-            })
-           
-  				
+            })				
   			};
   		    		
   			this.title = (!this.selectNews) ? 'Додати новину' : 'Редагувати новину';

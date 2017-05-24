@@ -1182,8 +1182,8 @@ var modalNewsEditor = (function () {
         var _this = this;
         console.log(this.selectNews);
         if (this.selectNews) {
-            this.newsGroup.controls['title'].setValue(this.selectNews['title']);
             this._http.getNews(this.selectNews).subscribe(function (news) {
+                _this.newsGroup.controls['title'].setValue(news['title']);
                 _this.ckeditorContent = news.textHtml;
             });
         }
