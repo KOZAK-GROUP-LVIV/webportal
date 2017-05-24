@@ -157,7 +157,7 @@ app.set('port',3000);
 const server = require('https').createServer(app);
 const io = require('socket.io').listen(server);
 */
-var port = normalizePort(process.env.PORT || '3000');
+var port = process.env.PORT || '3000';
 let server = app.listen(port) 
 console.log(`server  listen :${port}`)
 var io = require('socket.io').listen(server) 
