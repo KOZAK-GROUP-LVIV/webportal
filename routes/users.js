@@ -54,7 +54,7 @@ router.post('/api/login',
 
 
 router.get('/api/getProfile', [authGuard] ,(req, res)=>{
-      res.json({isSucces:true,req.user});
+      res.json({isSucces:true,user:req.user});
 
  });
 
