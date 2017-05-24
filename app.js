@@ -71,10 +71,6 @@ var sessionStore = new MongoStore({
       url: 'mongodb://maxim:123987bonus@ds139761.mlab.com:39761/webportalkozakgroup'
     });
 
-
-
-
-
 app.use(session({
     secret:"tasmanialDeywool", // Keep your secret key
     key:'sid', 
@@ -105,14 +101,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
 app.use('/', users);
-
-
 app.use('/', chat);
 app.use('/', news);
 app.use('/', interview);
-
 
 
 app.get('/js/:filename', (req, res)=>{
@@ -125,13 +117,6 @@ app.get('/images/avatars/:filename', (req, res)=>{
 app.get('*', (req, res)=>{
   res.sendFile(__dirname + '/public/index.html');
 })
-
-
-
-
-
-
-
 
 
 // catch 404 and forward to error handler
@@ -152,60 +137,12 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-/*
-app.set('port',3000);
-const server = require('https').createServer(app);
-const io = require('socket.io').listen(server);
-*/
 var port = process.env.PORT || '3000';
-let server = app.listen(port) 
-console.log(`server  listen :${port}`)
+let server = app.listen(port);
 var io = require('socket.io').listen(server) 
 global.io = io;
 
 require('./routes/socket.js')(io, sessionStore, __dirname);
-
-
-
-
-
-function onAuthorizeSuccess(data, accept){
-  console.log('successful connection to socket.io');
- 
-  // The accept-callback still allows us to decide whether to 
-  // accept the connection or not. 
-  accept(null, true);
- 
-  // OR 
- 
-}
-
-function onAuthorizeFail(data, message, error, accept){
-  if(error)
-    throw new Error(message);
-  console.log('failed connection to socket.io:', message);
- 
-  // We use this callback to log all of our failed connections. 
-  accept(null, false);
- 
-  // OR 
- 
-  // If you use socket.io@1.X the callback looks different 
-  // If you don't want to accept the connection 
-  if(error)
-    accept(new Error(message));
-  // this error will be sent to the user as a special error-package 
-  // see: http://socket.io/docs/client-api/#socket > error-object 
-}
-
-
-
-/*
-http.listen(3000, function(){
-  console.log('listening on *:3000');
-});
-
-*/
 
 module.exports = app;
 
