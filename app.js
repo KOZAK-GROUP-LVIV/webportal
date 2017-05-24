@@ -20,13 +20,7 @@ const usersModel = require('./models/userModel');
 const passportSocketIo = require("passport.socketio");
 
 var express = require('express');
-const PORT =  3000;
-const socketIO = require('socket.io');
-const app = express()
-const server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-const io = socketIO.listen(app);
-
-//var app = express();
+var app = express();
 app.set('port',3000);
 
 passport.use(new Strategy(
@@ -160,12 +154,9 @@ app.use(function(err, req, res, next) {
 
 
 
-/*
-
 let server = app.listen(app.get('port'));
 var io = require('socket.io').listen(server);
 global.io = io;
-*/
 
 require('./routes/socket.js')(io, sessionStore, __dirname);
 
