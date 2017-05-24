@@ -29,7 +29,7 @@ export class SocketConnectionService {
 
 
 
-  public socket = io('//localhost:3000' );
+  public socket = io('/:3000' );
   public userInfo;
   public dualMsgStream = Observable.fromEvent(this.socket, 'incomDualMsg');
   public generalMsgStream = Observable.fromEvent(this.socket, 'incomGeneralMsg');
