@@ -2463,7 +2463,7 @@ var SocketConnectionService = (function () {
     function SocketConnectionService(_router) {
         var _this = this;
         this._router = _router;
-        this.socket = __WEBPACK_IMPORTED_MODULE_17_socket_io_client__('https://evening-savannah-51961.herokuapp.com:3000');
+        this.socket = __WEBPACK_IMPORTED_MODULE_17_socket_io_client__["connect"]('https://evening-savannah-51961.herokuapp.com', { secure: true });
         this.dualMsgStream = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.socket, 'incomDualMsg');
         this.generalMsgStream = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.socket, 'incomGeneralMsg');
         this.refreshUsersStream = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.socket, 'refreshUsers');
