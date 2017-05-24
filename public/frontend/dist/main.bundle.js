@@ -1185,7 +1185,9 @@ var modalNewsEditor = (function () {
                 console.log(news);
                 debugger;
                 _this.newsGroup.controls['title'].setValue(news['title']);
-                _this.ckeditorContent = news.textHtml;
+                setTimeout(function () {
+                    _this.ckeditorContent = news.textHtml;
+                }, 500);
             }, function (err) {
                 debugger;
             });

@@ -148,7 +148,10 @@ export class modalNewsEditor {
               console.log(news)
               debugger
               this.newsGroup.controls['title'].setValue(news['title']);
-              this.ckeditorContent = news.textHtml;
+              setTimeout(()=>{
+                  this.ckeditorContent = news.textHtml;
+              },500);
+             
             },(err)=>{
               debugger
             })				
