@@ -151,7 +151,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tokens__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__http_connection_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__http_connection_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__socket_connection_service__ = __webpack_require__(356);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_component__ = __webpack_require__(337);
@@ -831,7 +831,7 @@ CustomDatePipe = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tokens__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__http_connection_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__http_connection_service__ = __webpack_require__(42);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EntryComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1255,7 +1255,7 @@ var _a, _b, _c, _d;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tokens__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__http_connection_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__http_connection_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_from__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_from___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_from__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_merge__ = __webpack_require__(27);
@@ -1746,7 +1746,7 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tokens__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__http_connection_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__http_connection_service__ = __webpack_require__(42);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterviewEditorComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1947,7 +1947,7 @@ var _a;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tokens__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_connection_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_connection_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(6);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2212,7 +2212,7 @@ var _a, _b, _c;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__http_connection_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__http_connection_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tokens__ = __webpack_require__(9);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NewsListComponent; });
@@ -2672,6 +2672,507 @@ var environment = {
     production: false
 };
 //# sourceMappingURL=environment.js.map
+
+/***/ }),
+
+/***/ 42:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_from__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_from___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_from__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_fromEvent__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_fromEvent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_fromPromise__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_fromPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_mergeMap__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_mergeMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_mergeMap__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_mapTo__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_mapTo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_mapTo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_switchMap__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_switchMap__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_switchMapTo__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_switchMapTo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_switchMapTo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_takeWhile__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_takeWhile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_takeWhile__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_filter__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_filter__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_do__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_do__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_catch__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_catch__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpConnectionService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var HttpConnectionService = (function () {
+    function HttpConnectionService(http) {
+        this.http = http;
+        this.isAuth = false;
+        this.isAdmin = false;
+        this.authStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
+        this.adminStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
+        this.updateNewsStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
+        this.updateIntervieStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
+        this.domain = '';
+    }
+    HttpConnectionService.prototype.getUsers = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getUsers", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]).result);
+                    observer.next(JSON.parse(responce["_body"]).result);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.singin = function (formData) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify(formData);
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: false });
+            _this.http.post(_this.domain + "/api/singin", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.login = function (formData) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify({ username: formData.login, password: formData.password });
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.post(_this.domain + "/api/login", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.removeUser = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/removeUser/" + id, options)
+                .subscribe(function (responce) {
+                console.log(responce);
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.addToWorkers = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/addWorker/" + id, options)
+                .subscribe(function (responce) {
+                console.log(responce);
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.removeFromWorker = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/removeWorker/" + id, options)
+                .subscribe(function (responce) {
+                console.log(responce);
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.getProfileInfo = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getProfile", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]).user);
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.editProfile = function (formData) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ withCredentials: true });
+            _this.http.post(_this.domain + "/api/editProfile", formData, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    observer.next(true);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.isAuthUser = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getProfile", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                _this.isAuth = isSucces;
+                observer.next(isSucces);
+            });
+        });
+    };
+    HttpConnectionService.prototype.isAuthWorker = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getWorkerProfile", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                observer.next(isSucces);
+            });
+        });
+    };
+    HttpConnectionService.prototype.isAdminUser = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getProfile", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    var isAdmin = JSON.parse(responce["_body"]).user.isAdmin;
+                    _this.isAdmin = isSucces && isAdmin;
+                    _this.adminStream.next(isSucces && isAdmin);
+                    observer.next(isSucces && isAdmin);
+                }
+                else {
+                    observer.next(false);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.logout = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/logout", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    //	this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.getNewsList = function (pagination) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getAllNews/" + pagination, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    _this.updateNewsStream.next(JSON.parse(responce["_body"]).result);
+                    observer.next(JSON.parse(responce["_body"]).result);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.getNews = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getNews/" + id, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]).result);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.addNews = function (data) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify(data);
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.post(_this.domain + "/api/addNews", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.updateNews = function (data) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify(data);
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.post(_this.domain + "/api/updateNews", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.removeNews = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/removeNews/" + id, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]).isSucces);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.addInterview = function (data) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify(data);
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.post(_this.domain + "/api/addInterview", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.getInterviewList = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getAllInterview", options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    _this.updateIntervieStream.next(JSON.parse(responce["_body"]).result);
+                    observer.next(JSON.parse(responce["_body"]).result);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.updateInterview = function (data) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify(data);
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.post(_this.domain + "/api/updateInterview", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.removeInterview = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/removeInterview/" + id, options)
+                .subscribe(function (responce) {
+                console.log(responce);
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]).result);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.getInterview = function (id) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.get(_this.domain + "/api/getInterview/" + id, options)
+                .subscribe(function (responce) {
+                console.log(responce);
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                if (isSucces) {
+                    observer.next(JSON.parse(responce["_body"]).result);
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]).err);
+                }
+            });
+        });
+    };
+    HttpConnectionService.prototype.sendInterviewResult = function (masResult) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+            var body = JSON.stringify(masResult);
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
+            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
+            _this.http.post(_this.domain + "/api/setInterviewResult", body, options)
+                .subscribe(function (responce) {
+                var isSucces = JSON.parse(responce["_body"]).isSucces;
+                console.log(responce);
+                if (isSucces) {
+                    _this.authStream.next(JSON.parse(responce["_body"]));
+                    observer.next(JSON.parse(responce["_body"]));
+                }
+                if (!isSucces) {
+                    observer.error(JSON.parse(responce["_body"]));
+                }
+            });
+        });
+    };
+    return HttpConnectionService;
+}());
+HttpConnectionService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object])
+], HttpConnectionService);
+
+var _a;
+//# sourceMappingURL=http-connection.service.js.map
 
 /***/ }),
 
@@ -3308,506 +3809,6 @@ module.exports = "\r\n<ngb-pagination [collectionSize]=\"count\" (pageChange)=\"
 /***/ (function(module, exports) {
 
 module.exports = "<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Ваш обліковий запис верифікується адміністратором. Після цього - Ви зможете користуватися повноцінною версією додатку.</title>\n</head>\n\n<body>\n\n  <div class=\"Container\">\n    \n    <div class=\"MainGraphic\">\n    <svg class=\"Hummingbird\" viewBox=\"0 0 55 41\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M35.5 5L54.7.6H32.3L35.5 5zM12.4 40.8l10.3-10.1-6.2-6.7-4.1 16.8zM33.8 5.3L30.5.8l-5.4 4 8.7.5zM20.8 4.6L8.8 0l1.9 4.1 10.1.5zM0 5l15.2 15.4 7.5-14.2L0 5zM34.2 6.8l-9.9-.5-8 15.2 7.4 8.1 8-7.9 2.5-14.9z\"/></svg>\n    \n    <svg class=\"Cog\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><path d=\"M29.18 19.07c-1.678-2.908-.668-6.634 2.256-8.328L28.29 5.295c-.897.527-1.942.83-3.057.83-3.36 0-6.085-2.743-6.085-6.126h-6.29c.01 1.043-.25 2.102-.81 3.07-1.68 2.907-5.41 3.896-8.34 2.21L.566 10.727c.905.515 1.69 1.268 2.246 2.234 1.677 2.904.673 6.624-2.24 8.32l3.145 5.447c.895-.522 1.935-.82 3.044-.82 3.35 0 6.066 2.725 6.083 6.092h6.29c-.004-1.035.258-2.08.81-3.04 1.676-2.902 5.4-3.893 8.325-2.218l3.145-5.447c-.9-.515-1.678-1.266-2.232-2.226zM16 22.48c-3.578 0-6.48-2.902-6.48-6.48S12.423 9.52 16 9.52c3.578 0 6.48 2.902 6.48 6.48s-2.902 6.48-6.48 6.48z\"/></svg>\n    \n    </div>\n\n    <svg class=\"Spanner\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M20.285 7.12c-.05-.17-.184-.3-.354-.345-.17-.047-.35.003-.476.126L16.838 9.46l-1.914-.383-.38-1.907 2.644-2.585c.126-.123.178-.303.137-.474s-.168-.31-.336-.362c-.532-.166-1.02-.248-1.49-.248-2.757 0-5 2.243-5 5 0 .323.038.65.118 1.01-.562.463-1.096.862-1.7 1.314-.866.646-1.846 1.377-3.183 2.506C4.95 14.016 4.5 14.99 4.5 16c0 1.93 1.57 3.5 3.5 3.5 1.02 0 1.993-.456 2.662-1.25 1.15-1.347 1.89-2.336 2.544-3.21.442-.59.832-1.11 1.283-1.66.36.082.687.12 1.01.12 2.757 0 5-2.243 5-5 0-.437-.068-.875-.215-1.38zM8 17c-.553 0-1-.447-1-1s.447-1 1-1 1 .447 1 1-.447 1-1 1z\"/>\n    </svg>\n   <h1 class=\"MainTitle\">\n        Ваш обліковий запис верифікується адміністратором. Після цього - Ви зможете користуватися повноцінною версією веб-порталу.\n      </h1>\n    <p class=\"Main Description\">\n      Вибачте за незручності =( \n    </p>   \n    \n  </div>\n\n</body>\n\n</html>"
-
-/***/ }),
-
-/***/ 48:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_from__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_from___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_from__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_fromEvent__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_fromEvent__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_fromPromise__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_fromPromise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_mergeMap__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_mergeMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_mergeMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_mapTo__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_mapTo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_mapTo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_switchMap__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_switchMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_switchMapTo__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_switchMapTo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_switchMapTo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_takeWhile__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_takeWhile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_takeWhile__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_filter__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_filter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_do__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_do__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_catch__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_catch__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpConnectionService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var HttpConnectionService = (function () {
-    function HttpConnectionService(http) {
-        this.http = http;
-        this.isAuth = false;
-        this.isAdmin = false;
-        this.authStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
-        this.adminStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
-        this.updateNewsStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
-        this.updateIntervieStream = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
-    }
-    HttpConnectionService.prototype.getUsers = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getUsers", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).result);
-                    observer.next(JSON.parse(responce["_body"]).result);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.singin = function (formData) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify(formData);
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: false });
-            _this.http.post("http://localhost:3000/api/singin", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.login = function (formData) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify({ username: formData.login, password: formData.password });
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.post("http://localhost:3000/api/login", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.removeUser = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/removeUser/" + id, options)
-                .subscribe(function (responce) {
-                console.log(responce);
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.addToWorkers = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/addWorker/" + id, options)
-                .subscribe(function (responce) {
-                console.log(responce);
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.removeFromWorker = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/removeWorker/" + id, options)
-                .subscribe(function (responce) {
-                console.log(responce);
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.getProfileInfo = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getProfile", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).user);
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.editProfile = function (formData) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ withCredentials: true });
-            _this.http.post("http://localhost:3000/api/editProfile", formData, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    observer.next(true);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.isAuthUser = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getProfile", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                _this.isAuth = isSucces;
-                observer.next(isSucces);
-            });
-        });
-    };
-    HttpConnectionService.prototype.isAuthWorker = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getWorkerProfile", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                observer.next(isSucces);
-            });
-        });
-    };
-    HttpConnectionService.prototype.isAdminUser = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getProfile", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    var isAdmin = JSON.parse(responce["_body"]).user.isAdmin;
-                    _this.isAdmin = isSucces && isAdmin;
-                    _this.adminStream.next(isSucces && isAdmin);
-                    observer.next(isSucces && isAdmin);
-                }
-                else {
-                    observer.next(false);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.logout = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/logout", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    //	this.authStream.next(JSON.parse(responce["_body"]).isSucces);
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.getNewsList = function (pagination) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getAllNews/" + pagination, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    _this.updateNewsStream.next(JSON.parse(responce["_body"]).result);
-                    observer.next(JSON.parse(responce["_body"]).result);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.getNews = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getNews/" + id, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]).result);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.addNews = function (data) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify(data);
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.post("http://localhost:3000/api/addNews", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.updateNews = function (data) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify(data);
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.post("http://localhost:3000/api/updateNews", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.removeNews = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/removeNews/" + id, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]).isSucces);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.addInterview = function (data) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify(data);
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.post("http://localhost:3000/api/addInterview", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.getInterviewList = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getAllInterview", options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    _this.updateIntervieStream.next(JSON.parse(responce["_body"]).result);
-                    observer.next(JSON.parse(responce["_body"]).result);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.updateInterview = function (data) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify(data);
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.post("http://localhost:3000/api/updateInterview", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.removeInterview = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/removeInterview/" + id, options)
-                .subscribe(function (responce) {
-                console.log(responce);
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]).result);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.getInterview = function (id) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.get("http://localhost:3000/api/getInterview/" + id, options)
-                .subscribe(function (responce) {
-                console.log(responce);
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                if (isSucces) {
-                    observer.next(JSON.parse(responce["_body"]).result);
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]).err);
-                }
-            });
-        });
-    };
-    HttpConnectionService.prototype.sendInterviewResult = function (masResult) {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            var body = JSON.stringify(masResult);
-            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
-            var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: headers, withCredentials: true });
-            _this.http.post("http://localhost:3000/api/setInterviewResult", body, options)
-                .subscribe(function (responce) {
-                var isSucces = JSON.parse(responce["_body"]).isSucces;
-                console.log(responce);
-                if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]));
-                    observer.next(JSON.parse(responce["_body"]));
-                }
-                if (!isSucces) {
-                    observer.error(JSON.parse(responce["_body"]));
-                }
-            });
-        });
-    };
-    return HttpConnectionService;
-}());
-HttpConnectionService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Http */]) === "function" && _a || Object])
-], HttpConnectionService);
-
-var _a;
-//# sourceMappingURL=http-connection.service.js.map
 
 /***/ }),
 
