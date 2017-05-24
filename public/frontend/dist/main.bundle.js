@@ -1179,10 +1179,13 @@ var modalNewsEditor = (function () {
         }
     };
     modalNewsEditor.prototype.ngOnInit = function () {
+        var _this = this;
         console.log(this.selectNews);
         if (this.selectNews) {
             this.newsGroup.controls['title'].setValue(this.selectNews['title']);
-            this.ckeditorContent = this.selectNews.textHtml;
+            this._http.getNews(this.selectNews).subscribe(function (news) {
+                _this.ckeditorContent = news.textHtml;
+            });
         }
         ;
         this.title = (!this.selectNews) ? 'Додати новину' : 'Редагувати новину';
@@ -1220,7 +1223,7 @@ var FormNewsEditComponent = (function () {
     FormNewsEditComponent.prototype.editNews = function (news, routerParams, options) {
         if (options === void 0) { options = { size: "lg" }; }
         var modalRef = this.modalService.open(modalNewsEditor, options);
-        modalRef.componentInstance.selectNews = news;
+        modalRef.componentInstance.selectNews = news._id;
         modalRef.componentInstance.routerParams = this.routerParams;
     };
     FormNewsEditComponent.prototype.ngOnInit = function () {

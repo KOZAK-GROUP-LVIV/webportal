@@ -147,7 +147,10 @@ export class modalNewsEditor {
   			if(this.selectNews){
   	
   					this.newsGroup.controls['title'].setValue(this.selectNews['title']);
-            this.ckeditorContent = this.selectNews.textHtml;
+            this._http.getNews(this.selectNews).subscribe((news)=>{
+              this.ckeditorContent = news.textHtml;
+            })
+           
   				
   			};
   		    		
@@ -183,7 +186,7 @@ export class FormNewsEditComponent implements OnInit {
   public editNews(news, routerParams,options: NgbModalOptions = {size: "lg"}){
 
   	const modalRef = this.modalService.open(modalNewsEditor,options);
-    modalRef.componentInstance.selectNews = news;
+    modalRef.componentInstance.selectNews = news._id;
     modalRef.componentInstance.routerParams = this.routerParams;
   }
 
