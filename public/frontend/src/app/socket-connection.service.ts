@@ -18,11 +18,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
-
-
 import * as io  from 'socket.io-client';
-
-
 
 @Injectable()
 export class SocketConnectionService {

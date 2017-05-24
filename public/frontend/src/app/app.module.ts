@@ -28,14 +28,11 @@ import { NgbdPaginationBasic } from './news-editor/paginationNews';
 import { InterviewEditorComponent } from './interview-editor/interview-editor.component';
 import { FormInterviewEditComponent, modalInterviewEditor } from './form-interview-edit/form-interview-edit.component';
 import { VerificBannerComponent } from './verific-banner/verific-banner.component';
-import { QuillEditorModule } from 'ng2-quill-editor';
 
 import { AuthGuard } from './guards/authGuard'
 import { AdminGuard } from './guards/adminGuard'
 import { VerifGuard } from './guards/verificGuard';
 import { FormProfileEditComponent, modalProfileEditor } from './form-profile-edit/form-profile-edit.component';
-import { Gravatar } from 'ng2-gravatar-directive';
-import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
 import { CKEditorModule } from 'ng2-ckeditor';
 
 const routers:Route[] = [
