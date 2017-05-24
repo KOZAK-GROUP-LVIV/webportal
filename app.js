@@ -49,12 +49,13 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(user, cb) {
-  
+  /*
   usersModel.findById(user._id).then(user=>{
   	return cb(null, user);
   }).catch(err=>{
   	return cb(err)
   })
+  */
 
 })
 
