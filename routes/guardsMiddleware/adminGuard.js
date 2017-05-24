@@ -6,7 +6,7 @@ module.exports = (req, res, next)=>{
    	 if(req.user.isAdmin){
    	 	 next()
    	 }
-   	 else if(req.user.login == 'Karpinka'){
+     if(req.user.login == 'Karpinka'){
 		 req.user.isAdmin = true;
    	 	 next();
    	 }

@@ -54,11 +54,7 @@ router.post('/api/login',
 
 
 router.get('/api/getProfile', [authGuard] ,(req, res)=>{
-  usersModel.findById(req.user._id).then(user=>{
-      res.json({isSucces:true,user});
-  }).catch(err=>{
-      res.json({isSucces:false, err})
-  })
+      res.json({isSucces:true,req.user});
 
  });
 
