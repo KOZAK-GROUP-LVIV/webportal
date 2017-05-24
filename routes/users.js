@@ -43,10 +43,10 @@ router.post('/api/login',
 
 
 router.get('/api/getProfile', [authGuard] ,(req, res)=>{
-
-      req.session.passsport.user = true;
-      req.session.passsport.user = true;
-      res.json({isSucces:true, user: req.session.passsport.user});
+  console.log(req.session)
+    //  req.session.passsport.user = true;
+    //  req.session.passsport.user = true;
+      res.json({isSucces:true, user: req.session.user});
   });
 
 router.get('/api/getWorkerProfile', [authGuard, verifGuard] ,(req, res)=>{
@@ -113,7 +113,8 @@ router.post('/api/editProfile', [authGuard, verifGuard], upload.single('avatar')
 
    usersModel.updateProfile(req.user._id, req).then(newUser=>{
     req.user = newUser;
-    req.session.save(function(err){
+    req.session.reload(function(err){
+      console.log(req.session)
       if(!err){
         res.json({isSucces:true})
       }

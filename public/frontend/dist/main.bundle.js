@@ -270,9 +270,6 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot(routers),
             __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_31_ng2_ckeditor__["CKEditorModule"]
-            // FroalaEditorModule.forRoot(), 
-            // FroalaViewModule.forRoot(),
-            // QuillEditorModule
         ],
         providers: [{ provide: __WEBPACK_IMPORTED_MODULE_5__tokens__["a" /* httpConnection */], useClass: __WEBPACK_IMPORTED_MODULE_6__http_connection_service__["a" /* HttpConnectionService */] },
             { provide: __WEBPACK_IMPORTED_MODULE_5__tokens__["b" /* socketConnection */], useClass: __WEBPACK_IMPORTED_MODULE_7__socket_connection_service__["a" /* SocketConnectionService */] }, __WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__["a" /* AdminGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__["a" /* VerifGuard */]],

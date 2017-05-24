@@ -85,9 +85,6 @@ const routers:Route[] = [
     RouterModule.forRoot(routers),
     NgbModule.forRoot(),
     CKEditorModule
-   // FroalaEditorModule.forRoot(), 
-   // FroalaViewModule.forRoot(),
-   // QuillEditorModule
   ],
   providers: [{provide: httpConnection, useClass: HttpConnectionService}, 
               {provide: socketConnection, useClass: SocketConnectionService}, AuthGuard, AdminGuard, VerifGuard],
