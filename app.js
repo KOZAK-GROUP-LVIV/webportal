@@ -20,6 +20,13 @@ const usersModel = require('./models/userModel');
 const passportSocketIo = require("passport.socketio");
 
 var express = require('express');
+const PORT = process.env.PORT || 3000;
+const socketIO = require('socket.io');
+
+const server = express()
+              .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const io = socketIO(server);
+
 var app = express();
 app.set('port',3000);
 
@@ -152,9 +159,14 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+
+/*
+
 let server = app.listen(app.get('port'));
 var io = require('socket.io').listen(server);
 global.io = io;
+*/
 
 require('./routes/socket.js')(io, sessionStore, __dirname);
 
