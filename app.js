@@ -24,7 +24,7 @@ const PORT =  3000;
 const socketIO = require('socket.io');
 const app = express()
 const server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-const io = socketIO(app);
+const io = socketIO.listen(app);
 
 //var app = express();
 app.set('port',3000);
