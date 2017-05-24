@@ -1136,7 +1136,6 @@ var modalNewsEditor = (function () {
         this.isInvalidForm = false;
         this.newsGroup = this._fb.group({
             title: [null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].compose([__WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].minLength(3), __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].maxLength(20)])]
-            //excerpt : [null, Validators.compose([Validators.minLength(20), Validators.maxLength(100)])]
         });
     }
     modalNewsEditor.prototype.addNews = function (form) {
@@ -1223,6 +1222,8 @@ var FormNewsEditComponent = (function () {
     FormNewsEditComponent.prototype.editNews = function (news, routerParams, options) {
         if (options === void 0) { options = { size: "lg" }; }
         var modalRef = this.modalService.open(modalNewsEditor, options);
+        console.log(news);
+        debugger;
         modalRef.componentInstance.selectNews = news._id;
         modalRef.componentInstance.routerParams = this.routerParams;
     };

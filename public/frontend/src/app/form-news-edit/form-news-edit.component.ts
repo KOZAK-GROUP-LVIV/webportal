@@ -75,7 +75,6 @@ export class modalNewsEditor {
   	
   	this.newsGroup = this._fb.group({
   		title : [null, Validators.compose([Validators.minLength(3), Validators.maxLength(20)])]
-      //excerpt : [null, Validators.compose([Validators.minLength(20), Validators.maxLength(100)])]
   	});
 
 
@@ -183,6 +182,8 @@ export class FormNewsEditComponent implements OnInit {
   public editNews(news, routerParams,options: NgbModalOptions = {size: "lg"}){
 
   	const modalRef = this.modalService.open(modalNewsEditor,options);
+    console.log(news)
+    debugger
     modalRef.componentInstance.selectNews = news._id;
     modalRef.componentInstance.routerParams = this.routerParams;
   }
