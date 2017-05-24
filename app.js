@@ -21,7 +21,7 @@ const passportSocketIo = require("passport.socketio");
 
 var express = require('express');
 var app = express();
-app.set('port',3000);
+
 
 passport.use(new Strategy(
   function(username, password, cb) {
@@ -153,9 +153,10 @@ app.use(function(err, req, res, next) {
 });
 
 
+app.set('port',3000);
+const server = require('https').createServer(app);
+const io = require('socket.io').listen(server);
 
-let server = app.listen(app.get('port'));
-var io = require('socket.io').listen(server);
 global.io = io;
 
 require('./routes/socket.js')(io, sessionStore, __dirname);
