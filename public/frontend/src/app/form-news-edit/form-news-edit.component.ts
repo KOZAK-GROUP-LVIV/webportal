@@ -145,6 +145,7 @@ export class modalNewsEditor {
 
   			if(this.selectNews){
             this._http.getNews(this.selectNews).subscribe((news)=>{
+              console.log(news)
               debugger
               this.newsGroup.controls['title'].setValue(news['title']);
               this.ckeditorContent = news.textHtml;

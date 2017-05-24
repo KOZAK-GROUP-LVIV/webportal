@@ -1182,6 +1182,7 @@ var modalNewsEditor = (function () {
         console.log(this.selectNews);
         if (this.selectNews) {
             this._http.getNews(this.selectNews).subscribe(function (news) {
+                console.log(news);
                 debugger;
                 _this.newsGroup.controls['title'].setValue(news['title']);
                 _this.ckeditorContent = news.textHtml;
