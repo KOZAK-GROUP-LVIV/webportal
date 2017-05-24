@@ -153,7 +153,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-var http = require('http').Server(app);
+var http = require('https').Server(app);
 var io = require('socket.io')(http);
 global.io = io;
 
@@ -195,7 +195,7 @@ function onAuthorizeFail(data, message, error, accept){
 
 
 
-http.listen(20680, function(){
+http.listen(3000, function(){
   console.log('listening on *:3000');
 });
 
