@@ -27,6 +27,7 @@ export class HttpConnectionService {
   public adminStream = new Subject();
   public updateNewsStream = new Subject();
   public updateIntervieStream = new Subject();
+  public domain = '';
 
   constructor(private http:Http) {
 
@@ -44,7 +45,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/getUsers`,options)
+			  	this.http.get(`${this.domain}/api/getUsers`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -69,7 +70,7 @@ export class HttpConnectionService {
   	 		let body = JSON.stringify(formData);
 		    let headers = new Headers({ 'Content-Type': 'application/json' });
 		    let options = new RequestOptions({ headers: headers, withCredentials: false});
-		  	this.http.post(`http://localhost:3000/api/singin`,body,options)
+		  	this.http.post(`${this.domain}/api/singin`,body,options)
 		  	.subscribe((responce)=>{
 		  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 		  		console.log(responce)
@@ -94,7 +95,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.post(`http://localhost:3000/api/login`,body,options)
+			  	this.http.post(`${this.domain}/api/login`,body,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -121,7 +122,7 @@ export class HttpConnectionService {
 	  	 		
 			   	let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/removeUser/${id}`,options)
+			  	this.http.get(`${this.domain}/api/removeUser/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		console.log(responce)
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
@@ -144,7 +145,7 @@ export class HttpConnectionService {
 	  	 		
 			   	let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/addWorker/${id}`,options)
+			  	this.http.get(`${this.domain}/api/addWorker/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		console.log(responce)
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
@@ -166,7 +167,7 @@ export class HttpConnectionService {
 	  	 		
 			   	let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/removeWorker/${id}`,options)
+			  	this.http.get(`${this.domain}/api/removeWorker/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		console.log(responce)
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
@@ -191,7 +192,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/getProfile`,options)
+			  	this.http.get(`${this.domain}/api/getProfile`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -216,7 +217,7 @@ export class HttpConnectionService {
    	return Observable.create((observer:Observer<any>)=>{
 
 		let options = new RequestOptions({withCredentials: true});
-		this.http.post(`http://localhost:3000/api/editProfile`, formData, options)
+		this.http.post(`${this.domain}/api/editProfile`, formData, options)
 		.subscribe((responce)=>{
 				let isSucces = JSON.parse(responce["_body"]).isSucces;
 			    if(isSucces){
@@ -236,7 +237,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/getProfile`,options)
+			  	this.http.get(`${this.domain}/api/getProfile`,options)
 			  	.subscribe((responce)=>{
 
 			  			let isSucces = JSON.parse(responce["_body"]).isSucces;
@@ -255,7 +256,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/getWorkerProfile`,options)
+			  	this.http.get(`${this.domain}/api/getWorkerProfile`,options)
 			  	.subscribe((responce)=>{
 			  			let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  			observer.next(isSucces);
@@ -270,7 +271,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/getProfile`,options)
+			  	this.http.get(`${this.domain}/api/getProfile`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 				  		if(isSucces){
@@ -298,7 +299,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.get(`http://localhost:3000/api/logout`,options)
+			  	this.http.get(`${this.domain}/api/logout`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
@@ -325,7 +326,7 @@ export class HttpConnectionService {
    		  let headers = new Headers({ 'Content-Type': 'application/json' });
 		  let options = new RequestOptions({ headers: headers, withCredentials: true});
 
-		    	this.http.get(`http://localhost:3000/api/getAllNews/${pagination}`,options)
+		    	this.http.get(`${this.domain}/api/getAllNews/${pagination}`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
@@ -349,7 +350,7 @@ export class HttpConnectionService {
    		  let headers = new Headers({ 'Content-Type': 'application/json' });
 		  let options = new RequestOptions({ headers: headers, withCredentials: true});
 
-		    	this.http.get(`http://localhost:3000/api/getNews/${id}`,options)
+		    	this.http.get(`${this.domain}/api/getNews/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
@@ -375,7 +376,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.post(`http://localhost:3000/api/addNews`,body,options)
+			  	this.http.post(`${this.domain}/api/addNews`,body,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -401,7 +402,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.post(`http://localhost:3000/api/updateNews`,body,options)
+			  	this.http.post(`${this.domain}/api/updateNews`,body,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -425,7 +426,7 @@ export class HttpConnectionService {
    		  let headers = new Headers({ 'Content-Type': 'application/json' });
 		  let options = new RequestOptions({ headers: headers, withCredentials: true});
 
-		    	this.http.get(`http://localhost:3000/api/removeNews/${id}`,options)
+		    	this.http.get(`${this.domain}/api/removeNews/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
@@ -449,7 +450,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.post(`http://localhost:3000/api/addInterview`,body,options)
+			  	this.http.post(`${this.domain}/api/addInterview`,body,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -474,7 +475,7 @@ export class HttpConnectionService {
    		  let headers = new Headers({ 'Content-Type': 'application/json' });
 		  let options = new RequestOptions({ headers: headers, withCredentials: true});
 
-		    	this.http.get(`http://localhost:3000/api/getAllInterview`,options)
+		    	this.http.get(`${this.domain}/api/getAllInterview`,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
@@ -500,7 +501,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.post(`http://localhost:3000/api/updateInterview`,body,options)
+			  	this.http.post(`${this.domain}/api/updateInterview`,body,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
@@ -526,7 +527,7 @@ export class HttpConnectionService {
    		  let headers = new Headers({ 'Content-Type': 'application/json' });
 		  let options = new RequestOptions({ headers: headers, withCredentials: true});
 
-		    	this.http.get(`http://localhost:3000/api/removeInterview/${id}`,options)
+		    	this.http.get(`${this.domain}/api/removeInterview/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		console.log(responce)
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
@@ -553,7 +554,7 @@ export class HttpConnectionService {
    		  let headers = new Headers({ 'Content-Type': 'application/json' });
 		  let options = new RequestOptions({ headers: headers, withCredentials: true});
 
-		    	this.http.get(`http://localhost:3000/api/getInterview/${id}`,options)
+		    	this.http.get(`${this.domain}/api/getInterview/${id}`,options)
 			  	.subscribe((responce)=>{
 			  		console.log(responce)
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
@@ -580,7 +581,7 @@ export class HttpConnectionService {
 
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
-			  	this.http.post(`http://localhost:3000/api/setInterviewResult`,body,options)
+			  	this.http.post(`${this.domain}/api/setInterviewResult`,body,options)
 			  	.subscribe((responce)=>{
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		console.log(responce)
