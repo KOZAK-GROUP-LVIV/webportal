@@ -194,8 +194,8 @@ function onAuthorizeFail(data, message, error, accept){
 
 
 
-
-http.listen(3000, function(){
+let port = process.env.PORT || 3000;
+http.listen(port, function(){
   console.log('listening on *:3000');
 });
 
