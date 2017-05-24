@@ -152,11 +152,14 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
+/*
 app.set('port',3000);
 const server = require('https').createServer(app);
 const io = require('socket.io').listen(server);
+*/
 
+let server = app.listen(process.env.PORT) 
+var io = require('socket.io').listen(server) 
 global.io = io;
 
 require('./routes/socket.js')(io, sessionStore, __dirname);
