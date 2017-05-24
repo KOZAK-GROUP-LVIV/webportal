@@ -22,8 +22,8 @@ const passportSocketIo = require("passport.socketio");
 var express = require('express');
 const PORT =  3000;
 const socketIO = require('socket.io');
-
-const app = express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const app = express()
+const server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const io = socketIO(app);
 
 //var app = express();
