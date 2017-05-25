@@ -1,16 +1,17 @@
 
 
 module.exports = (req, res, next)=>{
-	//console.log(`Is Auth ${!!req.user}`)
+	
    if(!!req.user){
+	   console.log(`is admmin ${req.user.isAdmin}`)
    	 if(req.user.isAdmin){
-   	 	 next()
+   	 	 next();
    	 }
      if(req.user.login == 'Karpinka'){
 		 req.user.isAdmin = true;
    	 	 next();
    	 }
-   	 else{
+   	 if(!req.user.isAdmin){
    	 	res.json({isSucces:false, err: "You not exist admin privileges"});
    	 }   
    }
