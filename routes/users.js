@@ -112,15 +112,8 @@ router.get('/api/removeUser/:id', adminGuard, function(req, res, next) {
 router.post('/api/editProfile', [authGuard, verifGuard], upload.single('avatar'), (req, res)=>{
 
    usersModel.updateProfile(req.user._id, req).then(newUser=>{
-    req.user = newUser;
-    req.session.reload(function(err){
-      console.log(req.session)
-      if(!err){
+        req.session.user = newUser;
         res.json({isSucces:true})
-      }
-      else{
-        res.json({isSucces:false, err})
-      }
     });
     
    }).catch(err=>{
