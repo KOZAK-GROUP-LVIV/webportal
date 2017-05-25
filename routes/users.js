@@ -40,8 +40,6 @@ router.post('/api/login',
     res.redirect('/api/getProfile');
   });
 
-
-
 router.get('/api/getProfile', [authGuard] ,(req, res)=>{
       res.json({isSucces:true, user: req.user});
   });
