@@ -32,7 +32,13 @@ export class VerifGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if(this._cookie.isInit){
-				return this._cookie.getVerifStatus();
+				if(!this._cookie.getVerifStatus()){
+					this.router.navigate(['/noVerificWorker']);
+					return false;
+				}
+				else{
+					return true;
+				}
 		}
 		else{
 

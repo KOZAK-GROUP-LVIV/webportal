@@ -1750,7 +1750,13 @@ var VerifGuard = (function () {
     VerifGuard.prototype.canActivate = function (route, state) {
         var _this = this;
         if (this._cookie.isInit) {
-            return this._cookie.getVerifStatus();
+            if (!this._cookie.getVerifStatus()) {
+                this.router.navigate(['/noVerificWorker']);
+                return false;
+            }
+            else {
+                return true;
+            }
         }
         else {
             return new __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"](function (observer) {
