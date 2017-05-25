@@ -34,7 +34,16 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if(this._cookie.isInit){
-			return this._cookie.getAuthStatus();
+			if(!this._cookie.getAuthStatus()){
+				this._http.isAdminUser().subscribe(res=>{});
+				this._http.isAuthUser().subscribe(res=>{});
+				this.router.navigate(['/entry', 'login']);		
+			}
+			else{
+				this._http.isAdminUser().subscribe(res=>{});
+				this._http.isAuthUser().subscribe(res=>{});
+				return true;
+			}
 		}
 		else{
 			return new Observable((observer:Observer<boolean>)=>{
@@ -46,7 +55,7 @@ export class AuthGuard implements CanActivate {
 						this.router.navigate(['/entry', 'login']);
 					}
 					else{   				
-							observer.next(true);
+						observer.next(true);
 
 					}
 				})

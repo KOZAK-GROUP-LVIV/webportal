@@ -11,10 +11,11 @@ export class CookieServiceCustom {
   public isInit:boolean = false;
 
   constructor(private _cookieService:CookieService, @Inject(httpConnection) private _http:HttpConnectionService) { 
-    debugger
     this.refreshStatus();
 
     this._http.authStream.subscribe((status:boolean)=>{
+      let s = status ? 'y' : 'n';
+      this.setAuthStatus(s);
       this.refreshStatus();
     })
   }
@@ -23,8 +24,6 @@ export class CookieServiceCustom {
     this._cookieService.put('auth', status, {expires: this.timeCookie});
   }
   public getAuthStatus(){
-    console.log(this._cookieService.get('auth'))
-    debugger
     return this._cookieService.get('auth') == 'y';
   }
 
@@ -32,8 +31,6 @@ export class CookieServiceCustom {
     this._cookieService.put('admin', status,  {expires: this.timeCookie});
   }
   public getAdminStatus(){
-     console.log(this._cookieService.get('auth'))
-    debugger
     return  this._cookieService.get('admin') == 'y';
   }
 
@@ -41,28 +38,22 @@ export class CookieServiceCustom {
     this._cookieService.put('verif', status,  {expires: this.timeCookie});
   }
   public getVerifStatus(){
-     console.log(this._cookieService.get('auth'))
-    debugger
    return this._cookieService.get('verif') == 'y';
   }
 
   public refreshStatus(){
        this._http.getProfileInfo().subscribe((res)=>{
-          this.isInit = true;
-          if(res.user){
+            this.isInit = true;
             let isWorker = res.user.isWorker ? 'y' : 'n',
                 isAdmin = res.user.isAdmin ? 'y' : 'n';
 
             this.setAuthStatus('y');
             this.setVerifStatus(isWorker);
-            this.setAdminStatus(isAdmin);
-          }
-          else{
+            this.setAdminStatus(isAdmin);   
+    },(err)=>{
+            this.isInit = true;
             this.setAuthStatus('n');
-            this.setVerifStatus('n');
             this.setAdminStatus('n');
-          }
-     
     });
   }
 }

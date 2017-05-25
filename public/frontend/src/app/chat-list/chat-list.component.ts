@@ -74,8 +74,8 @@ export class ChatListComponent implements OnInit , OnDestroy {
  
 
     this._socket.generalConferenceStream.takeWhile(() => this.isWork).subscribe(confecence=>{
-      console.log(confecence);
-      debugger
+     // console.log(confecence);
+     // debugger
       this.generalConference = confecence;
     });
  
@@ -90,10 +90,10 @@ export class ChatListComponent implements OnInit , OnDestroy {
       if(this.writterId){
         clearTimeout(this.writterId);
       }
-    this.writer = writer;
-    this.writterId = setTimeout(()=>{
-       this.writer = null;
-       }, 3000);
+      this.writer = writer;
+      this.writterId = setTimeout(()=>{
+        this.writer = null;
+        }, 3000);
     });
 
     this.msgInput.valueChanges.debounceTime(300)
@@ -112,14 +112,14 @@ export class ChatListComponent implements OnInit , OnDestroy {
      this._socket.onReadMessage.takeWhile(() => this.isWork)
       .filter(({readUserId, writter})=>readUserId==this.currId||writter==this.myPersonInfo._id)
       .subscribe(readUserId=>{
-       debugger
+      // debugger
         this._socket.getChatUserList();
         this._socket.getGeneralConference();
     })
 
 
     this._socket.generalMsgStream.takeWhile(() => this.isWork).subscribe(msg=>{
-      debugger
+     // debugger
       this.msgList.incomGeneralMsg(msg);
 
     });
@@ -134,7 +134,7 @@ export class ChatListComponent implements OnInit , OnDestroy {
     this._socket.refreshUsersStream
     .takeWhile(() => this.isWork)
     .subscribe((res)=>{
-    // debugger
+     debugger
       this._socket.getChatUserList();
       this._socket.getGeneralConference();
     });
@@ -156,7 +156,7 @@ export class ChatListComponent implements OnInit , OnDestroy {
     })
 
       this._actRoute.queryParams.subscribe((param:{conference, userid})=>{
-        debugger
+       // debugger
         if(param.conference=='general'&&!param.userid){
           this.currMsgList = 'general';
           this.hideMenuUser = true;
@@ -184,7 +184,7 @@ export class ChatListComponent implements OnInit , OnDestroy {
       if(param.mode=='dialogs'){
          this.currMsgList = 'general';
          this.hideMenuUser = true;
-               debugger
+             //  debugger
       }
 
     });
@@ -202,6 +202,7 @@ export class ChatListComponent implements OnInit , OnDestroy {
          return false;
     }
     if(!this.currId&&form.valid){
+    //  debugger
        this._socket.sendGeneralMsg(form.value.text);
        form.controls['text'].setValue(null);
     }

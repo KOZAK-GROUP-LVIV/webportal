@@ -379,8 +379,8 @@ var ChatListComponent = (function () {
         });
         this._socket.getProfile();
         this._socket.generalConferenceStream.takeWhile(function () { return _this.isWork; }).subscribe(function (confecence) {
-            console.log(confecence);
-            debugger;
+            // console.log(confecence);
+            // debugger
             _this.generalConference = confecence;
         });
         this.msgInput = this._fb.group({
@@ -410,12 +410,12 @@ var ChatListComponent = (function () {
             return readUserId == _this.currId || writter == _this.myPersonInfo._id;
         })
             .subscribe(function (readUserId) {
-            debugger;
+            // debugger
             _this._socket.getChatUserList();
             _this._socket.getGeneralConference();
         });
         this._socket.generalMsgStream.takeWhile(function () { return _this.isWork; }).subscribe(function (msg) {
-            debugger;
+            // debugger
             _this.msgList.incomGeneralMsg(msg);
         });
         this._socket.dualMsgStream.takeWhile(function () { return _this.isWork; }).subscribe(function (msg) {
@@ -424,7 +424,7 @@ var ChatListComponent = (function () {
         this._socket.refreshUsersStream
             .takeWhile(function () { return _this.isWork; })
             .subscribe(function (res) {
-            // debugger
+            debugger;
             _this._socket.getChatUserList();
             _this._socket.getGeneralConference();
         });
@@ -441,7 +441,7 @@ var ChatListComponent = (function () {
             }
         });
         this._actRoute.queryParams.subscribe(function (param) {
-            debugger;
+            // debugger
             if (param.conference == 'general' && !param.userid) {
                 _this.currMsgList = 'general';
                 _this.hideMenuUser = true;
@@ -463,7 +463,7 @@ var ChatListComponent = (function () {
             if (param.mode == 'dialogs') {
                 _this.currMsgList = 'general';
                 _this.hideMenuUser = true;
-                debugger;
+                //  debugger
             }
         });
     }
@@ -473,6 +473,7 @@ var ChatListComponent = (function () {
                 return false;
         }
         if (!this.currId && form.valid) {
+            //  debugger
             this._socket.sendGeneralMsg(form.value.text);
             form.controls['text'].setValue(null);
         }
@@ -1393,8 +1394,17 @@ var modalProfileEditor = (function () {
             }
         }
     };
+    modalProfileEditor.prototype.getProfile = function () {
+        var _this = this;
+        this._http.getProfileInfo().filter(function (res) { return res.isSucces; }).map(function (res) { return res.user; }).subscribe(function (user) {
+            _this.userInfo = user;
+            console.log(user);
+            debugger;
+            _this.setUserInfo();
+        });
+    };
     modalProfileEditor.prototype.ngOnInit = function () {
-        this.setUserInfo();
+        this.getProfile();
     };
     return modalProfileEditor;
 }());
@@ -1424,22 +1434,10 @@ var FormProfileEditComponent = (function () {
     function FormProfileEditComponent(modalService, _http) {
         this.modalService = modalService;
         this._http = _http;
-        this.getProfile();
     }
     FormProfileEditComponent.prototype.open = function (options) {
-        var _this = this;
         if (options === void 0) { options = { size: "lg" }; }
         var modalRef = this.modalService.open(modalProfileEditor, options);
-        modalRef.componentInstance.userInfo = this.userInfo;
-        modalRef.result.then(function () {
-            _this.getProfile();
-        });
-    };
-    FormProfileEditComponent.prototype.getProfile = function () {
-        var _this = this;
-        this._http.getProfileInfo().filter(function (res) { return res.isSucces; }).map(function (res) { return res.user; }).subscribe(function (user) {
-            _this.userInfo = user;
-        });
     };
     FormProfileEditComponent.prototype.ngOnInit = function () {
     };
@@ -1639,7 +1637,16 @@ var AuthGuard = (function () {
     AuthGuard.prototype.canActivate = function (route, state) {
         var _this = this;
         if (this._cookie.isInit) {
-            return this._cookie.getAuthStatus();
+            if (!this._cookie.getAuthStatus()) {
+                this._http.isAdminUser().subscribe(function (res) { });
+                this._http.isAuthUser().subscribe(function (res) { });
+                this.router.navigate(['/entry', 'login']);
+            }
+            else {
+                this._http.isAdminUser().subscribe(function (res) { });
+                this._http.isAuthUser().subscribe(function (res) { });
+                return true;
+            }
         }
         else {
             return new __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"](function (observer) {
@@ -3893,9 +3900,10 @@ var CookieServiceCustom = (function () {
         this._http = _http;
         this.timeCookie = new Date(new Date().getTime() + (((60 * 1000) * 60) * 24) * 365); // 1 year
         this.isInit = false;
-        debugger;
         this.refreshStatus();
         this._http.authStream.subscribe(function (status) {
+            var s = status ? 'y' : 'n';
+            _this.setAuthStatus(s);
             _this.refreshStatus();
         });
     }
@@ -3903,41 +3911,32 @@ var CookieServiceCustom = (function () {
         this._cookieService.put('auth', status, { expires: this.timeCookie });
     };
     CookieServiceCustom.prototype.getAuthStatus = function () {
-        console.log(this._cookieService.get('auth'));
-        debugger;
         return this._cookieService.get('auth') == 'y';
     };
     CookieServiceCustom.prototype.setAdminStatus = function (status) {
         this._cookieService.put('admin', status, { expires: this.timeCookie });
     };
     CookieServiceCustom.prototype.getAdminStatus = function () {
-        console.log(this._cookieService.get('auth'));
-        debugger;
         return this._cookieService.get('admin') == 'y';
     };
     CookieServiceCustom.prototype.setVerifStatus = function (status) {
         this._cookieService.put('verif', status, { expires: this.timeCookie });
     };
     CookieServiceCustom.prototype.getVerifStatus = function () {
-        console.log(this._cookieService.get('auth'));
-        debugger;
         return this._cookieService.get('verif') == 'y';
     };
     CookieServiceCustom.prototype.refreshStatus = function () {
         var _this = this;
         this._http.getProfileInfo().subscribe(function (res) {
             _this.isInit = true;
-            if (res.user) {
-                var isWorker = res.user.isWorker ? 'y' : 'n', isAdmin = res.user.isAdmin ? 'y' : 'n';
-                _this.setAuthStatus('y');
-                _this.setVerifStatus(isWorker);
-                _this.setAdminStatus(isAdmin);
-            }
-            else {
-                _this.setAuthStatus('n');
-                _this.setVerifStatus('n');
-                _this.setAdminStatus('n');
-            }
+            var isWorker = res.user.isWorker ? 'y' : 'n', isAdmin = res.user.isAdmin ? 'y' : 'n';
+            _this.setAuthStatus('y');
+            _this.setVerifStatus(isWorker);
+            _this.setAdminStatus(isAdmin);
+        }, function (err) {
+            _this.isInit = true;
+            _this.setAuthStatus('n');
+            _this.setAdminStatus('n');
         });
     };
     return CookieServiceCustom;

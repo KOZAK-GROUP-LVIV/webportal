@@ -43,10 +43,9 @@ router.post('/api/login',
 
 
 router.get('/api/getProfile', [authGuard] ,(req, res)=>{
-  console.log(req.session)
-      req.session.passport.user.isWorker = true;
-      req.session.passport.user.isAdmin = true;
-      res.json({isSucces:true, user: req.session.passport.user});
+      req.user.isWorker = true;
+      req.user.isAdmin = true;
+      res.json({isSucces:true, user: req.user});
   });
 
 router.get('/api/getWorkerProfile', [authGuard, verifGuard] ,(req, res)=>{

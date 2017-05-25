@@ -210,12 +210,21 @@ export class modalProfileEditor {
 
    }
 
+  private getProfile(){
+  	this._http.getProfileInfo().filter(res=>res.isSucces).map(res=>res.user).subscribe(user=>{
+  		this.userInfo = user;
+      console.log(user);
+      debugger
+      this.setUserInfo()
+  	})
+  }
+
 
 
 
 
   	ngOnInit() {
-  		this.setUserInfo();
+  		this.getProfile();
 
 
   	}
@@ -233,30 +242,16 @@ export class FormProfileEditComponent implements OnInit {
 
   private userInfo;
 
-
   constructor(private modalService: NgbModal, @Inject(httpConnection) private _http:HttpConnectionService) {
 
-  	this.getProfile();
   }
 
   private open(options: NgbModalOptions = {size: "lg"}) {
     const modalRef = this.modalService.open(modalProfileEditor,options);
-    modalRef.componentInstance.userInfo = this.userInfo;
-    modalRef.result.then(()=>{
-    	this.getProfile();
-    });
   }
-
-
-  private getProfile(){
-  	this._http.getProfileInfo().filter(res=>res.isSucces).map(res=>res.user).subscribe(user=>{
-  		this.userInfo = user;
-  	})
-  }
-
-
 
   ngOnInit() {
+
   }
 
 }

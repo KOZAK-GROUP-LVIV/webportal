@@ -33,8 +33,7 @@ export class NavComponent implements OnInit {
         });
       
 
-        this._http.isAdminUser().subscribe(res=>{
-        
+        this._http.isAdminUser().subscribe(res=>{   
           this.isAdmin = res;
         });
 

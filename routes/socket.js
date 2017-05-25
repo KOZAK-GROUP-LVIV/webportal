@@ -9,7 +9,7 @@ module.exports = function(io, sessionStore, __dirname){
 
     io.on('connection', function(socket){
             // console.log('a user connected');
-             getSession(socket);
+     getSession(socket);
 
     socket.on('login', ()=>{
         getSession(socket);
@@ -32,7 +32,7 @@ module.exports = function(io, sessionStore, __dirname){
         }
         
         if(!socket.user){
-            getSession(socket);
+          getSession(socket);
         } 
 
        })
@@ -242,6 +242,7 @@ module.exports = function(io, sessionStore, __dirname){
       chatModel.readMessage(idMessage, authorId, readerId, isGeneral).then(()=>{
 
         userModel.findById(authorId).then(user=>{
+          console.log(`is read user ${user}`)
           if(user.isOnline){
             if(isGeneral){
              return socket.emit('readMessage', {reader: socket.user._id, writer: authorId});
@@ -280,7 +281,7 @@ module.exports = function(io, sessionStore, __dirname){
 
         chatModel.deleteHistory(idAddressee).then(responce=>{
                 
-                socket.emit('deleteHistory', {isSucces:true})
+            socket.emit('deleteHistory', {isSucces:true})
         }).catch(err=>{
             socket.emit('deleteHistory', {isSucces:false, err})
         })
@@ -305,7 +306,7 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('logout', ()=>{
       io.sockets.to(socket.id).emit('redirectLogin');
-      let soc = socket;
+       let soc = socket;
        userModel.offlineUser(socket)
       .then(models=>{
         socket.user = null;
@@ -321,33 +322,50 @@ module.exports = function(io, sessionStore, __dirname){
 
     
 
-    };
+  };
+
+
+      function unsubscribtion(socket){
+        socket.removeAllListeners("addUsersFromChat");
+        socket.removeAllListeners("getUsersChat");
+        socket.removeAllListeners("sendDualMsg");
+        socket.removeAllListeners("getGeneralConference");
+        socket.removeAllListeners("sendGeneralMsg");
+        socket.removeAllListeners("getDualHistory");
+        socket.removeAllListeners("getGeneralHistory");
+        socket.removeAllListeners("readMessage");
+        socket.removeAllListeners("writeMessage");
+        socket.removeAllListeners("deleteHistory");
+        socket.removeAllListeners("disconnect");
+        socket.removeAllListeners("logout ");
+      }
   
 
-        function getSession(socket){
+      function getSession(socket){
         let cookies = cookie.parse(socket.handshake.headers.cookie);
         let sid = cookieParser.signedCookie(cookies['sid'], 'tasmanialDeywool');
 
         sessionStore.get(sid, (err, session)=>{
-            if(err)
-            {
+            if(err){
                 console.log(err);
             }
-            //console.log()
+            
              if(session.passport){
                 if(!session.passport.user)
                   return false;
 
                 userModel.findById(session.passport.user._id).then(user=>{
                    socket.user = user;   
-
-                      if(!socket.user){
-                  return io.sockets.to(socket.id).emit('redirectLogin');
-                }      
+                   
+                  if(!socket.user){
+                    return io.sockets.to(socket.id).emit('redirectLogin');
+                                  }      
 
                   socket.emit('authorization', {isSucces: !!socket.user, myProfile: socket.user})
                   if(socket.user){
                     if(socket.user.isWorker){
+                         
+                          unsubscribtion(socket);
                           initEvent(socket);
                           socket.user.isOnline = true;
                           socket.user.socketId = socket.id;
@@ -361,9 +379,6 @@ module.exports = function(io, sessionStore, __dirname){
                     }
 
                 })
-
-             
-
 
             }
         });
