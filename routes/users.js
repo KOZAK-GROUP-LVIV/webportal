@@ -113,9 +113,7 @@ router.post('/api/editProfile', [authGuard, verifGuard], upload.single('avatar')
 
    usersModel.updateProfile(req.user._id, req).then(newUser=>{
         req.session.user = newUser;
-        res.json({isSucces:true})
-    });
-    
+        res.json({isSucces:true})    
    }).catch(err=>{
     res.json({isSucces:false, err})
    })
