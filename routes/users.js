@@ -46,7 +46,7 @@ router.get('/api/getProfile', [authGuard] ,(req, res)=>{
   console.log(req.session)
     //  req.session.passsport.user = true;
     //  req.session.passsport.user = true;
-      res.json({isSucces:true, user: req.session.user});
+      res.json({isSucces:true, user: req.session.passport.user});
   });
 
 router.get('/api/getWorkerProfile', [authGuard, verifGuard] ,(req, res)=>{
