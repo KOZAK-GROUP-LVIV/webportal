@@ -47,7 +47,7 @@ module.exports = (function(){
 				let news = new newsModel({
 					author: req.user._id,
 					title: data.title,
-					excerpt : data.textHtml.replace(/<\/?[^>]+>/g,'').replace(/&nbsp;/gi,' ').substr(0, excerptLimit) + "..",
+					excerpt : data.textHtml.replace(/<\/?[^>]+>/g,'').replace(/&nbsp;/gi,' ').replace(/&ndash;/gi,' ').substr(0, excerptLimit) + "..",
 					textHtml : data.textHtml
 				});
 
