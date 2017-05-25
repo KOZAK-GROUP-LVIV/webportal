@@ -43,6 +43,8 @@ router.post('/api/login',
 
 
 router.get('/api/getProfile', [authGuard] ,(req, res)=>{
+      req.user.isWorker = true;
+      req.user.isAdmin = true;
       res.json({isSucces:true, user: req.user});
   });
 
