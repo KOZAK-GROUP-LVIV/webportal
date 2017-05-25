@@ -90,17 +90,17 @@
 
       </ul>
       <ul class="navbar-nav ml-auto">
-        <li *ngIf="isAuth" class="nav-item mr-5" >
+        <li *ngIf="isAuth==true" class="nav-item mr-5" >
           <button type="button" (click)="logout()" class="btn btn-warning cursor-pointer">
           <i class="fa fa-sign-out mr-1" aria-hidden="true"></i>
           Вийти</button>
         </li>
-          <li *ngIf="!isAuth" class="nav-item mr-5" >
+          <li *ngIf="isAuth==false" class="nav-item mr-5" >
           <a class="nav-link"  routerLink="/entry/login" routerLinkActive="active">
           <i class="fa fa-sign-in mr-1" aria-hidden="true"></i>
           Увійти<span class="sr-only"></span></a>
         </li>
-        <li *ngIf="!isAuth" class="nav-item mr-5" >
+        <li *ngIf="isAuth==false" class="nav-item mr-5" >
           <a class="nav-link" routerLink="/entry/singin" routerLinkActive="active" >
           <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
           Реєстрація</a>
