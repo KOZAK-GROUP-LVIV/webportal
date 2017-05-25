@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { httpConnection } from '../../tokens';
+import { httpConnection, cookieS } from '../../tokens';
 
 
 
@@ -26,29 +26,33 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router, @Inject(httpConnection) private _http) {
+    constructor(private router: Router, @Inject(httpConnection) private _http, @Inject(cookieS) private _cookie) {
+	//	console.log(this._cookie);
+		//debugger
 
      }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+		if(this._cookie.isInit){
+			return this._cookie.getAuthStatus();
+		}
+		else{
+			return new Observable((observer:Observer<boolean>)=>{
+				this._http.isAuthUser().subscribe(res=>{
 
-    	return new Observable((observer:Observer<boolean>)=>{
-    		this._http.isAuthUser().subscribe(res=>{
+					if(!res){
+						debugger
+						observer.next(res);
+						this.router.navigate(['/entry', 'login']);
+					}
+					else{   				
+							observer.next(true);
 
-    			if(!res){
-    				debugger
-    				observer.next(res);
-    				this.router.navigate(['/entry', 'login']);
-    			}
-    			else{   				
-    					observer.next(true);
+					}
+				})
 
-    			}
-    		})
-
-    	})
-        
-   
-
+			}) 
+		}
     }
+
 }

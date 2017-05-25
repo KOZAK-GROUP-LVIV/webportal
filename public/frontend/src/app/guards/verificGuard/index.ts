@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { httpConnection } from '../../tokens';
+import { httpConnection, cookieS } from '../../tokens';
 
 
 
@@ -26,13 +26,18 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class VerifGuard implements CanActivate {
 
-    constructor(private router: Router, @Inject(httpConnection) private _http) {
+    constructor(private router: Router, @Inject(httpConnection) private _http, @Inject(cookieS) private _cookie) {
 
      }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+		if(this._cookie.isInit){
+				return this._cookie.getVerifStatus();
+		}
+		else{
 
     	return new Observable((observer:Observer<boolean>)=>{
+
     		this._http.isAuthWorker().subscribe(res=>{
 
     			if(!res){
@@ -44,11 +49,9 @@ export class VerifGuard implements CanActivate {
     					observer.next(true);
 
     			}
-    		})
+						})
 
-    	})
-        
-   
-
-    }
+					})
+				}
+				}
 }

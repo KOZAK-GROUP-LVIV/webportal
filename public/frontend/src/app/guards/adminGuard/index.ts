@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { httpConnection } from '../../tokens'
+import { httpConnection, cookieS } from '../../tokens'
 
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
@@ -22,22 +22,28 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class AdminGuard implements CanActivate {
 
-    constructor(private router: Router, @Inject(httpConnection) private _http) {
+    constructor(private router: Router, @Inject(httpConnection) private _http, @Inject(cookieS) private _cookie) {
 
      }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return Observable.create((observer:Observer<any>)=>{
-        	this._http.isAdminUser().subscribe(res=>{
-        		if(res){
-        			observer.next(res)
-        		}
-        		else{
-        			this.router.navigate(['chat']);
-        			observer.next(res);
+		if(this._cookie.isInit){
+			return this._cookie.getAdminStatus();
+		}
+		else{
+			 return Observable.create((observer:Observer<any>)=>{
+					this._http.isAdminUser().subscribe(res=>{
+						if(res){
+							observer.next(res)
+						}
+						else{
+							this.router.navigate(['chat']);
+							observer.next(res);
 
-        		}
-        	})
-        })
-    }
+						}
+						})
+						})
+					}
+		}
+       
 }

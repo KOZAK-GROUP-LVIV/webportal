@@ -172,12 +172,15 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__interview_editor_interview_editor_component__ = __webpack_require__(347);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__form_interview_edit_form_interview_edit_component__ = __webpack_require__(341);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__verific_banner_verific_banner_component__ = __webpack_require__(356);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__guards_authGuard__ = __webpack_require__(345);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__ = __webpack_require__(344);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__ = __webpack_require__(346);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__form_profile_edit_form_profile_edit_component__ = __webpack_require__(343);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_ng2_ckeditor__ = __webpack_require__(453);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_ng2_ckeditor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31_ng2_ckeditor__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_angular2_cookie_core__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_angular2_cookie_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27_angular2_cookie_core__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__guards_authGuard__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__guards_adminGuard__ = __webpack_require__(344);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__guards_verificGuard__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__form_profile_edit_form_profile_edit_component__ = __webpack_require__(343);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_ckeditor__ = __webpack_require__(453);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_ckeditor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32_ng2_ckeditor__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__cookie_service__ = __webpack_require__(527);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -217,17 +220,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 var routers = [
     { path: 'entry/:mode', component: __WEBPACK_IMPORTED_MODULE_12__entry_entry_component__["a" /* EntryComponent */] },
-    { path: 'chat', redirectTo: 'chat/workers', canActivate: [__WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__["a" /* VerifGuard */]] },
-    { path: 'chat/:mode', component: __WEBPACK_IMPORTED_MODULE_10__chat_list_chat_list_component__["a" /* ChatListComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__["a" /* VerifGuard */]] },
-    { path: 'news', component: __WEBPACK_IMPORTED_MODULE_17__news_list_news_list_component__["a" /* NewsListComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__["a" /* VerifGuard */]] },
-    { path: 'interview', component: __WEBPACK_IMPORTED_MODULE_19__interview_interview_component__["a" /* InterviewComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__["a" /* VerifGuard */]] },
-    { path: 'admin', redirectTo: 'admin/editWorkers', canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__["a" /* AdminGuard */]] },
-    { path: 'admin/editWorkers', component: __WEBPACK_IMPORTED_MODULE_20__admin_edit_chat_admin_edit_chat_component__["a" /* AdminEditChatComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__["a" /* AdminGuard */]] },
-    { path: 'admin/editNews', component: __WEBPACK_IMPORTED_MODULE_21__news_editor_news_editor_component__["a" /* NewsEditorComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__["a" /* AdminGuard */]] },
-    { path: 'admin/editInterviews', component: __WEBPACK_IMPORTED_MODULE_24__interview_editor_interview_editor_component__["a" /* InterviewEditorComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__["a" /* AdminGuard */]] },
-    { path: 'noVerificWorker', component: __WEBPACK_IMPORTED_MODULE_26__verific_banner_verific_banner_component__["a" /* VerificBannerComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */]] },
+    { path: 'chat', redirectTo: 'chat/workers', canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_30__guards_verificGuard__["a" /* VerifGuard */]] },
+    { path: 'chat/:mode', component: __WEBPACK_IMPORTED_MODULE_10__chat_list_chat_list_component__["a" /* ChatListComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_30__guards_verificGuard__["a" /* VerifGuard */]] },
+    { path: 'news', component: __WEBPACK_IMPORTED_MODULE_17__news_list_news_list_component__["a" /* NewsListComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_30__guards_verificGuard__["a" /* VerifGuard */]] },
+    { path: 'interview', component: __WEBPACK_IMPORTED_MODULE_19__interview_interview_component__["a" /* InterviewComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_30__guards_verificGuard__["a" /* VerifGuard */]] },
+    { path: 'admin', redirectTo: 'admin/editWorkers', canActivate: [__WEBPACK_IMPORTED_MODULE_29__guards_adminGuard__["a" /* AdminGuard */]] },
+    { path: 'admin/editWorkers', component: __WEBPACK_IMPORTED_MODULE_20__admin_edit_chat_admin_edit_chat_component__["a" /* AdminEditChatComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_29__guards_adminGuard__["a" /* AdminGuard */]] },
+    { path: 'admin/editNews', component: __WEBPACK_IMPORTED_MODULE_21__news_editor_news_editor_component__["a" /* NewsEditorComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_29__guards_adminGuard__["a" /* AdminGuard */]] },
+    { path: 'admin/editInterviews', component: __WEBPACK_IMPORTED_MODULE_24__interview_editor_interview_editor_component__["a" /* InterviewEditorComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_29__guards_adminGuard__["a" /* AdminGuard */]] },
+    { path: 'noVerificWorker', component: __WEBPACK_IMPORTED_MODULE_26__verific_banner_verific_banner_component__["a" /* VerificBannerComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__guards_authGuard__["a" /* AuthGuard */]] },
     { path: '', pathMatch: 'full', redirectTo: 'news' }
 ];
 var AppModule = (function () {
@@ -257,10 +262,10 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_24__interview_editor_interview_editor_component__["a" /* InterviewEditorComponent */],
             __WEBPACK_IMPORTED_MODULE_25__form_interview_edit_form_interview_edit_component__["b" /* FormInterviewEditComponent */],
             __WEBPACK_IMPORTED_MODULE_26__verific_banner_verific_banner_component__["a" /* VerificBannerComponent */],
-            __WEBPACK_IMPORTED_MODULE_30__form_profile_edit_form_profile_edit_component__["a" /* FormProfileEditComponent */],
-            __WEBPACK_IMPORTED_MODULE_30__form_profile_edit_form_profile_edit_component__["b" /* modalProfileEditor */]
+            __WEBPACK_IMPORTED_MODULE_31__form_profile_edit_form_profile_edit_component__["a" /* FormProfileEditComponent */],
+            __WEBPACK_IMPORTED_MODULE_31__form_profile_edit_form_profile_edit_component__["b" /* modalProfileEditor */]
         ],
-        entryComponents: [__WEBPACK_IMPORTED_MODULE_22__form_news_edit_form_news_edit_component__["b" /* modalNewsEditor */], __WEBPACK_IMPORTED_MODULE_25__form_interview_edit_form_interview_edit_component__["a" /* modalInterviewEditor */], __WEBPACK_IMPORTED_MODULE_30__form_profile_edit_form_profile_edit_component__["b" /* modalProfileEditor */]],
+        entryComponents: [__WEBPACK_IMPORTED_MODULE_22__form_news_edit_form_news_edit_component__["b" /* modalNewsEditor */], __WEBPACK_IMPORTED_MODULE_25__form_interview_edit_form_interview_edit_component__["a" /* modalInterviewEditor */], __WEBPACK_IMPORTED_MODULE_31__form_profile_edit_form_profile_edit_component__["b" /* modalProfileEditor */]],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormsModule"],
@@ -269,10 +274,12 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["ReactiveFormsModule"],
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot(routers),
             __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_31_ng2_ckeditor__["CKEditorModule"]
+            __WEBPACK_IMPORTED_MODULE_32_ng2_ckeditor__["CKEditorModule"]
         ],
         providers: [{ provide: __WEBPACK_IMPORTED_MODULE_5__tokens__["a" /* httpConnection */], useClass: __WEBPACK_IMPORTED_MODULE_6__http_connection_service__["a" /* HttpConnectionService */] },
-            { provide: __WEBPACK_IMPORTED_MODULE_5__tokens__["b" /* socketConnection */], useClass: __WEBPACK_IMPORTED_MODULE_7__socket_connection_service__["a" /* SocketConnectionService */] }, __WEBPACK_IMPORTED_MODULE_27__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_28__guards_adminGuard__["a" /* AdminGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_verificGuard__["a" /* VerifGuard */]],
+            { provide: __WEBPACK_IMPORTED_MODULE_5__tokens__["b" /* socketConnection */], useClass: __WEBPACK_IMPORTED_MODULE_7__socket_connection_service__["a" /* SocketConnectionService */] }, __WEBPACK_IMPORTED_MODULE_28__guards_authGuard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_29__guards_adminGuard__["a" /* AdminGuard */], __WEBPACK_IMPORTED_MODULE_30__guards_verificGuard__["a" /* VerifGuard */],
+            __WEBPACK_IMPORTED_MODULE_27_angular2_cookie_core__["CookieService"],
+            { provide: __WEBPACK_IMPORTED_MODULE_5__tokens__["c" /* cookieS */], useClass: __WEBPACK_IMPORTED_MODULE_33__cookie_service__["a" /* CookieServiceCustom */] }],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_9__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -1519,30 +1526,36 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 var AdminGuard = (function () {
-    function AdminGuard(router, _http) {
+    function AdminGuard(router, _http, _cookie) {
         this.router = router;
         this._http = _http;
+        this._cookie = _cookie;
     }
     AdminGuard.prototype.canActivate = function (route, state) {
         var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
-            _this._http.isAdminUser().subscribe(function (res) {
-                if (res) {
-                    observer.next(res);
-                }
-                else {
-                    _this.router.navigate(['chat']);
-                    observer.next(res);
-                }
+        if (this._cookie.isInit) {
+            return this._cookie.getAdminStatus();
+        }
+        else {
+            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].create(function (observer) {
+                _this._http.isAdminUser().subscribe(function (res) {
+                    if (res) {
+                        observer.next(res);
+                    }
+                    else {
+                        _this.router.navigate(['chat']);
+                        observer.next(res);
+                    }
+                });
             });
-        });
+        }
     };
     return AdminGuard;
 }());
 AdminGuard = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, Object])
+    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])), __param(2, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["c" /* cookieS */])),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, Object, Object])
 ], AdminGuard);
 
 var _a;
@@ -1616,31 +1629,39 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 var AuthGuard = (function () {
-    function AuthGuard(router, _http) {
+    function AuthGuard(router, _http, _cookie) {
+        //	console.log(this._cookie);
+        //debugger
         this.router = router;
         this._http = _http;
+        this._cookie = _cookie;
     }
     AuthGuard.prototype.canActivate = function (route, state) {
         var _this = this;
-        return new __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"](function (observer) {
-            _this._http.isAuthUser().subscribe(function (res) {
-                if (!res) {
-                    debugger;
-                    observer.next(res);
-                    _this.router.navigate(['/entry', 'login']);
-                }
-                else {
-                    observer.next(true);
-                }
+        if (this._cookie.isInit) {
+            return this._cookie.getAuthStatus();
+        }
+        else {
+            return new __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"](function (observer) {
+                _this._http.isAuthUser().subscribe(function (res) {
+                    if (!res) {
+                        debugger;
+                        observer.next(res);
+                        _this.router.navigate(['/entry', 'login']);
+                    }
+                    else {
+                        observer.next(true);
+                    }
+                });
             });
-        });
+        }
     };
     return AuthGuard;
 }());
 AuthGuard = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, Object])
+    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])), __param(2, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["c" /* cookieS */])),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, Object, Object])
 ], AuthGuard);
 
 var _a;
@@ -1714,31 +1735,37 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 var VerifGuard = (function () {
-    function VerifGuard(router, _http) {
+    function VerifGuard(router, _http, _cookie) {
         this.router = router;
         this._http = _http;
+        this._cookie = _cookie;
     }
     VerifGuard.prototype.canActivate = function (route, state) {
         var _this = this;
-        return new __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"](function (observer) {
-            _this._http.isAuthWorker().subscribe(function (res) {
-                if (!res) {
-                    debugger;
-                    observer.next(res);
-                    _this.router.navigate(['/noVerificWorker']);
-                }
-                else {
-                    observer.next(true);
-                }
+        if (this._cookie.isInit) {
+            return this._cookie.getVerifStatus();
+        }
+        else {
+            return new __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"](function (observer) {
+                _this._http.isAuthWorker().subscribe(function (res) {
+                    if (!res) {
+                        debugger;
+                        observer.next(res);
+                        _this.router.navigate(['/noVerificWorker']);
+                    }
+                    else {
+                        observer.next(true);
+                    }
+                });
             });
-        });
+        }
     };
     return VerifGuard;
 }());
 VerifGuard = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, Object])
+    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])), __param(2, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["c" /* cookieS */])),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, Object, Object])
 ], VerifGuard);
 
 var _a;
@@ -2470,7 +2497,7 @@ var SocketConnectionService = (function () {
     function SocketConnectionService(_router) {
         var _this = this;
         this._router = _router;
-        this.socket = __WEBPACK_IMPORTED_MODULE_17_socket_io_client__["connect"]('https://evening-savannah-51961.herokuapp.com');
+        this.socket = __WEBPACK_IMPORTED_MODULE_17_socket_io_client__();
         this.dualMsgStream = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.socket, 'incomDualMsg');
         this.generalMsgStream = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.socket, 'incomGeneralMsg');
         this.refreshUsersStream = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.socket, 'refreshUsers');
@@ -2766,7 +2793,7 @@ var HttpConnectionService = (function () {
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 console.log(responce);
                 if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).result);
+                    //this.authStream.next(JSON.parse(responce["_body"]).result);
                     observer.next(JSON.parse(responce["_body"]).result);
                 }
                 if (!isSucces) {
@@ -2843,7 +2870,6 @@ var HttpConnectionService = (function () {
                 console.log(responce);
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
                     observer.next(JSON.parse(responce["_body"]));
                 }
                 if (!isSucces) {
@@ -2862,7 +2888,6 @@ var HttpConnectionService = (function () {
                 console.log(responce);
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).isSucces);
                     observer.next(JSON.parse(responce["_body"]));
                 }
                 if (!isSucces) {
@@ -2881,7 +2906,7 @@ var HttpConnectionService = (function () {
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 console.log(responce);
                 if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]).user);
+                    //this.authStream.next(JSON.parse(responce["_body"]).isSucces);
                     observer.next(JSON.parse(responce["_body"]));
                 }
                 if (!isSucces) {
@@ -2915,6 +2940,7 @@ var HttpConnectionService = (function () {
                 .subscribe(function (responce) {
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 _this.isAuth = isSucces;
+                _this.authStream.next(isSucces);
                 observer.next(isSucces);
             });
         });
@@ -2960,7 +2986,7 @@ var HttpConnectionService = (function () {
                 .subscribe(function (responce) {
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 if (isSucces) {
-                    //	this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+                    _this.authStream.next(!JSON.parse(responce["_body"]).isSucces);
                     observer.next(JSON.parse(responce["_body"]));
                 }
                 if (!isSucces) {
@@ -3162,7 +3188,7 @@ var HttpConnectionService = (function () {
                 var isSucces = JSON.parse(responce["_body"]).isSucces;
                 console.log(responce);
                 if (isSucces) {
-                    _this.authStream.next(JSON.parse(responce["_body"]));
+                    //this.authStream.next(JSON.parse(responce["_body"]));
                     observer.next(JSON.parse(responce["_body"]));
                 }
                 if (!isSucces) {
@@ -3834,6 +3860,99 @@ module.exports = __webpack_require__(322);
 
 /***/ }),
 
+/***/ 527:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tokens__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__http_connection_service__ = __webpack_require__(42);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CookieServiceCustom; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var CookieServiceCustom = (function () {
+    function CookieServiceCustom(_cookieService, _http) {
+        var _this = this;
+        this._cookieService = _cookieService;
+        this._http = _http;
+        this.timeCookie = new Date(new Date().getTime() + (((60 * 1000) * 60) * 24) * 365); // 1 year
+        this.isInit = false;
+        debugger;
+        this.refreshStatus();
+        this._http.authStream.subscribe(function (status) {
+            _this.refreshStatus();
+        });
+    }
+    CookieServiceCustom.prototype.setAuthStatus = function (status) {
+        this._cookieService.put('auth', status, { expires: this.timeCookie });
+    };
+    CookieServiceCustom.prototype.getAuthStatus = function () {
+        console.log(this._cookieService.get('auth'));
+        debugger;
+        return this._cookieService.get('auth') == 'y';
+    };
+    CookieServiceCustom.prototype.setAdminStatus = function (status) {
+        this._cookieService.put('admin', status, { expires: this.timeCookie });
+    };
+    CookieServiceCustom.prototype.getAdminStatus = function () {
+        console.log(this._cookieService.get('auth'));
+        debugger;
+        return this._cookieService.get('admin') == 'y';
+    };
+    CookieServiceCustom.prototype.setVerifStatus = function (status) {
+        this._cookieService.put('verif', status, { expires: this.timeCookie });
+    };
+    CookieServiceCustom.prototype.getVerifStatus = function () {
+        console.log(this._cookieService.get('auth'));
+        debugger;
+        return this._cookieService.get('verif') == 'y';
+    };
+    CookieServiceCustom.prototype.refreshStatus = function () {
+        var _this = this;
+        this._http.getProfileInfo().subscribe(function (res) {
+            _this.isInit = true;
+            if (res.user) {
+                var isWorker = res.user.isWorker ? 'y' : 'n', isAdmin = res.user.isAdmin ? 'y' : 'n';
+                _this.setAuthStatus('y');
+                _this.setVerifStatus(isWorker);
+                _this.setAdminStatus(isAdmin);
+            }
+            else {
+                _this.setAuthStatus('n');
+                _this.setVerifStatus('n');
+                _this.setAdminStatus('n');
+            }
+        });
+    };
+    return CookieServiceCustom;
+}());
+CookieServiceCustom = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__tokens__["a" /* httpConnection */])),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__http_connection_service__["a" /* HttpConnectionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__http_connection_service__["a" /* HttpConnectionService */]) === "function" && _b || Object])
+], CookieServiceCustom);
+
+var _a, _b;
+//# sourceMappingURL=cookie.service.js.map
+
+/***/ }),
+
 /***/ 9:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3841,9 +3960,11 @@ module.exports = __webpack_require__(322);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return httpConnection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return socketConnection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return cookieS; });
 
 var httpConnection = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["OpaqueToken"]('httpConnection');
 var socketConnection = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["OpaqueToken"]('socketConnection');
+var cookieS = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["OpaqueToken"]('cookieS');
 //# sourceMappingURL=tokens.js.map
 
 /***/ })

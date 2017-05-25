@@ -51,7 +51,7 @@ export class HttpConnectionService {
 			  		console.log(responce)
 
 			         if(isSucces){
-			         	this.authStream.next(JSON.parse(responce["_body"]).result);
+			         	//this.authStream.next(JSON.parse(responce["_body"]).result);
 			          	observer.next(JSON.parse(responce["_body"]).result);
 			        }
 			         if(!isSucces){
@@ -151,7 +151,6 @@ export class HttpConnectionService {
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
 			         if(isSucces){
-			         	this.authStream.next(JSON.parse(responce["_body"]).isSucces);
 			          	observer.next(JSON.parse(responce["_body"]));
 			        }
 			         if(!isSucces){
@@ -173,7 +172,6 @@ export class HttpConnectionService {
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
 			         if(isSucces){
-			         	this.authStream.next(JSON.parse(responce["_body"]).isSucces);
 			          	observer.next(JSON.parse(responce["_body"]));
 			        }
 			         if(!isSucces){
@@ -189,7 +187,6 @@ export class HttpConnectionService {
    public getProfileInfo(){
    		return	Observable.create((observer:Observer<any>)=>{
 
-
 			    let headers = new Headers({ 'Content-Type': 'application/json' });
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
 			  	this.http.get(`${this.domain}/api/getProfile`,options)
@@ -198,7 +195,7 @@ export class HttpConnectionService {
 			  		console.log(responce)
 
 			         if(isSucces){
-			         	this.authStream.next(JSON.parse(responce["_body"]).user);
+			         	//this.authStream.next(JSON.parse(responce["_body"]).isSucces);
 			          	observer.next(JSON.parse(responce["_body"]));
 			        }
 			         if(!isSucces){
@@ -239,9 +236,10 @@ export class HttpConnectionService {
 			    let options = new RequestOptions({ headers: headers, withCredentials: true});
 			  	this.http.get(`${this.domain}/api/getProfile`,options)
 			  	.subscribe((responce)=>{
-
+						
 			  			let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  			this.isAuth = isSucces;
+						this.authStream.next(isSucces);
 			  			observer.next(isSucces);
 
 			        })
@@ -304,7 +302,7 @@ export class HttpConnectionService {
 			  		let isSucces = JSON.parse(responce["_body"]).isSucces;
 			  		
 			         if(isSucces){
-			         //	this.authStream.next(JSON.parse(responce["_body"]).isSucces);
+			         	this.authStream.next(!JSON.parse(responce["_body"]).isSucces);
 			          	observer.next(JSON.parse(responce["_body"]));
 			        }
 			         if(!isSucces){
@@ -587,7 +585,7 @@ export class HttpConnectionService {
 			  		console.log(responce)
 
 			         if(isSucces){
-			         	this.authStream.next(JSON.parse(responce["_body"]));
+			         	//this.authStream.next(JSON.parse(responce["_body"]));
 			          	observer.next(JSON.parse(responce["_body"]));
 			        }
 			         if(!isSucces){

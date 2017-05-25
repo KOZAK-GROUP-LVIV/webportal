@@ -25,7 +25,7 @@ export class SocketConnectionService {
 
 
 
-  public socket = io.connect('https://evening-savannah-51961.herokuapp.com');  
+  public socket = io();   
   public userInfo;
   public dualMsgStream = Observable.fromEvent(this.socket, 'incomDualMsg');
   public generalMsgStream = Observable.fromEvent(this.socket, 'incomGeneralMsg');

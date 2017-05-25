@@ -4,7 +4,7 @@ import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Route, Routes, RouterModule, ROUTER_CONFIGURATION } from '@angular/router';
 
-import {httpConnection, socketConnection} from './tokens';
+import {httpConnection, socketConnection, cookieS} from './tokens';
 import {HttpConnectionService} from './http-connection.service';
 import {SocketConnectionService} from './socket-connection.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -28,12 +28,13 @@ import { NgbdPaginationBasic } from './news-editor/paginationNews';
 import { InterviewEditorComponent } from './interview-editor/interview-editor.component';
 import { FormInterviewEditComponent, modalInterviewEditor } from './form-interview-edit/form-interview-edit.component';
 import { VerificBannerComponent } from './verific-banner/verific-banner.component';
-
+import { CookieService } from 'angular2-cookie/core';
 import { AuthGuard } from './guards/authGuard'
 import { AdminGuard } from './guards/adminGuard'
 import { VerifGuard } from './guards/verificGuard';
 import { FormProfileEditComponent, modalProfileEditor } from './form-profile-edit/form-profile-edit.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { CookieServiceCustom } from './cookie.service';
 
 const routers:Route[] = [
 {path: 'entry/:mode', component: EntryComponent},
@@ -87,7 +88,9 @@ const routers:Route[] = [
     CKEditorModule
   ],
   providers: [{provide: httpConnection, useClass: HttpConnectionService}, 
-              {provide: socketConnection, useClass: SocketConnectionService}, AuthGuard, AdminGuard, VerifGuard],
+              {provide: socketConnection, useClass: SocketConnectionService}, AuthGuard, AdminGuard, VerifGuard, 
+              CookieService,
+              {provide: cookieS, useClass: CookieServiceCustom}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
