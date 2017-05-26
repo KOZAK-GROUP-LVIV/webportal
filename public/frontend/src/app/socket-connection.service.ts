@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
+import { httpConnection } from './tokens';
+import { HttpConnectionService  } from './http-connection.service'
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/fromEvent';
@@ -38,18 +40,28 @@ export class SocketConnectionService {
   public onReadMessage = Observable.fromEvent(this.socket, 'readMessage');
   public generalConferenceStream = Observable.fromEvent(this.socket, 'getGeneralConference');
 
+
   public profileStream = Observable.fromEvent(this.socket, 'profile')
     .filter((res:{isSucces:boolean, user: {}})=>{
     return res.isSucces;
   }).map((res:{isSucces:boolean, user: {}})=>res.user);
 
-  constructor(private _router:Router) {
+  constructor(private _router:Router, @Inject(httpConnection) private _http:HttpConnectionService) {
     this.profileStream.subscribe(user=>{
       this.userInfo = user;
-    })
-	  this.init();
+    });
+
+
+    Observable.fromEvent(this.socket, 'reloadUser').subscribe(()=>{
+      location.reload();
+    });
+	    this.init();
    }
 
+
+   private reloadUser(_id){
+      this.socket.emit('reloadUser', _id);
+   }
 
    private getGeneralConference(){
       this.socket.emit('getGeneralConference');
@@ -135,13 +147,14 @@ export class SocketConnectionService {
   }
 
 
-
   private init(){
 
     this.socket.on('connect', ()=>{
 
 
-        this.socket.on('redirectLogin', ()=>{        
+        this.socket.on('redirectLogin', ()=>{   
+           this._http.isAuthUser().subscribe(()=>{});
+           this._http.isAdminUser().subscribe(()=>{})
            this._router.navigate(['entry', 'login']);
         })
 

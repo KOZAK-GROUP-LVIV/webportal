@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { httpConnection } from '../tokens';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verific-banner',
@@ -7,7 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VerificBannerComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(httpConnection) private _http, private _router:Router) {
+
+    this._http.isAuthUser().filter(isAuth=>isAuth).subscribe(isAuth=>{
+      this._router.navigate(['news']);
+    })
+   }
 
   ngOnInit() {
   }

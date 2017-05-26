@@ -62,9 +62,9 @@ let schema = new Schema({
 							type: Boolean,
 							default: false
 						},
-						socketId: {
-							type: String,
-							default: null
+						socketIds: {
+							type: [],
+							default: []
 						}
 		});
 
@@ -95,6 +95,46 @@ let model = {
 			return usersModel.findOne({'login':user.login}).select("+password");
 		},
 
+
+		addUserSocket(_id, socketId){
+			console.log(_id)
+			usersModel.findOne({_id}).update({$push : {socketIds: socketId}}).then((res)=>{
+				console.log(res)
+			}).catch(err=>{
+				console.log(err)
+			})
+		},
+
+		removeUserSocket(_id, socketId){
+			return new Promise((resolve, reject)=>{
+					usersModel.findOne({_id}).update({$pull : {socketIds: socketId}}).then((res)=>{
+							usersModel.findOne({_id}).then(user=>{
+								if(user.socketIds.length==0)
+								resolve(true)
+								else
+								resolve(false)
+							});
+						console.log('DELETESOCKETS')
+						console.log(res)
+					}).catch(err=>{
+						console.log(err)
+					})
+			})
+		
+		},
+
+		removeAllSockets(){
+			return usersModel.find({}).then((users)=>{
+			
+				users.forEach(user=>{
+					usersModel.find({_id:user._id}).update({ $set: { socketIds : [] }}).then(res=>{
+						//console.log(res)
+					}).catch(err=>{
+						//console.log(err)
+					})
+				});
+			})
+		},
 		getUsersChat(socket){
 			if(socket){
 				return new Promise((res, rej)=>{
@@ -201,19 +241,26 @@ let model = {
 			return usersModel.find({$and: [{isWorker:true, isOnline: true},  {_id: {$ne: socket.user._id} }] })
 		},
 
-		offlineUser(socket){
+		closeSocket(socket, isLogout){
+		 return	new Promise((resolve, reject)=>{
 
-			return new Promise((res, rej)=>{
-					usersModel.findByIdAndUpdate(socket.user._id, {isOnline: false, socketId: null}, {new: true}, function(err, model) {
-					if(!err){
-						res(model)
+			this.removeUserSocket(socket.user._id, socket.user.socketId).then((isEmpty)=>{
+					if(isEmpty||isLogout){
+						usersModel.findByIdAndUpdate(socket.user._id, {isOnline: false, socketId: null}, {new: true}, function(err, model) {
+						if(!err){
+							resolve(true)
+						}
+						if(err){
+							reject(err)
+						}
+						})
 					}
-					if(err){
-						rej(err)
+					else{
+						resolve(false);
 					}
-				})
-			})
-		
+				});	
+
+			});	
 		},
 
 		generateAvatars(){
@@ -240,7 +287,6 @@ let model = {
 
 					  fs.readFile(req.file.path, (err, data)=>{
 	                                  var randomName = randomstring.generate(7);
-	                                          
 
 				  		fs.writeFile(`./public/images/avatars/${randomName}.png`, data, (err)=> {
 				                                   if(err) {

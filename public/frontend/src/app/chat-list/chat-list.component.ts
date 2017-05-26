@@ -112,7 +112,7 @@ export class ChatListComponent implements OnInit , OnDestroy {
      this._socket.onReadMessage.takeWhile(() => this.isWork)
       .filter(({readUserId, writter})=>readUserId==this.currId||writter==this.myPersonInfo._id)
       .subscribe(readUserId=>{
-      // debugger
+        debugger
         this._socket.getChatUserList();
         this._socket.getGeneralConference();
     })

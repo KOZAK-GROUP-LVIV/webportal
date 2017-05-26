@@ -7,7 +7,7 @@ var cors = require('cors');
 var users = require('./routes/users');
 var chat = require('./routes/chat');
 var news = require('./routes/news');
-var interview = require('./routes/inquirer.js')
+var interview = require('./routes/inquirer.js');
 var cookie = require('cookie');
 var connect = require('connect');
 var cookieSession = require('cookie-session');
@@ -139,10 +139,15 @@ app.use(function(err, req, res, next) {
 
 var port = process.env.PORT || '3000';
 let server = app.listen(port);
-var io = require('socket.io').listen(server) 
-global.io = io;
+var io = require('socket.io').listen(server);
 
-require('./routes/socket.js')(io, sessionStore, __dirname);
+usersModel.removeAllSockets().then((res)=>{
+  global.io = io;
+  require('./routes/socket.js')(io, sessionStore, __dirname);
+}).catch(err=>{
+  console.log(err)
+})
+
 
 module.exports = app;
 

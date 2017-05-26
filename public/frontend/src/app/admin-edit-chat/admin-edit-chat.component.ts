@@ -11,16 +11,14 @@ export class AdminEditChatComponent implements OnInit {
 
 	private users;
 
-  constructor(@Inject(httpConnection)  private _http) {
-
-  	
+  constructor(@Inject(httpConnection)  private _http, @Inject(socketConnection) private _socket) {
 
   	this.getUsetList();
    }
 
    private addToWorkers(id){
    	this._http.addToWorkers(id).subscribe(()=>{
-   		debugger
+   		this._socket.reloadUser(id);
    		this.getUsetList();
    	},
    	(err)=>{
@@ -31,7 +29,7 @@ export class AdminEditChatComponent implements OnInit {
    private removeFromWorker(id){
 
    	this._http.removeFromWorker(id).subscribe(()=>{
-   		debugger
+   		this._socket.reloadUser(id);
    		this.getUsetList();
    	},
    	(err)=>{
@@ -43,6 +41,7 @@ export class AdminEditChatComponent implements OnInit {
 
    private removeUser(id){
      this._http.removeUser(id).subscribe(()=>{
+         this._socket.reloadUser(id);
          this.getUsetList();
      },
      ()=>{

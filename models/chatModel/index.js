@@ -380,7 +380,7 @@ module.exports = function(userModel){
 
 		},
 
-		getDualHistory({myId, partnerId, pagination}, socket){
+		getDualHistory({myId, partnerId, pagination}, socket, emitCb){
 			console.log(`pagination -> ${pagination}`);
 			console.log(`partnerId -> ${partnerId}`)
 
@@ -413,7 +413,7 @@ module.exports = function(userModel){
 
 								//console.log(res);
 								if(String(res.history[res.history.length-1].addressee._id)==String(myId)){
-	        						  this.notifyAuthor(res.history[res.history.length-1].author._id, myId)
+	        						  this.notifyAuthor(res.history[res.history.length-1].author._id, myId, emitCb)
 			  					}
 
 			  					
@@ -452,11 +452,12 @@ module.exports = function(userModel){
 
 			},
 
-		notifyAuthor(writerId, readerId){
+		notifyAuthor(writerId, readerId, emitCb){
 			usersModel.findById(writerId).then((user)=>{
 		  			 	if(user.isOnline)
-		  			 		io.sockets.to(user.socketId)
-		  			 			.emit('readMessage', {reader: readerId, writer: writerId});
+						   emitCb(user._id, 'readMessage', {reader: readerId, writer: writerId})
+		  			 		//io.sockets.to(user.socketId)
+		  			 		//	.emit('readMessage', {reader: readerId, writer: writerId});
 
 		  			 		});
 			}

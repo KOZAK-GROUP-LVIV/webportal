@@ -89,8 +89,7 @@ module.exports = function(io, sessionStore, __dirname){
                                            };
        
             
-                  
-        socket.emit('incomDualMsg', dataAuthor);
+        emitSockets(socket.user._id, 'incomDualMsg', dataAuthor)
 
         userModel.getUserById(idAddressee).then(user=>{
           //  console.log(user);
@@ -121,9 +120,12 @@ module.exports = function(io, sessionStore, __dirname){
                                                        body, 
                                                        date: new Date(),
                                                        _id: lastMessageId};
-                        socket.emit('refreshUsers');
-                        io.to(user.socketId).emit('refreshUsers');
-                        io.to(user.socketId).emit('incomDualMsg',dataAdreesse);
+                        emitSockets(socket.user._id, 'refreshUsers');
+                        emitSockets(user._id, 'refreshUsers');
+                        emitSockets(user._id, 'incomDualMsg', dataAdreesse);
+                       // socket.emit('refreshUsers');
+                       // io.to(user.socketId).emit('refreshUsers');
+                       // io.to(user.socketId).emit('incomDualMsg',dataAdreesse);
                                  
                       }
 
@@ -166,9 +168,11 @@ module.exports = function(io, sessionStore, __dirname){
                                              date: new Date(),
                                              isRead: true
                                            };
+            emitSockets(socket.user._id, 'incomGeneralMsg', dataAuthor);
+            emitSockets(socket.user._id, 'refreshUsers', dataAuthor);
 
-            socket.emit('incomGeneralMsg', dataAuthor);
-            socket.emit('refreshUsers');
+           // socket.emit('incomGeneralMsg', dataAuthor);
+           // socket.emit('refreshUsers');
 
             chatModel.setGeneralHistory({author: socket.user, body})
                     .then(lastMessage=>{
@@ -176,8 +180,7 @@ module.exports = function(io, sessionStore, __dirname){
                      //console.log(lastMessage);
                     
                       for(let user of users){
-
-                            io.to(user.socketId).emit('incomGeneralMsg', {
+                          emitSockets(user._id, 'incomGeneralMsg', {
                                              _id : lastMessage._id,
                                              author: {
                                                     _id: socket.user._id,        
@@ -199,7 +202,9 @@ module.exports = function(io, sessionStore, __dirname){
                                              isRead: true
 
                                                       });
-                            io.to(user.socketId).emit('refreshUsers');
+                            emitSockets(user._id, 'refreshUsers')          
+                          //  io.to(user.socketId).emit('incomGeneralMsg', );
+                           // io.to(user.socketId).emit('refreshUsers');
                       }
 
                     }).catch(err=>{
@@ -215,9 +220,8 @@ module.exports = function(io, sessionStore, __dirname){
 
     socket.on('getDualHistory', ({partnerId, pagination})=>{
 
-        chatModel.getDualHistory({myId:socket.user._id, partnerId, pagination}, socket).then(history=>{
-               // console.log(history);
-                socket.emit('getDualHistory', {isSucces:true, history});
+        chatModel.getDualHistory({myId:socket.user._id, partnerId, pagination}, socket, emitSockets).then(history=>{
+                emitSockets(socket.user._id, 'getDualHistory', {isSucces:true, history})
         }).catch(err=>{
               //  console.log(err)
                 socket.emit('getDualHistory', {isSucces:false, err});
@@ -228,7 +232,7 @@ module.exports = function(io, sessionStore, __dirname){
     socket.on('getGeneralHistory', (pagination)=>{
 
       chatModel.getGeneralHistory(socket.user._id, pagination).then(history=>{
-          socket.emit('getGeneralHistory', {isSucces:true, history});
+          emitSockets(socket.user._id, 'getGeneralHistory', {isSucces:true, history})
       }).catch(err=>{
           socket.emit('getGeneralHistory', {isSucces:false, err});
         });
@@ -245,10 +249,10 @@ module.exports = function(io, sessionStore, __dirname){
           console.log(`is read user ${user}`)
           if(user.isOnline){
             if(isGeneral){
-             return socket.emit('readMessage', {reader: socket.user._id, writer: authorId});
+             return emitSockets(socket.user._id, 'readMessage', {reader: socket.user._id, writer: authorId});
             }
-            io.to(user.socketId).emit('readMessage', {reader: socket.user._id, writer: authorId});
-            socket.emit('readMessage', {reader: socket.user._id, writer: authorId});
+            emitSockets(user._id, 'readMessage', {reader: socket.user._id, writer: authorId})
+            emitSockets(socket.user._id, 'readMessage', {reader: socket.user._id, writer: authorId})
             
           }
         });
@@ -285,44 +289,61 @@ module.exports = function(io, sessionStore, __dirname){
         }).catch(err=>{
             socket.emit('deleteHistory', {isSucces:false, err})
         })
-      })
+  });
+
+
+    socket.on('reloadUser', (_id)=>{
+      emitSockets(_id, 'reloadUser');
+    })
 
 
 
     socket.on('disconnect', ()=>{
-       // console.log('sdasda;sldjalksjdlasjldkjaslkjd')
+
       console.log(socket.user);
-      userModel.offlineUser(socket)
-      .then(models=>{
-        io.sockets.emit('refreshUsers');
-               
-      }).catch(err=>{
-        console.log(err);
-      })
+       userModel.closeSocket(socket)
+        .then(isOffline=>{
+          if(isOffline)         
+            io.sockets.emit('refreshUsers');
+
+            socket.user = null;        
+        }).catch(err=>{
+          console.log(err);
+        })
+
       
     
 
     })
 
     socket.on('logout', ()=>{
-      io.sockets.to(socket.id).emit('redirectLogin');
+       emitSockets(socket.user._id, 'redirectLogin');
        let soc = socket;
-       userModel.offlineUser(socket)
-      .then(models=>{
-        socket.user = null;
-        io.sockets.emit('refreshUsers');
-               
-      }).catch(err=>{
-        console.log(err);
-      })
+       userModel.closeSocket(socket, true)
+        .then(isOffline=>{      
+            io.sockets.emit('refreshUsers');
+            socket.user = null;        
+        }).catch(err=>{
+          console.log(err);
+        })
 
     });
 
-
-
-    
-
   };
+
+
+    function emitSockets(_idUser, e, data){
+        userModel.findById(_idUser).then(user=>{
+          if(user.isOnline){
+            console.log(user.socketIds)
+             user.socketIds.forEach(socketId=>{
+                io.to(socketId).emit(e, data);
+              })  
+
+                           }  
+        })
+          
+      }
 
 
       function unsubscribtion(socket){
@@ -342,6 +363,7 @@ module.exports = function(io, sessionStore, __dirname){
   
 
       function getSession(socket){
+        
         let cookies = cookie.parse(socket.handshake.headers.cookie);
         let sid = cookieParser.signedCookie(cookies['sid'], 'tasmanialDeywool');
 
@@ -351,16 +373,21 @@ module.exports = function(io, sessionStore, __dirname){
             }
             
              if(session.passport){
+              
                 if(!session.passport.user)
                   return false;
 
                 userModel.findById(session.passport.user._id).then(user=>{
                    socket.user = user;   
-                   
+                 
                   if(!socket.user){
-                    return io.sockets.to(socket.id).emit('redirectLogin');
-                                  }      
+                   return io.sockets.to(socket.id).emit('redirectLogin');
+                  }
 
+                    
+                  console.log(socket.user)
+                 userModel.addUserSocket(user._id, socket.id);
+                  
                   socket.emit('authorization', {isSucces: !!socket.user, myProfile: socket.user})
                   if(socket.user){
                     if(socket.user.isWorker){
@@ -378,11 +405,13 @@ module.exports = function(io, sessionStore, __dirname){
                       }
                     }
 
+                
                 })
 
             }
         });
 
+     
       }
     
 
